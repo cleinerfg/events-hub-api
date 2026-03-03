@@ -1,0 +1,14 @@
+services:
+    db:
+        image: postgres:15-alpine
+        container_name: events-hub-postgres
+        restart: always
+        shm_size: 128mb
+        environment:
+          POSTGRES_USER: ${DB_POSTGRES_USERNAME}
+          POSTGRES_PASSWORD: ${DB_POSTGRES_PASSWORD}
+          POSTGRES_DB: events-hub
+        ports:
+        - '5432:5432'
+        volumes:
+        - ./data/postgres:/var/lib/postgresql/data
