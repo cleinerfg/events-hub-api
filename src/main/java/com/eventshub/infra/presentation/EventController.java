@@ -7,9 +7,12 @@ import com.eventshub.infra.dto.EventRequest;
 import com.eventshub.infra.dto.EventResponse;
 import com.eventshub.infra.mapper.EventDtoMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,9 +24,14 @@ public class EventController {
     private final EventDtoMapper eventDtoMapper;
 
     @PostMapping
-    public EventResponse create(@RequestBody EventRequest request) {
+    public ResponseEntity<Map<String, Object>> create(@RequestBody EventRequest request) {
         Event event = createEventUseCase.execute(eventDtoMapper.toDomain(request));
-        return eventDtoMapper.toResponse(event);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Event created successfully");
+        response.put("event", eventDtoMapper.toResponse(event));
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping
