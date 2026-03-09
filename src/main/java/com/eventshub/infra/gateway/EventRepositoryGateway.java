@@ -26,6 +26,11 @@ public class EventRepositoryGateway implements EventGateway {
     }
 
     @Override
+    public boolean existsByIdentifier(String identifier) {
+        return eventRepository.existsByIdentifier(identifier);
+    }
+
+    @Override
     public List<Event> findAll() {
         return eventRepository.findAll()
                 .stream()
