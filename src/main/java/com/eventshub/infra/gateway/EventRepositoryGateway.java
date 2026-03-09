@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
@@ -28,6 +29,12 @@ public class EventRepositoryGateway implements EventGateway {
     @Override
     public boolean existsByIdentifier(String identifier) {
         return eventRepository.existsByIdentifier(identifier);
+    }
+
+    @Override
+    public Optional<Event> findByIdentifier(String identifier) {
+        return eventRepository.findByIdentifier(identifier)
+                .map(eventEntityMapper::toDomain);
     }
 
     @Override
