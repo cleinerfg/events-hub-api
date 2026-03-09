@@ -2,11 +2,14 @@ package com.eventshub.infra.presentation;
 
 import com.eventshub.core.domain.Event;
 import com.eventshub.core.usecases.CreateEventUseCase;
+import com.eventshub.core.usecases.FindAllEventsUseCase;
 import com.eventshub.infra.dto.EventRequest;
 import com.eventshub.infra.dto.EventResponse;
 import com.eventshub.infra.mapper.EventDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class EventController {
 
     private final CreateEventUseCase createEventUseCase;
+    private final FindAllEventsUseCase findAllEventsUseCase;
     private final EventDtoMapper eventDtoMapper;
 
     @PostMapping
@@ -23,7 +27,10 @@ public class EventController {
     }
 
     @GetMapping
-    public String getAll() {
-        return "All events";
+    public List<EventResponse> findAll() {
+        return findAllEventsUseCase.execute()
+                .stream()
+                .map(eventDtoMapper::toResponse)
+                .toList();
     }
 }
