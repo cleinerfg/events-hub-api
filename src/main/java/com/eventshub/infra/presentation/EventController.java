@@ -3,6 +3,7 @@ package com.eventshub.infra.presentation;
 import com.eventshub.core.domain.Event;
 import com.eventshub.core.usecases.CreateEventUseCase;
 import com.eventshub.core.usecases.FindAllEventsUseCase;
+import com.eventshub.core.usecases.FindEventByIdentifierUseCase;
 import com.eventshub.infra.dto.EventRequest;
 import com.eventshub.infra.dto.EventResponse;
 import com.eventshub.infra.mapper.EventDtoMapper;
@@ -20,6 +21,7 @@ import java.util.Map;
 public class EventController {
 
     private final CreateEventUseCase createEventUseCase;
+    private final FindEventByIdentifierUseCase findEventByIdentifierUseCase;
     private final FindAllEventsUseCase findAllEventsUseCase;
     private final EventDtoMapper eventDtoMapper;
 
@@ -32,6 +34,14 @@ public class EventController {
         response.put("event", eventDtoMapper.toResponse(event));
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{identifier}")
+    public ResponseEntity<EventResponse> findByIdentifier(
+            @PathVariable String identifier
+    ) {
+        Event event = findEventByIdentifierUseCase.execute(identifier);
+        return ResponseEntity.ok(eventDtoMapper.toResponse(event));
     }
 
     @GetMapping
