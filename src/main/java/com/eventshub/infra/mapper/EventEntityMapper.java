@@ -5,7 +5,7 @@ import com.eventshub.infra.persistence.EventEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EventDomainMapper {
+public class EventEntityMapper {
 
     public EventEntity toEntity(Event event) {
         return EventEntity.builder()
