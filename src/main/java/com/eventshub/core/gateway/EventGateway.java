@@ -8,5 +8,7 @@ public interface EventGateway {
 
     Event create(Event event);
 
+    boolean existsByIdentifier(String identifier);
+
     List<Event> findAll();
 }
