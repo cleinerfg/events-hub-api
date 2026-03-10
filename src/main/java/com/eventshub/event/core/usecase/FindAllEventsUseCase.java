@@ -1,7 +1,7 @@
 package com.eventshub.event.core.usecases;
 
-import com.eventshub.event.core.Event;
 import com.eventshub.event.core.gateway.EventGateway;
+import com.eventshub.event.core.model.Event;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

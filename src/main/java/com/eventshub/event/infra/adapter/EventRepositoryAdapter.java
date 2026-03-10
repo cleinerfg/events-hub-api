@@ -1,7 +1,7 @@
 package com.eventshub.event.infra.adapter;
 
-import com.eventshub.event.core.Event;
 import com.eventshub.event.core.gateway.EventGateway;
+import com.eventshub.event.core.model.Event;
 import com.eventshub.event.infra.mapper.EventEntityMapper;
 import com.eventshub.event.infra.persistence.EventEntity;
 import com.eventshub.event.infra.persistence.EventRepository;

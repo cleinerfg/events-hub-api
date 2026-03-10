@@ -1,6 +1,6 @@
 package com.eventshub.event.core.gateway;
 
-import com.eventshub.event.core.Event;
+import com.eventshub.event.core.model.Event;
 
 import java.util.List;
 import java.util.Optional;

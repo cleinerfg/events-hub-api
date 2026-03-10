@@ -1,6 +1,6 @@
 package com.eventshub.event.infra;
 
-import com.eventshub.event.core.Event;
+import com.eventshub.event.core.model.Event;
 import com.eventshub.event.core.usecases.CreateEventUseCase;
 import com.eventshub.event.core.usecases.FindAllEventsUseCase;
 import com.eventshub.event.core.usecases.FindEventByIdentifierUseCase;
