@@ -1,4 +1,4 @@
-package com.eventshub.event.core;
+package com.eventshub.event.core.model;
 
 import lombok.Builder;
 

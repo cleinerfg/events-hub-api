@@ -1,6 +1,6 @@
 package com.eventshub.event.infra.dto;
 
-import com.eventshub.event.core.EventType;
+import com.eventshub.event.core.model.EventType;
 
 import java.time.OffsetDateTime;
 
