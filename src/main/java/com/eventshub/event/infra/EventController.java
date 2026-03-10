@@ -1,9 +1,9 @@
 package com.eventshub.event.infra;
 
 import com.eventshub.event.core.model.Event;
-import com.eventshub.event.core.usecases.CreateEventUseCase;
-import com.eventshub.event.core.usecases.FindAllEventsUseCase;
-import com.eventshub.event.core.usecases.FindEventByIdentifierUseCase;
+import com.eventshub.event.core.usecase.CreateEventUseCase;
+import com.eventshub.event.core.usecase.FindAllEventsUseCase;
+import com.eventshub.event.core.usecase.FindEventByIdentifierUseCase;
 import com.eventshub.event.infra.dto.EventRequest;
 import com.eventshub.event.infra.dto.EventResponse;
 import com.eventshub.event.infra.mapper.EventDtoMapper;
