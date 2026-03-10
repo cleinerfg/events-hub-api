@@ -6,7 +6,7 @@ import com.eventshub.event.core.gateway.EventGateway;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class CreateEventUseCaseImpl implements CreateEventUseCase {
+public class CreateEventUseCase implements CreateEventUseCase {
 
     private final EventGateway eventGateway;
 

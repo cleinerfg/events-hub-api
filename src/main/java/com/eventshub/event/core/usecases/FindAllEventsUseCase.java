@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class FindAllEventsUseCaseImpl implements FindAllEventsUseCase {
+public class FindAllEventsUseCase implements FindAllEventsUseCase {
 
     private final EventGateway eventGateway;
 
