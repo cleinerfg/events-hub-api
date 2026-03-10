@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 @Getter
 @Setter
 @Table(name = "event")
-public class EventEntity {
+public class EventJpaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

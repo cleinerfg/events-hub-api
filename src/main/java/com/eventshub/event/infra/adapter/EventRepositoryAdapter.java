@@ -2,8 +2,8 @@ package com.eventshub.event.infra.adapter;
 
 import com.eventshub.event.core.gateway.EventGateway;
 import com.eventshub.event.core.model.Event;
-import com.eventshub.event.infra.mapper.EventEntityMapper;
-import com.eventshub.event.infra.persistence.EventEntity;
+import com.eventshub.event.infra.mapper.EventPersistenceMapper;
+import com.eventshub.event.infra.persistence.EventJpaEntity;
 import com.eventshub.event.infra.persistence.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -16,14 +16,14 @@ import java.util.Optional;
 public class EventRepositoryAdapter implements EventGateway {
 
     private final EventRepository eventRepository;
-    private final EventEntityMapper eventEntityMapper;
+    private final EventPersistenceMapper eventPersistenceMapper;
 
     @Override
     public Event create(Event event) {
-        EventEntity savedEvent = eventRepository.save(
-                eventEntityMapper.toEntity(event)
+        EventJpaEntity savedEvent = eventRepository.save(
+                eventPersistenceMapper.toEntity(event)
         );
-        return eventEntityMapper.toDomain(savedEvent);
+        return eventPersistenceMapper.toDomain(savedEvent);
     }
 
     @Override
@@ -34,14 +34,14 @@ public class EventRepositoryAdapter implements EventGateway {
     @Override
     public Optional<Event> findByIdentifier(String identifier) {
         return eventRepository.findByIdentifier(identifier)
-                .map(eventEntityMapper::toDomain);
+                .map(eventPersistenceMapper::toDomain);
     }
 
     @Override
     public List<Event> findAll() {
         return eventRepository.findAll()
                 .stream()
-                .map(eventEntityMapper::toDomain)
+                .map(eventPersistenceMapper::toDomain)
                 .toList();
     }
 
