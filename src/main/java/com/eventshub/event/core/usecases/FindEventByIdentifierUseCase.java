@@ -6,7 +6,7 @@ import com.eventshub.event.core.gateway.EventGateway;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class FindEventByIdentifierUseCaseImpl implements FindEventByIdentifierUseCase {
+public class FindEventByIdentifierUseCase implements FindEventByIdentifierUseCase {
 
     private final EventGateway eventGateway;
 
