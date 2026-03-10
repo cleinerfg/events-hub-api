@@ -1,9 +1,9 @@
 package com.eventshub.event.infra.config;
 
 import com.eventshub.event.core.gateway.EventGateway;
-import com.eventshub.event.core.usecases.CreateEventUseCase;
-import com.eventshub.event.core.usecases.FindAllEventsUseCase;
-import com.eventshub.event.core.usecases.FindEventByIdentifierUseCase;
+import com.eventshub.event.core.usecase.CreateEventUseCase;
+import com.eventshub.event.core.usecase.FindAllEventsUseCase;
+import com.eventshub.event.core.usecase.FindEventByIdentifierUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
