@@ -6,6 +6,7 @@ import com.eventshub.event.infra.exception.SystemIntegrityException;
 import com.eventshub.event.infra.mapper.EventPersistenceMapper;
 import com.eventshub.event.infra.persistence.EventJpaEntity;
 import com.eventshub.event.infra.persistence.EventRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -47,6 +48,7 @@ public class EventRepositoryAdapter implements EventGateway {
     }
 
     @Override
+    @Transactional
     public Event update(Event event) {
         EventJpaEntity jpaEntity = eventRepository.findById(event.getId()).orElseThrow(
                 () -> new SystemIntegrityException("Event with identifier " +
@@ -59,5 +61,4 @@ public class EventRepositoryAdapter implements EventGateway {
 
         return eventPersistenceMapper.toDomain(updatedEntity);
     }
-
 }
