@@ -1,6 +1,7 @@
 package com.eventshub.event.infra.exception;
 
 import com.eventshub.event.core.exception.DuplicateIdentifierException;
+import com.eventshub.event.core.exception.InvalidPeriodException;
 import com.eventshub.event.core.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -34,6 +35,15 @@ public class RestExceptionHandler {
                 HttpStatus.NOT_FOUND, ex.getMessage()
         );
         problemDetail.setTitle("NOT_FOUND_EVENT");
+        return problemDetail;
+    }
+
+    @ExceptionHandler(InvalidPeriodException.class)
+    public ProblemDetail handleInvalidPeriodException(InvalidPeriodException ex) {
+        var problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST, ex.getMessage()
+        );
+        problemDetail.setTitle("INVALID_PERIOD");
         return problemDetail;
     }
 }
