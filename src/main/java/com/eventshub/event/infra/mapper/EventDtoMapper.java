@@ -23,14 +23,14 @@ public class EventDtoMapper {
 
     public EventResponse toResponse(Event event) {
         return EventResponse.builder()
-                .name(event.name())
-                .identifier(event.identifier())
-                .type(event.type())
-                .description(event.description())
-                .organizer(event.organizer())
-                .location(event.location())
-                .startDate(event.startDate())
-                .endDate(event.endDate())
+                .name(event.getName())
+                .identifier(event.getIdentifier())
+                .type(event.getType())
+                .description(event.getDescription())
+                .organizer(event.getOrganizer())
+                .location(event.getLocation())
+                .startDate(event.getStartDate())
+                .endDate(event.getEndDate())
                 .build();
     }
 }

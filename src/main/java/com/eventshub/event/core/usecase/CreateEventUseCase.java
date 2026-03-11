@@ -11,8 +11,8 @@ public class CreateEventUseCase {
     private final EventGateway eventGateway;
 
     public Event execute(Event event) {
-        if (eventGateway.existsByIdentifier(event.identifier())) {
-            throw new DuplicateIdentifierException(event.identifier());
+        if (eventGateway.existsByIdentifier(event.getIdentifier())) {
+            throw new DuplicateIdentifierException(event.getIdentifier());
         }
         return eventGateway.create(event);
     }

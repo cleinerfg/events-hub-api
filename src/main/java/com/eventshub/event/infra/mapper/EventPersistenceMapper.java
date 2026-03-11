@@ -9,15 +9,14 @@ public class EventPersistenceMapper {
 
     public EventJpaEntity toEntity(Event event) {
         return EventJpaEntity.builder()
-                .id(event.id())
-                .identifier(event.identifier())
-                .name(event.name())
-                .type(event.type())
-                .description(event.description())
-                .organizer(event.organizer())
-                .location(event.location())
-                .startDate(event.startDate())
-                .endDate(event.endDate())
+                .identifier(event.getIdentifier())
+                .name(event.getName())
+                .type(event.getType())
+                .description(event.getDescription())
+                .organizer(event.getOrganizer())
+                .location(event.getLocation())
+                .startDate(event.getStartDate())
+                .endDate(event.getEndDate())
                 .build();
     }
 
