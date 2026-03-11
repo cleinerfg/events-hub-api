@@ -2,6 +2,7 @@ package com.eventshub.event.infra.adapter;
 
 import com.eventshub.event.core.gateway.EventGateway;
 import com.eventshub.event.core.model.Event;
+import com.eventshub.event.infra.exception.SystemIntegrityException;
 import com.eventshub.event.infra.mapper.EventPersistenceMapper;
 import com.eventshub.event.infra.persistence.EventJpaEntity;
 import com.eventshub.event.infra.persistence.EventRepository;
@@ -43,6 +44,20 @@ public class EventRepositoryAdapter implements EventGateway {
                 .stream()
                 .map(eventPersistenceMapper::toDomain)
                 .toList();
+    }
+
+    @Override
+    public Event update(Event event) {
+        EventJpaEntity jpaEntity = eventRepository.findById(event.getId()).orElseThrow(
+                () -> new SystemIntegrityException("Event with identifier " +
+                        event.getIdentifier() + " lost during update")
+        );
+
+        eventPersistenceMapper.updateJpaEntityFromDomain(jpaEntity, event);
+
+        EventJpaEntity updatedEntity = eventRepository.save(jpaEntity);
+
+        return eventPersistenceMapper.toDomain(updatedEntity);
     }
 
 }
