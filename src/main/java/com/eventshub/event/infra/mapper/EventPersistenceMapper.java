@@ -33,4 +33,14 @@ public class EventPersistenceMapper {
                 .endDate(jpaEntity.getEndDate())
                 .build();
     }
+
+    public void updateJpaEntityFromDomain(EventJpaEntity jpaEntity, Event event) {
+        jpaEntity.setName(event.getName());
+        jpaEntity.setType(event.getType());
+        jpaEntity.setDescription(event.getDescription());
+        jpaEntity.setOrganizer(event.getOrganizer());
+        jpaEntity.setLocation(event.getLocation());
+        jpaEntity.setStartDate(event.getStartDate());
+        jpaEntity.setEndDate(event.getEndDate());
+    }
 }
