@@ -2,6 +2,7 @@ package com.eventshub.event.core.gateway;
 
 import com.eventshub.event.core.exception.NotFoundException;
 import com.eventshub.event.core.model.Event;
+import com.eventshub.event.core.model.FilterEventInput;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +16,8 @@ public interface EventGateway {
     Optional<Event> findByIdentifier(String identifier);
 
     List<Event> findAll();
+
+    List<Event> findAllWithFilter(FilterEventInput filter);
 
     Event update(Event event);
 
