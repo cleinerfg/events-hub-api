@@ -1,6 +1,7 @@
 package com.eventshub.event.infra;
 
 import com.eventshub.event.core.model.Event;
+import com.eventshub.event.core.model.FilterEventInput;
 import com.eventshub.event.core.model.UpdateEventInput;
 import com.eventshub.event.core.usecase.*;
 import com.eventshub.event.infra.dto.EventRequest;
@@ -22,6 +23,7 @@ public class EventController {
     private final CreateEventUseCase createEventUseCase;
     private final FindEventByIdentifierUseCase findEventByIdentifierUseCase;
     private final FindAllEventsUseCase findAllEventsUseCase;
+    private final FindAllEventsWithFilterUseCase findAllEventsWithFilterUseCase;
     private final UpdateEventUseCase updateEventUseCase;
     private final DeleteEventUseCase deleteEventUseCase;
     private final EventDtoMapper eventDtoMapper;
@@ -48,6 +50,16 @@ public class EventController {
     @GetMapping
     public List<EventResponse> findAll() {
         return findAllEventsUseCase.execute()
+                .stream()
+                .map(eventDtoMapper::toResponse)
+                .toList();
+    }
+
+    @GetMapping("/search")
+    public List<EventResponse> findAllWithFilter(
+            @ModelAttribute FilterEventInput filter
+    ) {
+        return findAllEventsWithFilterUseCase.execute(filter)
                 .stream()
                 .map(eventDtoMapper::toResponse)
                 .toList();
