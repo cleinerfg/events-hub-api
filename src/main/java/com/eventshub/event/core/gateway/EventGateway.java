@@ -1,5 +1,6 @@
 package com.eventshub.event.core.gateway;
 
+import com.eventshub.event.core.exception.NotFoundException;
 import com.eventshub.event.core.model.Event;
 
 import java.util.List;
@@ -14,4 +15,10 @@ public interface EventGateway {
     Optional<Event> findByIdentifier(String identifier);
 
     List<Event> findAll();
+
+    default Event getByIdentifierOrThrow(String identifier) {
+        return findByIdentifier(identifier).orElseThrow(() -> new NotFoundException(
+                "Event with identifier " + identifier + " not found")
+        );
+    }
 }
