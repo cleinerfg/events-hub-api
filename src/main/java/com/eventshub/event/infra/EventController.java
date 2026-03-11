@@ -1,9 +1,11 @@
 package com.eventshub.event.infra;
 
 import com.eventshub.event.core.model.Event;
+import com.eventshub.event.core.model.UpdateEventInput;
 import com.eventshub.event.core.usecase.CreateEventUseCase;
 import com.eventshub.event.core.usecase.FindAllEventsUseCase;
 import com.eventshub.event.core.usecase.FindEventByIdentifierUseCase;
+import com.eventshub.event.core.usecase.UpdateEventUseCase;
 import com.eventshub.event.infra.dto.EventRequest;
 import com.eventshub.event.infra.dto.EventResponse;
 import com.eventshub.event.infra.mapper.EventDtoMapper;
@@ -23,6 +25,7 @@ public class EventController {
     private final CreateEventUseCase createEventUseCase;
     private final FindEventByIdentifierUseCase findEventByIdentifierUseCase;
     private final FindAllEventsUseCase findAllEventsUseCase;
+    private final UpdateEventUseCase updateEventUseCase;
     private final EventDtoMapper eventDtoMapper;
 
     @PostMapping
@@ -50,5 +53,14 @@ public class EventController {
                 .stream()
                 .map(eventDtoMapper::toResponse)
                 .toList();
+    }
+
+    @PutMapping("/{identifier}")
+    public ResponseEntity<EventResponse> update(
+            @PathVariable String identifier,
+            @RequestBody UpdateEventInput request
+    ) {
+        Event updatedEvent = updateEventUseCase.execute(identifier, request);
+        return ResponseEntity.ok(eventDtoMapper.toResponse(updatedEvent));
     }
 }
