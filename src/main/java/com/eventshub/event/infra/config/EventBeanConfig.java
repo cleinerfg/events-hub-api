@@ -1,10 +1,7 @@
 package com.eventshub.event.infra.config;
 
 import com.eventshub.event.core.gateway.EventGateway;
-import com.eventshub.event.core.usecase.CreateEventUseCase;
-import com.eventshub.event.core.usecase.FindAllEventsUseCase;
-import com.eventshub.event.core.usecase.FindEventByIdentifierUseCase;
-import com.eventshub.event.core.usecase.UpdateEventUseCase;
+import com.eventshub.event.core.usecase.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,5 +26,10 @@ public class EventBeanConfig {
     @Bean
     public UpdateEventUseCase updateEventUseCase(EventGateway eventGateway) {
         return new UpdateEventUseCase(eventGateway);
+    }
+
+    @Bean
+    public DeleteEventUseCase deleteEventUseCase(EventGateway eventGateway) {
+        return new DeleteEventUseCase(eventGateway);
     }
 }
