@@ -19,8 +19,10 @@ public interface EventGateway {
     Event update(Event event);
 
     default Event getByIdentifierOrThrow(String identifier) {
-        return findByIdentifier(identifier).orElseThrow(() -> new NotFoundException(
-                "Event with identifier " + identifier + " not found")
-        );
+        return findByIdentifier(identifier).orElseThrow(() -> createNotFoundException(identifier));
+    }
+
+    default NotFoundException createNotFoundException(String identifier) {
+        return new NotFoundException("Event with identifier " + identifier + " not found");
     }
 }
