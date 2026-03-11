@@ -4,6 +4,8 @@ import com.eventshub.event.core.gateway.EventGateway;
 import com.eventshub.event.core.usecase.CreateEventUseCase;
 import com.eventshub.event.core.usecase.FindAllEventsUseCase;
 import com.eventshub.event.core.usecase.FindEventByIdentifierUseCase;
+import com.eventshub.event.core.usecase.UpdateEventUseCase;
+import jakarta.transaction.Transactional;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,5 +25,11 @@ public class EventBeanConfig {
     @Bean
     public FindAllEventsUseCase findAllEventsUseCase(EventGateway eventGateway) {
         return new FindAllEventsUseCase(eventGateway);
+    }
+
+    @Bean
+    @Transactional
+    public UpdateEventUseCase updateEventUseCase(EventGateway eventGateway) {
+        return new UpdateEventUseCase(eventGateway);
     }
 }
