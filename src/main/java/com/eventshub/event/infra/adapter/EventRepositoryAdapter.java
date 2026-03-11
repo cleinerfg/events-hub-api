@@ -2,10 +2,12 @@ package com.eventshub.event.infra.adapter;
 
 import com.eventshub.event.core.gateway.EventGateway;
 import com.eventshub.event.core.model.Event;
+import com.eventshub.event.core.model.FilterEventInput;
 import com.eventshub.event.infra.exception.SystemIntegrityException;
 import com.eventshub.event.infra.mapper.EventPersistenceMapper;
 import com.eventshub.event.infra.persistence.EventJpaEntity;
 import com.eventshub.event.infra.persistence.EventRepository;
+import com.eventshub.event.infra.persistence.EventSpecs;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -42,6 +44,17 @@ public class EventRepositoryAdapter implements EventGateway {
     @Override
     public List<Event> findAll() {
         return eventRepository.findAll()
+                .stream()
+                .map(eventPersistenceMapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<Event> findAllWithFilter(FilterEventInput filter) {
+
+        var spec = EventSpecs.withFilter(filter);
+
+        return eventRepository.findAll(spec)
                 .stream()
                 .map(eventPersistenceMapper::toDomain)
                 .toList();
