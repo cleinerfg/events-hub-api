@@ -10,6 +10,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class RestExceptionHandler {
 
+    @ExceptionHandler(SystemIntegrityException.class)
+    public ProblemDetail handleSystemIntegrityException(SystemIntegrityException ex) {
+        var problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage()
+        );
+        problemDetail.setTitle("SYSTEM_INTEGRITY_ERROR");
+        return problemDetail;
+    }
+
     @ExceptionHandler(DuplicateIdentifierException.class)
     public ProblemDetail handleDuplicateEventIdentifierException(DuplicateIdentifierException ex) {
         var problemDetail = ProblemDetail.forStatusAndDetail(
