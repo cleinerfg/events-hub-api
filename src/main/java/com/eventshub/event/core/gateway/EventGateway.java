@@ -18,6 +18,8 @@ public interface EventGateway {
 
     Event update(Event event);
 
+    void delete(String identifier);
+
     default Event getByIdentifierOrThrow(String identifier) {
         return findByIdentifier(identifier).orElseThrow(() -> createNotFoundException(identifier));
     }
