@@ -24,6 +24,11 @@ public class EventBeanConfig {
     }
 
     @Bean
+    public FindAllEventsWithFilterUseCase findAllEventsWithFilter(EventGateway eventGateway) {
+        return new FindAllEventsWithFilterUseCase(eventGateway);
+    }
+
+    @Bean
     public UpdateEventUseCase updateEventUseCase(EventGateway eventGateway) {
         return new UpdateEventUseCase(eventGateway);
     }
