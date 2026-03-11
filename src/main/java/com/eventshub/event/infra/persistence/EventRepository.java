@@ -9,4 +9,6 @@ public interface EventRepository extends JpaRepository<EventJpaEntity, Long> {
     boolean existsByIdentifier(String identifier);
 
     Optional<EventJpaEntity> findByIdentifier(String identifier);
+
+    void deleteByIdentifier(String identifier);
 }
