@@ -61,4 +61,10 @@ public class EventRepositoryAdapter implements EventGateway {
 
         return eventPersistenceMapper.toDomain(updatedEntity);
     }
+
+    @Override
+    @Transactional
+    public void delete(String identifier) {
+        eventRepository.deleteByIdentifier(identifier);
+    }
 }
