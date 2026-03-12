@@ -27,14 +27,22 @@ public final class EventSpecs {
             addEqual(predicates, cb, root.get("organizer"), input.organizer());
             addLike(predicates, cb, root.get("location"), input.location());
 
-            // TODO: fix filter by date
-
             Expression<OffsetDateTime> startDate = root.get("startDate");
-            addGreaterThanOrEqual(predicates, cb, startDate, input.startDate());
+            addRange(predicates,
+                    cb,
+                    startDate,
+                    input.getStartDateFromAsDateTime(),
+                    input.getStartDateUntilAsDateTime()
+            );
 
             Expression<OffsetDateTime> endDate = root.get("endDate");
-            addLessThanOrEqual(predicates, cb, endDate, input.endDate());
-
+            addRange(predicates,
+                    cb,
+                    endDate,
+                    input.getEndDateFromAsDateTime(),
+                    input.getEndDateUntilAsDateTime()
+            );
+            
             return cb.and(predicates.toArray(new Predicate[0]));
         };
     }
@@ -67,25 +75,14 @@ public final class EventSpecs {
     // the type has a natural ordering. Using Object would break type-safety since
     // Object doesn't implement Comparable, causing a compile-time error.
 
-    private static <Y extends Comparable<? super Y>> void addGreaterThanOrEqual(
+    private static <Y extends Comparable<? super Y>> void addRange(
             List<Predicate> predicates,
             CriteriaBuilder cb,
             Expression<Y> field,
-            Y value) {
-
-        if (value != null) {
-            predicates.add(cb.greaterThanOrEqualTo(field, value));
-        }
-    }
-
-    private static <Y extends Comparable<? super Y>> void addLessThanOrEqual(
-            List<Predicate> predicates,
-            CriteriaBuilder cb,
-            Expression<Y> field,
-            Y value) {
-
-        if (value != null) {
-            predicates.add(cb.lessThanOrEqualTo(field, value));
-        }
+            Y start,
+            Y end
+    ) {
+        if (start != null) predicates.add(cb.greaterThanOrEqualTo(field, start));
+        if (end != null) predicates.add(cb.lessThanOrEqualTo(field, end));
     }
 }
