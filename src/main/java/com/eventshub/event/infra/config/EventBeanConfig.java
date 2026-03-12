@@ -1,6 +1,6 @@
 package com.eventshub.event.infra.config;
 
-import com.eventshub.event.core.gateway.EventGateway;
+import com.eventshub.event.core.port.EventPort;
 import com.eventshub.event.core.usecase.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,32 +9,32 @@ import org.springframework.context.annotation.Configuration;
 public class EventBeanConfig {
 
     @Bean
-    public CreateEventUseCase createEventUseCase(EventGateway eventGateway) {
-        return new CreateEventUseCase(eventGateway);
+    public CreateEventUseCase createEventUseCase(EventPort port) {
+        return new CreateEventUseCase(port);
     }
 
     @Bean
-    public FindEventByIdentifierUseCase findEventByIdentifierUseCase(EventGateway eventGateway) {
-        return new FindEventByIdentifierUseCase(eventGateway);
+    public FindEventByIdentifierUseCase findEventByIdentifierUseCase(EventPort port) {
+        return new FindEventByIdentifierUseCase(port);
     }
 
     @Bean
-    public FindAllEventsUseCase findAllEventsUseCase(EventGateway eventGateway) {
-        return new FindAllEventsUseCase(eventGateway);
+    public FindAllEventsUseCase findAllEventsUseCase(EventPort port) {
+        return new FindAllEventsUseCase(port);
     }
 
     @Bean
-    public FindAllEventsWithFilterUseCase findAllEventsWithFilter(EventGateway eventGateway) {
-        return new FindAllEventsWithFilterUseCase(eventGateway);
+    public SearchEventsUseCase searchEventsUseCase(EventPort port) {
+        return new SearchEventsUseCase(port);
     }
 
     @Bean
-    public UpdateEventUseCase updateEventUseCase(EventGateway eventGateway) {
-        return new UpdateEventUseCase(eventGateway);
+    public UpdateEventUseCase updateEventUseCase(EventPort port) {
+        return new UpdateEventUseCase(port);
     }
 
     @Bean
-    public DeleteEventUseCase deleteEventUseCase(EventGateway eventGateway) {
-        return new DeleteEventUseCase(eventGateway);
+    public DeleteEventUseCase deleteEventUseCase(EventPort port) {
+        return new DeleteEventUseCase(port);
     }
 }

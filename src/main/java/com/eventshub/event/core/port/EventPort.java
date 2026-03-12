@@ -1,13 +1,13 @@
-package com.eventshub.event.core.gateway;
+package com.eventshub.event.core.port;
 
-import com.eventshub.event.core.exception.NotFoundException;
 import com.eventshub.event.core.model.Event;
-import com.eventshub.event.core.model.FilterEventInput;
+import com.eventshub.event.core.model.input.SearchEventInput;
+import com.eventshub.shared.exception.NotFoundException;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface EventGateway {
+public interface EventPort {
 
     Event create(Event event);
 
@@ -17,7 +17,7 @@ public interface EventGateway {
 
     List<Event> findAll();
 
-    List<Event> findAllWithFilter(FilterEventInput input);
+    List<Event> search(SearchEventInput input);
 
     Event update(Event event);
 

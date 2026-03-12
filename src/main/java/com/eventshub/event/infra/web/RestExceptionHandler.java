@@ -1,8 +1,9 @@
-package com.eventshub.event.infra.exception;
+package com.eventshub.event.infra.web;
 
-import com.eventshub.event.core.exception.DuplicateIdentifierException;
-import com.eventshub.event.core.exception.InvalidPeriodException;
-import com.eventshub.event.core.exception.NotFoundException;
+import com.eventshub.event.infra.exception.SystemIntegrityException;
+import com.eventshub.shared.exception.DuplicateIdentifierException;
+import com.eventshub.shared.exception.InvalidPeriodException;
+import com.eventshub.shared.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;

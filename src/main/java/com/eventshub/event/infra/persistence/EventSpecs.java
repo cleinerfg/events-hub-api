@@ -1,6 +1,6 @@
 package com.eventshub.event.infra.persistence;
 
-import com.eventshub.event.core.model.FilterEventInput;
+import com.eventshub.event.core.model.input.SearchEventInput;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Predicate;
@@ -15,25 +15,25 @@ public final class EventSpecs {
     private EventSpecs() {
     }
 
-    public static Specification<EventJpaEntity> withFilter(FilterEventInput filter) {
+    public static Specification<EventJpaEntity> from(SearchEventInput input) {
         return (root, query, cb) -> {
 
             // Local list to each execution (Thread-safe)
             List<Predicate> predicates = new ArrayList<>();
 
-            addLike(predicates, cb, root.get("name"), filter.name());
-            addEqual(predicates, cb, root.get("type"), filter.type());
-            addLike(predicates, cb, root.get("description"), filter.description());
-            addEqual(predicates, cb, root.get("organizer"), filter.organizer());
-            addLike(predicates, cb, root.get("location"), filter.location());
+            addLike(predicates, cb, root.get("name"), input.name());
+            addEqual(predicates, cb, root.get("type"), input.type());
+            addLike(predicates, cb, root.get("description"), input.description());
+            addEqual(predicates, cb, root.get("organizer"), input.organizer());
+            addLike(predicates, cb, root.get("location"), input.location());
 
             // TODO: fix filter by date
 
             Expression<OffsetDateTime> startDate = root.get("startDate");
-            addGreaterThanOrEqual(predicates, cb, startDate, filter.startDate());
+            addGreaterThanOrEqual(predicates, cb, startDate, input.startDate());
 
             Expression<OffsetDateTime> endDate = root.get("endDate");
-            addLessThanOrEqual(predicates, cb, endDate, filter.endDate());
+            addLessThanOrEqual(predicates, cb, endDate, input.endDate());
 
             return cb.and(predicates.toArray(new Predicate[0]));
         };

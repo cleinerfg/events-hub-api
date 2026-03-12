@@ -1,6 +1,7 @@
 package com.eventshub.event.core.model;
 
-import com.eventshub.event.core.exception.InvalidPeriodException;
+import com.eventshub.event.core.model.input.UpdateEventInput;
+import com.eventshub.shared.exception.InvalidPeriodException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

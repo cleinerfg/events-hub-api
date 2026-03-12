@@ -1,19 +1,19 @@
 package com.eventshub.event.core.usecase;
 
-import com.eventshub.event.core.gateway.EventGateway;
+import com.eventshub.event.core.port.EventPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class DeleteEventUseCase {
 
-    private final EventGateway eventGateway;
+    private final EventPort port;
 
     public void execute(String identifier) {
 
-        if (!eventGateway.existsByIdentifier(identifier)) {
-            throw eventGateway.createNotFoundException(identifier);
+        if (!port.existsByIdentifier(identifier)) {
+            throw port.createNotFoundException(identifier);
         }
 
-        eventGateway.delete(identifier);
+        port.delete(identifier);
     }
 }

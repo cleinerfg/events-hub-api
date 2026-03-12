@@ -1,23 +1,23 @@
-package com.eventshub.event.infra.mapper;
+package com.eventshub.event.infra.web;
 
 import com.eventshub.event.core.model.Event;
-import com.eventshub.event.infra.dto.EventRequest;
-import com.eventshub.event.infra.dto.EventResponse;
+import com.eventshub.event.infra.web.dto.EventRequest;
+import com.eventshub.event.infra.web.dto.EventResponse;
 import org.springframework.stereotype.Component;
 
 @Component
 public class EventDtoMapper {
 
-    public Event toDomain(EventRequest dto) {
+    public Event toDomain(EventRequest request) {
         return Event.builder()
-                .identifier(dto.identifier())
-                .name(dto.name())
-                .type(dto.type())
-                .description(dto.description())
-                .organizer(dto.organizer())
-                .location(dto.location())
-                .startDate(dto.startDate())
-                .endDate(dto.endDate())
+                .identifier(request.identifier())
+                .name(request.name())
+                .type(request.type())
+                .description(request.description())
+                .organizer(request.organizer())
+                .location(request.location())
+                .startDate(request.startDate())
+                .endDate(request.endDate())
                 .build();
     }
 

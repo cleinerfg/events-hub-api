@@ -1,4 +1,4 @@
-package com.eventshub.event.infra.dto;
+package com.eventshub.event.infra.web.dto;
 
 import com.eventshub.event.core.model.EventType;
 import lombok.Builder;

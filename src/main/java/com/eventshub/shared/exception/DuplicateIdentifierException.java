@@ -1,4 +1,4 @@
-package com.eventshub.event.core.exception;
+package com.eventshub.shared.exception;
 
 public class DuplicateIdentifierException extends RuntimeException {
 
