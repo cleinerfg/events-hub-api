@@ -1,4 +1,4 @@
-package com.eventshub.shared.exception;
+package com.eventshub.shared.core.exception;
 
 public class InvalidPeriodException extends RuntimeException {
     public InvalidPeriodException(String period1, String period2) {

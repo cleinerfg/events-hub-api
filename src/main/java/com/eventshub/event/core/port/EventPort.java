@@ -2,7 +2,7 @@ package com.eventshub.event.core.port;
 
 import com.eventshub.event.core.model.Event;
 import com.eventshub.event.core.model.input.SearchEventInput;
-import com.eventshub.shared.exception.NotFoundException;
+import com.eventshub.shared.core.exception.NotFoundException;
 
 import java.util.List;
 import java.util.Optional;

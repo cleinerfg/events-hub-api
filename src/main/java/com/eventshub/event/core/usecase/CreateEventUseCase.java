@@ -2,7 +2,7 @@ package com.eventshub.event.core.usecase;
 
 import com.eventshub.event.core.model.Event;
 import com.eventshub.event.core.port.EventPort;
-import com.eventshub.shared.exception.DuplicateIdentifierException;
+import com.eventshub.shared.core.exception.DuplicateIdentifierException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

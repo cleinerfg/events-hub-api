@@ -1,4 +1,4 @@
-package com.eventshub.shared.exception;
+package com.eventshub.shared.core.exception;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) {
