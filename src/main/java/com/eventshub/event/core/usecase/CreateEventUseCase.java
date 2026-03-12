@@ -1,19 +1,19 @@
 package com.eventshub.event.core.usecase;
 
-import com.eventshub.event.core.exception.DuplicateIdentifierException;
-import com.eventshub.event.core.gateway.EventGateway;
 import com.eventshub.event.core.model.Event;
+import com.eventshub.event.core.port.EventPort;
+import com.eventshub.shared.exception.DuplicateIdentifierException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class CreateEventUseCase {
 
-    private final EventGateway eventGateway;
+    private final EventPort port;
 
     public Event execute(Event event) {
-        if (eventGateway.existsByIdentifier(event.getIdentifier())) {
+        if (port.existsByIdentifier(event.getIdentifier())) {
             throw new DuplicateIdentifierException(event.getIdentifier());
         }
-        return eventGateway.create(event);
+        return port.create(event);
     }
 }

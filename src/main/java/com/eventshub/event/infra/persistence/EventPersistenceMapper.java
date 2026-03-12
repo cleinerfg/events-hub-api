@@ -1,7 +1,6 @@
-package com.eventshub.event.infra.mapper;
+package com.eventshub.event.infra.persistence;
 
 import com.eventshub.event.core.model.Event;
-import com.eventshub.event.infra.persistence.EventJpaEntity;
 import org.springframework.stereotype.Component;
 
 @Component

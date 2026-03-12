@@ -1,11 +1,11 @@
 package com.eventshub.event.infra.adapter;
 
-import com.eventshub.event.core.gateway.EventGateway;
 import com.eventshub.event.core.model.Event;
-import com.eventshub.event.core.model.FilterEventInput;
+import com.eventshub.event.core.model.input.SearchEventInput;
+import com.eventshub.event.core.port.EventPort;
 import com.eventshub.event.infra.exception.SystemIntegrityException;
-import com.eventshub.event.infra.mapper.EventPersistenceMapper;
 import com.eventshub.event.infra.persistence.EventJpaEntity;
+import com.eventshub.event.infra.persistence.EventPersistenceMapper;
 import com.eventshub.event.infra.persistence.EventRepository;
 import com.eventshub.event.infra.persistence.EventSpecs;
 import jakarta.transaction.Transactional;
@@ -17,67 +17,67 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
-public class EventRepositoryAdapter implements EventGateway {
+public class EventRepositoryAdapter implements EventPort {
 
-    private final EventRepository eventRepository;
-    private final EventPersistenceMapper eventPersistenceMapper;
+    private final EventRepository repository;
+    private final EventPersistenceMapper persistenceMapper;
 
     @Override
     public Event create(Event event) {
-        EventJpaEntity savedEvent = eventRepository.save(
-                eventPersistenceMapper.toEntity(event)
+        EventJpaEntity savedEvent = repository.save(
+                persistenceMapper.toEntity(event)
         );
-        return eventPersistenceMapper.toDomain(savedEvent);
+        return persistenceMapper.toDomain(savedEvent);
     }
 
     @Override
     public boolean existsByIdentifier(String identifier) {
-        return eventRepository.existsByIdentifier(identifier);
+        return repository.existsByIdentifier(identifier);
     }
 
     @Override
     public Optional<Event> findByIdentifier(String identifier) {
-        return eventRepository.findByIdentifier(identifier)
-                .map(eventPersistenceMapper::toDomain);
+        return repository.findByIdentifier(identifier)
+                .map(persistenceMapper::toDomain);
     }
 
     @Override
     public List<Event> findAll() {
-        return eventRepository.findAll()
+        return repository.findAll()
                 .stream()
-                .map(eventPersistenceMapper::toDomain)
+                .map(persistenceMapper::toDomain)
                 .toList();
     }
 
     @Override
-    public List<Event> findAllWithFilter(FilterEventInput filter) {
+    public List<Event> search(SearchEventInput input) {
 
-        var spec = EventSpecs.withFilter(filter);
+        var spec = EventSpecs.from(input);
 
-        return eventRepository.findAll(spec)
+        return repository.findAll(spec)
                 .stream()
-                .map(eventPersistenceMapper::toDomain)
+                .map(persistenceMapper::toDomain)
                 .toList();
     }
 
     @Override
     @Transactional
     public Event update(Event event) {
-        EventJpaEntity jpaEntity = eventRepository.findById(event.getId()).orElseThrow(
+        EventJpaEntity jpaEntity = repository.findById(event.getId()).orElseThrow(
                 () -> new SystemIntegrityException("Event with identifier " +
                         event.getIdentifier() + " lost during update")
         );
 
-        eventPersistenceMapper.updateJpaEntityFromDomain(jpaEntity, event);
+        persistenceMapper.updateJpaEntityFromDomain(jpaEntity, event);
 
-        EventJpaEntity updatedEntity = eventRepository.save(jpaEntity);
+        EventJpaEntity updatedEntity = repository.save(jpaEntity);
 
-        return eventPersistenceMapper.toDomain(updatedEntity);
+        return persistenceMapper.toDomain(updatedEntity);
     }
 
     @Override
     @Transactional
     public void delete(String identifier) {
-        eventRepository.deleteByIdentifier(identifier);
+        repository.deleteByIdentifier(identifier);
     }
 }

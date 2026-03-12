@@ -1,8 +1,10 @@
-package com.eventshub.event.core.model;
+package com.eventshub.event.core.model.input;
+
+import com.eventshub.event.core.model.EventType;
 
 import java.time.OffsetDateTime;
 
-public record UpdateEventInput(
+public record SearchEventInput(
         String name,
         EventType type,
         String description,

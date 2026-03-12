@@ -1,8 +1,11 @@
-package com.eventshub.event.core.model;
+package com.eventshub.event.infra.web.dto;
+
+import com.eventshub.event.core.model.EventType;
 
 import java.time.OffsetDateTime;
 
-public record FilterEventInput(
+public record EventRequest(
+        String identifier,
         String name,
         EventType type,
         String description,
