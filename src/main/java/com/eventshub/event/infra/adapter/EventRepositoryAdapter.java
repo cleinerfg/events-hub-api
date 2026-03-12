@@ -3,11 +3,11 @@ package com.eventshub.event.infra.adapter;
 import com.eventshub.event.core.model.Event;
 import com.eventshub.event.core.model.input.SearchEventInput;
 import com.eventshub.event.core.port.EventPort;
-import com.eventshub.event.infra.exception.SystemIntegrityException;
 import com.eventshub.event.infra.persistence.EventJpaEntity;
 import com.eventshub.event.infra.persistence.EventPersistenceMapper;
 import com.eventshub.event.infra.persistence.EventRepository;
 import com.eventshub.event.infra.persistence.EventSpecs;
+import com.eventshub.shared.core.exception.AppException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -64,9 +64,9 @@ public class EventRepositoryAdapter implements EventPort {
     @Transactional
     public Event update(Event event) {
         EventJpaEntity jpaEntity = repository.findById(event.getId()).orElseThrow(
-                () -> new SystemIntegrityException("Event with identifier " +
-                        event.getIdentifier() + " lost during update")
-        );
+                () -> AppException.systemIntegrity(
+                        "Event with identifier '%s' lost during update".formatted(event.getIdentifier())
+                ));
 
         persistenceMapper.updateJpaEntityFromDomain(jpaEntity, event);
 

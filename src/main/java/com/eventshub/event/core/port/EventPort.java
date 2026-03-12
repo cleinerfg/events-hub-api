@@ -2,7 +2,7 @@ package com.eventshub.event.core.port;
 
 import com.eventshub.event.core.model.Event;
 import com.eventshub.event.core.model.input.SearchEventInput;
-import com.eventshub.shared.core.exception.NotFoundException;
+import com.eventshub.shared.core.exception.AppException;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +27,7 @@ public interface EventPort {
         return findByIdentifier(identifier).orElseThrow(() -> createNotFoundException(identifier));
     }
 
-    default NotFoundException createNotFoundException(String identifier) {
-        return new NotFoundException("Event with identifier " + identifier + " not found");
+    default AppException createNotFoundException(String identifier) {
+        return AppException.resourceNotFound("Event", identifier);
     }
 }
