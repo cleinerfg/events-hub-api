@@ -1,0 +1,9 @@
+package com.eventshub.shared.infra.web.exception;
+
+import com.eventshub.shared.core.exception.AppError;
+import org.springframework.http.HttpStatus;
+
+public interface AppErrorHttpTranslator {
+
+    HttpStatus translate(AppError error);
+}
