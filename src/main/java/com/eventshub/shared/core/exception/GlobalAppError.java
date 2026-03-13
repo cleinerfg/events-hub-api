@@ -14,4 +14,5 @@ public enum GlobalAppError implements AppError {
 
     private final String code;
     private final ErrorCategory category;
+    private final ErrorScope scope = ErrorScope.GLOBAL;
 }
