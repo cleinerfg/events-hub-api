@@ -9,10 +9,10 @@ import com.eventshub.modules.event.infra.web.dto.EventResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.HashMap;
+import java.net.URI;
 import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -28,14 +28,17 @@ public class EventController {
     private final EventDtoMapper dtoMapper;
 
     @PostMapping
-    public ResponseEntity<Map<String, Object>> create(@RequestBody EventRequest request) {
+    public ResponseEntity<EventResponse> create(@RequestBody EventRequest request) {
         Event event = createUseCase.execute(dtoMapper.toDomain(request));
+        EventResponse response = dtoMapper.toResponse(event);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", "Event created successfully");
-        response.put("event", dtoMapper.toResponse(event));
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{identifier}")
+                .buildAndExpand(event.getIdentifier())
+                .toUri();
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.created(location).body(response);
     }
 
     @GetMapping("/{identifier}")
