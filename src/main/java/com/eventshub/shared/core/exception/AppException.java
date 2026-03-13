@@ -1,0 +1,33 @@
+package com.eventshub.shared.core.exception;
+
+import lombok.Getter;
+
+@Getter
+public class AppException extends RuntimeException {
+
+    private final transient AppError error;
+
+    private AppException(AppError error, String message) {
+        super(message);
+        this.error = error;
+    }
+
+    public static AppException resourceNotFound(String resource, String identifier) {
+        return new AppException(GlobalAppError.RESOURCE_NOT_FOUND,
+                "The %s with identifier '%s' was not found".formatted(resource, identifier));
+    }
+
+    public static AppException duplicateIdentifier(String resource, String identifier) {
+        return new AppException(GlobalAppError.DUPLICATE_IDENTIFIER,
+                "The %s with identifier '%s' already exists".formatted(resource, identifier));
+    }
+
+    public static AppException invalidPeriod(String startPeriod, String endPeriod) {
+        return new AppException(GlobalAppError.INVALID_PERIOD,
+                "The period from '%s' to '%s' is not valid".formatted(startPeriod, endPeriod));
+    }
+
+    public static AppException systemIntegrity(String message) {
+        return new AppException(GlobalAppError.SYSTEM_INTEGRITY_ERROR, message);
+    }
+}
