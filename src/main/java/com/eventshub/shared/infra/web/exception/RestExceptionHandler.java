@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -34,6 +35,13 @@ public class RestExceptionHandler {
                         AppErrorHttpTranslator::getScope,
                         translator -> translator
                 ));
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ProblemDetail handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+        var invalidJson = AppException.invalidJson();
+        var status = globalTranslator.translate(invalidJson.getError());
+        return buildProblemDetail(invalidJson.getError(), invalidJson.getMessage(), status);
     }
 
     @ExceptionHandler(AppException.class)
@@ -69,9 +77,7 @@ public class RestExceptionHandler {
         var systemIntegrity = AppException.systemIntegrity(
                 "AppError '%s' [scope='%s'] is unmapped.".formatted(orphanError.getCode(), orphanError.getScope())
         );
-
         var status = globalTranslator.translate(systemIntegrity.getError());
-
         return buildProblemDetail(systemIntegrity.getError(), systemIntegrity.getMessage(), status);
     }
 }

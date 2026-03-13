@@ -12,6 +12,10 @@ public class AppException extends RuntimeException {
         this.error = error;
     }
 
+    public static AppException invalidJson() {
+        return new AppException(GlobalAppError.INVALID_JSON, "The provided JSON is invalid");
+    }
+
     public static AppException resourceNotFound(String resource, String identifier) {
         return new AppException(GlobalAppError.RESOURCE_NOT_FOUND,
                 "The %s with identifier '%s' was not found".formatted(resource, identifier));
