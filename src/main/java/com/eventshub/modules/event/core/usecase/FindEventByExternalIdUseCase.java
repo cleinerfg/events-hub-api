@@ -4,12 +4,14 @@ import com.eventshub.modules.event.core.model.Event;
 import com.eventshub.modules.event.core.port.EventPort;
 import lombok.RequiredArgsConstructor;
 
+import java.util.UUID;
+
 @RequiredArgsConstructor
-public class FindEventByIdentifierUseCase {
+public class FindEventByExternalIdUseCase {
 
     private final EventPort port;
 
-    public Event execute(String identifier) {
-        return port.getByIdentifierOrThrow(identifier);
+    public Event execute(UUID externalId) {
+        return port.getByExternalIdOrThrow(externalId);
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Repository
@@ -31,13 +32,13 @@ public class EventRepositoryAdapter implements EventPort {
     }
 
     @Override
-    public boolean existsByIdentifier(String identifier) {
-        return repository.existsByIdentifier(identifier);
+    public boolean existsByExternalId(UUID externalId) {
+        return repository.existsByExternalId(externalId);
     }
 
     @Override
-    public Optional<Event> findByIdentifier(String identifier) {
-        return repository.findByIdentifier(identifier)
+    public Optional<Event> findByExternalId(UUID externalId) {
+        return repository.findByExternalId(externalId)
                 .map(persistenceMapper::toDomain);
     }
 
@@ -65,7 +66,7 @@ public class EventRepositoryAdapter implements EventPort {
     public Event update(Event event) {
         EventJpaEntity jpaEntity = repository.findById(event.getId()).orElseThrow(
                 () -> AppException.systemIntegrity(
-                        "Event with identifier '%s' lost during update".formatted(event.getIdentifier())
+                        "Event with externalId '%s' lost during update".formatted(event.getExternalId())
                 ));
 
         persistenceMapper.updateJpaEntityFromDomain(jpaEntity, event);
@@ -77,7 +78,7 @@ public class EventRepositoryAdapter implements EventPort {
 
     @Override
     @Transactional
-    public void delete(String identifier) {
-        repository.deleteByIdentifier(identifier);
+    public void delete(UUID externalId) {
+        repository.deleteByExternalId(externalId);
     }
 }

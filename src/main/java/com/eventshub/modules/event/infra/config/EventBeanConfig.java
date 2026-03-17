@@ -2,6 +2,7 @@ package com.eventshub.modules.event.infra.config;
 
 import com.eventshub.modules.event.core.port.EventPort;
 import com.eventshub.modules.event.core.usecase.*;
+import com.eventshub.shared.core.port.UuidGeneratorPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,13 +10,16 @@ import org.springframework.context.annotation.Configuration;
 public class EventBeanConfig {
 
     @Bean
-    public CreateEventUseCase createEventUseCase(EventPort port) {
-        return new CreateEventUseCase(port);
+    public CreateEventUseCase createEventUseCase(
+            EventPort port,
+            UuidGeneratorPort uuidGeneratorPort
+    ) {
+        return new CreateEventUseCase(port, uuidGeneratorPort);
     }
 
     @Bean
-    public FindEventByIdentifierUseCase findEventByIdentifierUseCase(EventPort port) {
-        return new FindEventByIdentifierUseCase(port);
+    public FindEventByExternalIdUseCase findEventByExternalIdUseCase(EventPort port) {
+        return new FindEventByExternalIdUseCase(port);
     }
 
     @Bean

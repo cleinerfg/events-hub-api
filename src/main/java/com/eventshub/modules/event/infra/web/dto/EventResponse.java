@@ -4,10 +4,11 @@ import com.eventshub.modules.event.core.model.EventType;
 import lombok.Builder;
 
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Builder
 public record EventResponse(
-        String identifier,
+        UUID externalId,
         String name,
         EventType type,
         String description,

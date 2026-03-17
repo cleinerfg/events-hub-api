@@ -8,7 +8,7 @@ public class EventPersistenceMapper {
 
     public EventJpaEntity toEntity(Event event) {
         return EventJpaEntity.builder()
-                .identifier(event.getIdentifier())
+                .externalId(event.getExternalId())
                 .name(event.getName())
                 .type(event.getType())
                 .description(event.getDescription())
@@ -22,7 +22,7 @@ public class EventPersistenceMapper {
     public Event toDomain(EventJpaEntity jpaEntity) {
         return Event.builder()
                 .id(jpaEntity.getId())
-                .identifier(jpaEntity.getIdentifier())
+                .externalId(jpaEntity.getExternalId())
                 .name(jpaEntity.getName())
                 .type(jpaEntity.getType())
                 .description(jpaEntity.getDescription())

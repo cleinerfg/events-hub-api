@@ -1,5 +1,6 @@
 package com.eventshub.modules.event.core.model;
 
+import com.eventshub.modules.event.core.model.input.CreateEventInput;
 import com.eventshub.modules.event.core.model.input.UpdateEventInput;
 import com.eventshub.shared.core.exception.AppException;
 import lombok.AllArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Getter
 @Builder
@@ -14,7 +16,7 @@ import java.time.OffsetDateTime;
 public class Event {
 
     private Long id;
-    private String identifier;
+    private final UUID externalId;
     private String name;
     private EventType type;
     private String description;
@@ -22,6 +24,22 @@ public class Event {
     private String location;
     private OffsetDateTime startDate;
     private OffsetDateTime endDate;
+
+    public static Event create(CreateEventInput input, UUID externalId) {
+        var event = Event.builder()
+                .externalId(externalId)
+                .name(input.name())
+                .type(input.type())
+                .description(input.description())
+                .organizer(input.organizer())
+                .location(input.location())
+                .startDate(input.startDate())
+                .endDate(input.endDate())
+                .build();
+
+        event.validatePeriod();
+        return event;
+    }
 
     public void update(UpdateEventInput input) {
         applyPartialUpdates(input);
