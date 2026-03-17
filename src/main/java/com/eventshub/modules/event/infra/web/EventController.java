@@ -1,10 +1,10 @@
 package com.eventshub.modules.event.infra.web;
 
 import com.eventshub.modules.event.core.model.Event;
+import com.eventshub.modules.event.core.model.input.CreateEventInput;
 import com.eventshub.modules.event.core.model.input.SearchEventInput;
 import com.eventshub.modules.event.core.model.input.UpdateEventInput;
 import com.eventshub.modules.event.core.usecase.*;
-import com.eventshub.modules.event.infra.web.dto.EventRequest;
 import com.eventshub.modules.event.infra.web.dto.EventResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
@@ -20,7 +21,7 @@ import java.util.List;
 public class EventController {
 
     private final CreateEventUseCase createUseCase;
-    private final FindEventByIdentifierUseCase findByIdentifierUseCase;
+    private final FindEventByExternalIdUseCase findByExternalIdUseCase;
     private final FindAllEventsUseCase findAllUseCase;
     private final SearchEventsUseCase searchUseCase;
     private final UpdateEventUseCase updateUseCase;
@@ -28,24 +29,24 @@ public class EventController {
     private final EventDtoMapper dtoMapper;
 
     @PostMapping
-    public ResponseEntity<EventResponse> create(@RequestBody EventRequest request) {
-        Event event = createUseCase.execute(dtoMapper.toDomain(request));
+    public ResponseEntity<EventResponse> create(@RequestBody CreateEventInput input) {
+        Event event = createUseCase.execute(input);
         EventResponse response = dtoMapper.toResponse(event);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{identifier}")
-                .buildAndExpand(event.getIdentifier())
+                .path("/{externalId}")
+                .buildAndExpand(event.getExternalId())
                 .toUri();
 
         return ResponseEntity.created(location).body(response);
     }
 
-    @GetMapping("/{identifier}")
-    public ResponseEntity<EventResponse> findByIdentifier(
-            @PathVariable String identifier
+    @GetMapping("/{externalId}")
+    public ResponseEntity<EventResponse> findByExternalId(
+            @PathVariable UUID externalId
     ) {
-        Event event = findByIdentifierUseCase.execute(identifier);
+        Event event = findByExternalIdUseCase.execute(externalId);
         return ResponseEntity.ok(dtoMapper.toResponse(event));
     }
 
@@ -67,20 +68,20 @@ public class EventController {
                 .toList();
     }
 
-    @PutMapping("/{identifier}")
+    @PutMapping("/{externalId}")
     public ResponseEntity<EventResponse> update(
-            @PathVariable String identifier,
+            @PathVariable UUID externalId,
             @RequestBody UpdateEventInput request
     ) {
-        Event updatedEvent = updateUseCase.execute(identifier, request);
+        Event updatedEvent = updateUseCase.execute(externalId, request);
         return ResponseEntity.ok(dtoMapper.toResponse(updatedEvent));
     }
 
-    @DeleteMapping("/{identifier}")
+    @DeleteMapping("/{externalId}")
     public ResponseEntity<Void> delete(
-            @PathVariable String identifier
+            @PathVariable UUID externalId
     ) {
-        deleteUseCase.execute(identifier);
+        deleteUseCase.execute(externalId);
         return ResponseEntity.noContent().build();
     }
 }
