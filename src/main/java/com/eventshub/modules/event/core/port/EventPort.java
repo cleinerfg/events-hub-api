@@ -6,14 +6,15 @@ import com.eventshub.shared.core.exception.AppException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface EventPort {
 
     Event create(Event event);
 
-    boolean existsByIdentifier(String identifier);
+    boolean existsByExternalId(UUID externalId);
 
-    Optional<Event> findByIdentifier(String identifier);
+    Optional<Event> findByExternalId(UUID externalId);
 
     List<Event> findAll();
 
@@ -21,13 +22,13 @@ public interface EventPort {
 
     Event update(Event event);
 
-    void delete(String identifier);
+    void delete(UUID externalId);
 
-    default Event getByIdentifierOrThrow(String identifier) {
-        return findByIdentifier(identifier).orElseThrow(() -> createNotFoundException(identifier));
+    default Event getByExternalIdOrThrow(UUID externalId) {
+        return findByExternalId(externalId).orElseThrow(() -> createNotFoundException(externalId));
     }
 
-    default AppException createNotFoundException(String identifier) {
-        return AppException.resourceNotFound("Event", identifier);
+    default AppException createNotFoundException(UUID externalId) {
+        return AppException.resourceNotFound("Event", externalId);
     }
 }

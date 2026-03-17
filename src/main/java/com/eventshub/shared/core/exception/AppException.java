@@ -2,6 +2,8 @@ package com.eventshub.shared.core.exception;
 
 import lombok.Getter;
 
+import java.util.UUID;
+
 @Getter
 public class AppException extends RuntimeException {
 
@@ -16,14 +18,9 @@ public class AppException extends RuntimeException {
         return new AppException(GlobalAppError.INVALID_JSON, "The provided JSON is invalid");
     }
 
-    public static AppException resourceNotFound(String resource, String identifier) {
+    public static AppException resourceNotFound(String resource, UUID externalId) {
         return new AppException(GlobalAppError.RESOURCE_NOT_FOUND,
-                "The %s with identifier '%s' was not found".formatted(resource, identifier));
-    }
-
-    public static AppException duplicateIdentifier(String resource, String identifier) {
-        return new AppException(GlobalAppError.DUPLICATE_IDENTIFIER,
-                "The %s with identifier '%s' already exists".formatted(resource, identifier));
+                "The %s with identifier '%s' was not found".formatted(resource, externalId));
     }
 
     public static AppException invalidPeriod(String startPeriod, String endPeriod) {
