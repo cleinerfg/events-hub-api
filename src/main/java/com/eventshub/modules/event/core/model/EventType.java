@@ -5,5 +5,12 @@ public enum EventType {
     MUSIC,
     SPORTS,
     ART,
-    TECHNOLOGY
+    TECHNOLOGY,
+    WORKSHOP,
+    GASTRONOMY,
+    WELLNESS,
+    FASHION,
+    THEATER,
+    E_SPORTS,
+    OTHER
 }
