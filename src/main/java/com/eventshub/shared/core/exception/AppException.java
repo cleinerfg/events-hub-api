@@ -9,7 +9,7 @@ public class AppException extends RuntimeException {
 
     private final transient AppError error;
 
-    private AppException(AppError error, String message) {
+    protected AppException(AppError error, String message) {
         super(message);
         this.error = error;
     }
