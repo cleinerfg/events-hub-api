@@ -1,0 +1,28 @@
+package com.eventshub.modules.user.infra.config;
+
+import com.eventshub.modules.user.core.exception.UserError;
+import com.eventshub.shared.core.exception.AppError;
+import com.eventshub.shared.core.exception.ErrorScope;
+import com.eventshub.shared.infra.web.exception.HttpErrorSchema;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+
+import java.util.Map;
+
+@Configuration
+public class UserWebConfig {
+
+    @Bean
+    public HttpErrorSchema userHttpErrorSchema() {
+        Map<AppError, HttpStatus> map = Map.of(
+                UserError.EMAIL_ALREADY_EXISTS, HttpStatus.CONFLICT
+        );
+
+        return HttpErrorSchema.builder()
+                .scope(ErrorScope.USER)
+                .definitions(map)
+                .build();
+
+    }
+}
