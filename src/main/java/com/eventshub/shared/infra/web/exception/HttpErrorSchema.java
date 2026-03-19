@@ -2,11 +2,14 @@ package com.eventshub.shared.infra.web.exception;
 
 import com.eventshub.shared.core.exception.AppError;
 import com.eventshub.shared.core.exception.ErrorScope;
+import lombok.Builder;
 import org.springframework.http.HttpStatus;
 
-public interface AppErrorHttpTranslator {
+import java.util.Map;
 
-    HttpStatus translate(AppError error);
-
-    ErrorScope getScope();
+@Builder
+public record HttpErrorSchema(
+        ErrorScope scope,
+        Map<AppError, HttpStatus> definitions
+) {
 }
