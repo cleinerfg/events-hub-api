@@ -2,7 +2,7 @@ package com.eventshub.shared.infra.web.exception;
 
 import com.eventshub.shared.core.exception.AppError;
 import com.eventshub.shared.core.exception.AppException;
-import com.eventshub.shared.core.exception.ErrorScope;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -11,36 +11,17 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
+@RequiredArgsConstructor
 @RestControllerAdvice
 public class RestExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(RestExceptionHandler.class);
-
-    private final Map<ErrorScope, AppErrorHttpTranslator> translators;
-    private final GlobalAppErrorHttpTranslator globalTranslator;
-
-    public RestExceptionHandler(
-            List<AppErrorHttpTranslator> translatorList,
-            GlobalAppErrorHttpTranslator globalTranslator
-    ) {
-        this.globalTranslator = globalTranslator;
-
-        // FAIL-FAST: toUnmodifiableMap throws IllegalStateException if it has duplicate key
-        this.translators = translatorList.stream()
-                .collect(Collectors.toUnmodifiableMap(
-                        AppErrorHttpTranslator::getScope,
-                        translator -> translator
-                ));
-    }
+    private final AppErrorHttpTranslator translator;
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ProblemDetail handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         var invalidJson = AppException.invalidJson();
-        var status = globalTranslator.translate(invalidJson.getError());
+        var status = translator.lookup(invalidJson.getError());
         return buildProblemDetail(invalidJson.getError(), invalidJson.getMessage(), status);
     }
 
@@ -48,13 +29,7 @@ public class RestExceptionHandler {
     public ProblemDetail handleAppException(AppException ex) {
         AppError error = ex.getError();
 
-        // O(1)
-        AppErrorHttpTranslator translator = translators.getOrDefault(
-                error.getScope(),
-                globalTranslator
-        );
-
-        HttpStatus status = translator.translate(error);
+        HttpStatus status = translator.lookup(error);
 
         if (status == null) {
             return translatorSystemIntegrityHandler(error);
@@ -77,7 +52,7 @@ public class RestExceptionHandler {
         var systemIntegrity = AppException.systemIntegrity(
                 "AppError '%s' [scope='%s'] is unmapped.".formatted(orphanError.getCode(), orphanError.getScope())
         );
-        var status = globalTranslator.translate(systemIntegrity.getError());
+        var status = translator.lookup(systemIntegrity.getError());
         return buildProblemDetail(systemIntegrity.getError(), systemIntegrity.getMessage(), status);
     }
 }
