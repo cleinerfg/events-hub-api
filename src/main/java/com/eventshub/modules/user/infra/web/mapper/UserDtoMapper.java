@@ -1,4 +1,4 @@
-package com.eventshub.modules.user.infra.web;
+package com.eventshub.modules.user.infra.web.mapper;
 
 import com.eventshub.modules.user.core.model.User;
 import com.eventshub.modules.user.infra.web.dto.UserResponse;

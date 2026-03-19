@@ -16,7 +16,8 @@ public class UserWebConfig {
     @Bean
     public HttpErrorSchema userHttpErrorSchema() {
         Map<AppError, HttpStatus> map = Map.of(
-                UserError.EMAIL_ALREADY_EXISTS, HttpStatus.CONFLICT
+                UserError.EMAIL_ALREADY_EXISTS, HttpStatus.CONFLICT,
+                UserError.INVALID_CREDENTIALS, HttpStatus.UNAUTHORIZED
         );
 
         return HttpErrorSchema.builder()
