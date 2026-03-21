@@ -18,6 +18,7 @@ public class GlobalWebConfig {
         Map<AppError, HttpStatus> map = Map.of(
                 GlobalAppError.SYSTEM_INTEGRITY_ERROR, HttpStatus.INTERNAL_SERVER_ERROR,
                 GlobalAppError.INVALID_JSON, HttpStatus.BAD_REQUEST,
+                GlobalAppError.VALIDATION_FAIL, HttpStatus.BAD_REQUEST,
                 GlobalAppError.RESOURCE_NOT_FOUND, HttpStatus.NOT_FOUND,
                 GlobalAppError.INVALID_PERIOD, HttpStatus.BAD_REQUEST
         );
