@@ -1,7 +1,8 @@
-package com.eventshub.shared.infra.web.exception;
+package com.eventshub.shared.infra.web.exception.support;
 
 import com.eventshub.shared.core.exception.AppError;
 import com.eventshub.shared.core.exception.ErrorScope;
+import com.eventshub.shared.infra.web.exception.HttpErrorSchema;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
