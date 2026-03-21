@@ -1,11 +1,15 @@
 package com.eventshub.shared.core.exception;
 
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 
 @Getter
 public class AppException extends RuntimeException {
+
+    private static final Logger log = LoggerFactory.getLogger(AppException.class);
 
     private final transient AppError error;
 
@@ -16,6 +20,10 @@ public class AppException extends RuntimeException {
 
     public static AppException invalidJson() {
         return new AppException(GlobalAppError.INVALID_JSON, "The provided JSON is invalid");
+    }
+
+    public static AppException validationFail() {
+        return new AppException(GlobalAppError.VALIDATION_FAIL, "The data provided is invalid.");
     }
 
     public static AppException resourceNotFound(String resource, UUID externalId) {
@@ -29,6 +37,7 @@ public class AppException extends RuntimeException {
     }
 
     public static AppException systemIntegrity(String message) {
+        log.error(message);
         return new AppException(GlobalAppError.SYSTEM_INTEGRITY_ERROR, message);
     }
 }
