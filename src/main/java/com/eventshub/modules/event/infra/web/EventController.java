@@ -1,11 +1,12 @@
 package com.eventshub.modules.event.infra.web;
 
 import com.eventshub.modules.event.core.model.Event;
-import com.eventshub.modules.event.core.model.input.CreateEventInput;
-import com.eventshub.modules.event.core.model.input.SearchEventInput;
-import com.eventshub.modules.event.core.model.input.UpdateEventInput;
 import com.eventshub.modules.event.core.usecase.*;
+import com.eventshub.modules.event.infra.web.dto.CreateEventRequest;
 import com.eventshub.modules.event.infra.web.dto.EventResponse;
+import com.eventshub.modules.event.infra.web.dto.SearchEventRequest;
+import com.eventshub.modules.event.infra.web.dto.UpdateEventRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +30,12 @@ public class EventController {
     private final EventDtoMapper dtoMapper;
 
     @PostMapping
-    public ResponseEntity<EventResponse> create(@RequestBody CreateEventInput input) {
-        Event event = createUseCase.execute(input);
+    public ResponseEntity<EventResponse> create(
+            @RequestBody @Valid CreateEventRequest request
+    ) {
+        Event event = createUseCase.execute(
+                dtoMapper.toCreateInput(request)
+        );
         EventResponse response = dtoMapper.toResponse(event);
 
         URI location = ServletUriComponentsBuilder
@@ -60,9 +65,9 @@ public class EventController {
 
     @GetMapping("/search")
     public List<EventResponse> search(
-            @ModelAttribute SearchEventInput input
+            @ModelAttribute @Valid SearchEventRequest request
     ) {
-        return searchUseCase.execute(input)
+        return searchUseCase.execute(dtoMapper.toSearchInput(request))
                 .stream()
                 .map(dtoMapper::toResponse)
                 .toList();
@@ -71,9 +76,12 @@ public class EventController {
     @PutMapping("/{externalId}")
     public ResponseEntity<EventResponse> update(
             @PathVariable UUID externalId,
-            @RequestBody UpdateEventInput request
+            @RequestBody @Valid UpdateEventRequest request
     ) {
-        Event updatedEvent = updateUseCase.execute(externalId, request);
+        Event updatedEvent = updateUseCase.execute(
+                externalId,
+                dtoMapper.toUpdateInput(request)
+        );
         return ResponseEntity.ok(dtoMapper.toResponse(updatedEvent));
     }
 

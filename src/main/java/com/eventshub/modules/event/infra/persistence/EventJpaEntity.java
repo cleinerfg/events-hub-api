@@ -40,7 +40,7 @@ public class EventJpaEntity {
     @Column(nullable = false)
     private String location;
 
-    @Column(name = "start_date")
+    @Column(name = "start_date", nullable = false)
     private OffsetDateTime startDate;
 
     @Column(name = "end_date")

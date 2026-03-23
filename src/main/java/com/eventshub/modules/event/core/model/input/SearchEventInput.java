@@ -1,11 +1,13 @@
 package com.eventshub.modules.event.core.model.input;
 
 import com.eventshub.modules.event.core.model.EventType;
+import lombok.Builder;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
+@Builder
 public record SearchEventInput(
         String name,
         EventType type,

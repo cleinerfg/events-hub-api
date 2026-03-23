@@ -1,7 +1,14 @@
 package com.eventshub.modules.event.infra.web;
 
 import com.eventshub.modules.event.core.model.Event;
+import com.eventshub.modules.event.core.model.input.CreateEventInput;
+import com.eventshub.modules.event.core.model.input.SearchEventInput;
+import com.eventshub.modules.event.core.model.input.UpdateEventInput;
+import com.eventshub.modules.event.infra.web.dto.CreateEventRequest;
 import com.eventshub.modules.event.infra.web.dto.EventResponse;
+import com.eventshub.modules.event.infra.web.dto.SearchEventRequest;
+import com.eventshub.modules.event.infra.web.dto.UpdateEventRequest;
+import com.eventshub.shared.core.support.StringSanitizer;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,6 +24,44 @@ public class EventDtoMapper {
                 .location(event.getLocation())
                 .startDate(event.getStartDate())
                 .endDate(event.getEndDate())
+                .build();
+    }
+
+    public CreateEventInput toCreateInput(CreateEventRequest request) {
+        return CreateEventInput.builder()
+                .name(StringSanitizer.capitalize(request.name()))
+                .type(request.type())
+                .description(StringSanitizer.trimAndClean(request.description()))
+                .organizer(StringSanitizer.trimAndClean(request.organizer()))
+                .location(StringSanitizer.trimAndClean(request.location()))
+                .startDate(request.startDate())
+                .endDate(request.endDate())
+                .build();
+    }
+
+    public SearchEventInput toSearchInput(SearchEventRequest request) {
+        return SearchEventInput.builder()
+                .name(StringSanitizer.trimAndClean(request.name()))
+                .type(request.type())
+                .description(StringSanitizer.trimAndClean(request.description()))
+                .organizer(StringSanitizer.trimAndClean(request.organizer()))
+                .location(StringSanitizer.trimAndClean(request.location()))
+                .startDateFrom(request.startDateFrom())
+                .startDateUntil(request.startDateUntil())
+                .endDateFrom(request.endDateFrom())
+                .endDateUntil(request.endDateUntil())
+                .build();
+    }
+
+    public UpdateEventInput toUpdateInput(UpdateEventRequest request) {
+        return UpdateEventInput.builder()
+                .name(StringSanitizer.capitalize(request.name()))
+                .type(request.type())
+                .description(StringSanitizer.trimAndClean(request.description()))
+                .organizer(StringSanitizer.trimAndClean(request.organizer()))
+                .location(StringSanitizer.trimAndClean(request.location()))
+                .startDate(request.startDate())
+                .endDate(request.endDate())
                 .build();
     }
 }

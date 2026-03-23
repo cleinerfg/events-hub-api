@@ -38,6 +38,7 @@ public class AppException extends RuntimeException {
 
     public static AppException systemIntegrity(String message) {
         log.error(message);
-        return new AppException(GlobalAppError.SYSTEM_INTEGRITY_ERROR, message);
+        var publicMessage = "System Integrity Violation";
+        return new AppException(GlobalAppError.SYSTEM_INTEGRITY_ERROR, publicMessage);
     }
 }

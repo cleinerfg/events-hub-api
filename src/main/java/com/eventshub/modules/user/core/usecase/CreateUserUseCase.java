@@ -5,6 +5,7 @@ import com.eventshub.modules.user.core.model.User;
 import com.eventshub.modules.user.core.model.input.CreateUserInput;
 import com.eventshub.modules.user.core.port.PasswordEncoderPort;
 import com.eventshub.modules.user.core.port.UserPort;
+import com.eventshub.modules.user.core.validator.PasswordValidator;
 import com.eventshub.shared.core.port.UuidGeneratorPort;
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +20,9 @@ public class CreateUserUseCase {
         if (port.emailExists(input.email())) {
             throw new EmailAlreadyExistsException(input.email());
         }
+
+        PasswordValidator.create(input.password())
+                .validate();
 
         var user = User.create(
                 input,

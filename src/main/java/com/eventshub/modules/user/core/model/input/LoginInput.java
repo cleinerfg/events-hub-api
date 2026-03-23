@@ -4,15 +4,13 @@ import com.eventshub.shared.core.exception.support.CheckNotNull;
 import lombok.Builder;
 
 @Builder
-public record CreateUserInput(
-        String name,
+public record LoginInput(
         String email,
         String password
 ) {
 
-    public CreateUserInput {
-        CheckNotNull.forClass(CreateUserInput.class.getName())
-                .field("name", name)
+    public LoginInput {
+        CheckNotNull.forClass(LoginInput.class.getName())
                 .field("email", email)
                 .field("password", password);
     }

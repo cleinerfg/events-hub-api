@@ -1,8 +1,9 @@
 package com.eventshub.modules.user.infra.web.mapper;
 
-import com.eventshub.modules.user.core.model.input.LoginUserInput;
+import com.eventshub.modules.user.core.model.input.LoginInput;
 import com.eventshub.modules.user.infra.web.dto.LoginRequest;
 import com.eventshub.modules.user.infra.web.dto.LoginResponse;
+import com.eventshub.shared.core.support.StringSanitizer;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,9 +13,9 @@ public class LoginDtoMapper {
         return new LoginResponse(token);
     }
 
-    public LoginUserInput toInput(LoginRequest request) {
-        return LoginUserInput.builder()
-                .email(request.email())
+    public LoginInput toInput(LoginRequest request) {
+        return LoginInput.builder()
+                .email(StringSanitizer.trimAndClean(request.email()).toLowerCase())
                 .password(request.password())
                 .build();
     }
