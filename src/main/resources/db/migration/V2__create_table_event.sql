@@ -7,8 +7,9 @@ CREATE TABLE event
     description TEXT,
     organizer   VARCHAR(255) NOT NULL,
     location    VARCHAR(255) NOT NULL,
-    start_date  TIMESTAMPTZ,
+    start_date  TIMESTAMPTZ  NOT NULL,
     end_date    TIMESTAMPTZ,
 
-    CONSTRAINT uk_event_external_id UNIQUE (external_id)
+    CONSTRAINT uk_event_external_id UNIQUE (external_id),
+    CONSTRAINT chk_end_date CHECK (end_date >= start_date)
 );
