@@ -37,13 +37,13 @@ public class Event {
                 .endDate(input.endDate())
                 .build();
 
-        event.validatePeriod();
+        event.validateEndDate();
         return event;
     }
 
     public void update(UpdateEventInput input) {
         applyPartialUpdates(input);
-        validatePeriod();
+        validateEndDate();
     }
 
     private void applyPartialUpdates(UpdateEventInput input) {
@@ -56,8 +56,8 @@ public class Event {
         if (input.endDate() != null) this.endDate = input.endDate();
     }
 
-    private void validatePeriod() {
-        if (startDate.isAfter(endDate)) {
+    private void validateEndDate() {
+        if (endDate != null && startDate.isAfter(endDate)) {
             throw AppException.invalidPeriod(startDate.toString(), endDate.toString());
         }
     }
