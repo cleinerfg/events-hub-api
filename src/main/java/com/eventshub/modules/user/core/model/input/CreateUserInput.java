@@ -1,5 +1,9 @@
 package com.eventshub.modules.user.core.model.input;
 
+import com.eventshub.shared.core.exception.support.CheckNotNull;
+import lombok.Builder;
+
+@Builder
 public record CreateUserInput(
         String name,
         String email,
@@ -7,6 +11,9 @@ public record CreateUserInput(
 ) {
 
     public CreateUserInput {
-        email = (email != null) ? email.trim().toLowerCase() : null;
+        CheckNotNull.forClass(CreateUserInput.class.getName())
+                .field("name", name)
+                .field("email", email)
+                .field("password", password);
     }
 }
