@@ -2,7 +2,7 @@ package com.eventshub.modules.user.core.usecase;
 
 import com.eventshub.modules.user.core.model.input.LoginInput;
 import com.eventshub.modules.user.core.port.AuthPort;
-import com.eventshub.modules.user.core.port.TokenPort;
+import com.eventshub.shared.core.security.TokenPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -13,6 +13,6 @@ public class LoginUseCase {
 
     public String execute(LoginInput input) {
         var user = authPort.authenticate(input.email(), input.password());
-        return tokenPort.generate(user);
+        return tokenPort.generate(user.getExternalId().toString());
     }
 }

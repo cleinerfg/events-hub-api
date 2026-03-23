@@ -1,9 +1,8 @@
-package com.eventshub.modules.user.infra.adapter;
+package com.eventshub.shared.infra.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.eventshub.modules.user.core.model.User;
-import com.eventshub.modules.user.core.port.TokenPort;
+import com.eventshub.shared.core.security.TokenPort;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,11 +31,11 @@ public class JwtTokenAdapter implements TokenPort {
     }
 
     @Override
-    public String generate(User user) {
+    public String generate(String subject) {
         Instant now = Instant.now();
         return JWT.create()
                 .withIssuer(issuer)
-                .withSubject(user.getExternalId().toString())
+                .withSubject(subject)
                 .withIssuedAt(now)
                 .withExpiresAt(now.plusSeconds(expirationSeconds))
                 .sign(algorithm);
