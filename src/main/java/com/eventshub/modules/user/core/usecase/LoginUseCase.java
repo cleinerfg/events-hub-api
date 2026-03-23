@@ -1,6 +1,6 @@
 package com.eventshub.modules.user.core.usecase;
 
-import com.eventshub.modules.user.core.model.input.LoginUserInput;
+import com.eventshub.modules.user.core.model.input.LoginInput;
 import com.eventshub.modules.user.core.port.AuthPort;
 import com.eventshub.modules.user.core.port.TokenPort;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ public class LoginUseCase {
     private final AuthPort authPort;
     private final TokenPort tokenPort;
 
-    public String execute(LoginUserInput input) {
+    public String execute(LoginInput input) {
         var user = authPort.authenticate(input.email(), input.password());
         return tokenPort.generate(user);
     }
