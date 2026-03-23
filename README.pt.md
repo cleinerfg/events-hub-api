@@ -66,6 +66,9 @@ Exemplo:
 DB_POSTGRES_USERNAME=username
 DB_POSTGRES_PASSWORD=password
 DB_POSTGRES_URL=jdbc:postgresql://localhost:5432/events-hub
+JWT_SECRET=jwt-secret-hash
+JWT_ISSUER=events-hub
+JWT_EXPIRATION_SECONDS=3600
 ```
 
 - Configure sua IDE para usar variáveis de ambiente.
