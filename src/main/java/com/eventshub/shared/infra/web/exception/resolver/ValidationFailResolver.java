@@ -1,6 +1,7 @@
 package com.eventshub.shared.infra.web.exception.resolver;
 
 import com.eventshub.shared.core.exception.GlobalAppException;
+import com.eventshub.shared.infra.web.exception.resolver.schema.FieldValidationViolation;
 import com.eventshub.shared.infra.web.exception.support.ProblemDetailFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ProblemDetail;
@@ -17,7 +18,7 @@ public class ValidationFailResolver {
 
     private final ProblemDetailFactory problemDetailFactory;
 
-    private List<FieldValidation> extract(List<FieldError> fieldErrors) {
+    private List<FieldValidationViolation> extract(List<FieldError> fieldErrors) {
         return fieldErrors.stream()
                 .collect(Collectors.groupingBy(
                         FieldError::getField,
@@ -27,7 +28,7 @@ public class ValidationFailResolver {
                         )
                 ))
                 .entrySet().stream()
-                .map(entry -> new FieldValidation(entry.getKey(), entry.getValue()))
+                .map(entry -> new FieldValidationViolation(entry.getKey(), entry.getValue()))
                 .toList();
     }
 
