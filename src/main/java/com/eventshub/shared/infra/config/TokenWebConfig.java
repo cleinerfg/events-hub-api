@@ -2,7 +2,6 @@ package com.eventshub.shared.infra.config;
 
 import com.eventshub.shared.core.exception.AppError;
 import com.eventshub.shared.core.exception.ErrorScope;
-import com.eventshub.shared.core.exception.GlobalAppError;
 import com.eventshub.shared.core.security.TokenError;
 import com.eventshub.shared.infra.web.exception.support.HttpErrorSchema;
 import org.springframework.context.annotation.Bean;
@@ -12,19 +11,14 @@ import org.springframework.http.HttpStatus;
 import java.util.Map;
 
 @Configuration
-public class GlobalWebConfig {
+public class TokenWebConfig {
 
     @Bean
-    public HttpErrorSchema globalHttpErrorSchema() {
+    public HttpErrorSchema tokenHttpErrorSchema() {
         Map<AppError, HttpStatus> map = Map.of(
-                GlobalAppError.SYSTEM_INTEGRITY_ERROR, HttpStatus.INTERNAL_SERVER_ERROR,
-                GlobalAppError.INVALID_JSON, HttpStatus.BAD_REQUEST,
                 TokenError.TOKEN_REQUIRED, HttpStatus.UNAUTHORIZED,
                 TokenError.TOKEN_INVALID, HttpStatus.UNAUTHORIZED,
-                TokenError.TOKEN_EXPIRED, HttpStatus.UNAUTHORIZED,
-                GlobalAppError.VALIDATION_FAIL, HttpStatus.BAD_REQUEST,
-                GlobalAppError.RESOURCE_NOT_FOUND, HttpStatus.NOT_FOUND,
-                GlobalAppError.INVALID_PERIOD, HttpStatus.UNPROCESSABLE_CONTENT
+                TokenError.TOKEN_EXPIRED, HttpStatus.UNAUTHORIZED
         );
 
         return HttpErrorSchema.builder()
