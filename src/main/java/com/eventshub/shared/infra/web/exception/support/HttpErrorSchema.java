@@ -1,4 +1,4 @@
-package com.eventshub.shared.infra.web.exception;
+package com.eventshub.shared.infra.web.exception.support;
 
 import com.eventshub.shared.core.exception.AppError;
 import com.eventshub.shared.core.exception.ErrorScope;
