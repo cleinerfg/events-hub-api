@@ -5,6 +5,7 @@ import com.eventshub.shared.core.exception.ErrorScope;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -16,9 +17,14 @@ public class AppErrorHttpTranslator {
 
     public AppErrorHttpTranslator(List<HttpErrorSchema> schemas) {
         schemaMapping = schemas.stream()
-                .collect(Collectors.toUnmodifiableMap(
+                .collect(Collectors.toMap(
                         HttpErrorSchema::scope,
-                        HttpErrorSchema::definitions
+                        HttpErrorSchema::definitions,
+                        (existingMap, newMap) -> {
+                            var combined = new HashMap<>(existingMap);
+                            combined.putAll(newMap);
+                            return combined;
+                        }
                 ));
     }
 
