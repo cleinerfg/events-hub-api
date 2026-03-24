@@ -6,7 +6,7 @@ import java.util.Set;
 
 @Builder
 public record FieldFormatViolation(
-        String fieldName,
+        String field,
         String sentValue,
         String expectedType,
         Set<String> acceptedValues,

@@ -32,7 +32,7 @@ public class InvalidParamResolver {
         Class<?> type = ex.getRequiredType();
 
         return FieldFormatViolation.builder()
-                .fieldName(ex.getName())
+                .field(ex.getName())
                 .sentValue(ex.getValue() != null ? ex.getValue().toString() : "null")
                 .expectedType(type != null ? type.getSimpleName() : "UNKNOWN")
                 .acceptedValues(FieldFormatViolationExtractor.extractEnumConstants(type))

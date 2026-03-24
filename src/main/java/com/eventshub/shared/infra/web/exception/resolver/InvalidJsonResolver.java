@@ -42,11 +42,11 @@ public class InvalidJsonResolver {
     private FieldFormatViolation extractFieldFormatViolation(HttpMessageNotReadableException ex) {
         if (ex.getCause() instanceof InvalidFormatException formatException) {
             Class<?> type = formatException.getTargetType();
-            String fieldName = formatException.getPath().isEmpty() ? "UNKNOWN_FIELD"
+            String field = formatException.getPath().isEmpty() ? "UNKNOWN_FIELD"
                     : formatException.getPath().get(0).getPropertyName();
 
             return FieldFormatViolation.builder()
-                    .fieldName(fieldName)
+                    .field(field)
                     .sentValue(formatException.getValue().toString())
                     .expectedType(type.getSimpleName())
                     .acceptedValues(FieldFormatViolationExtractor.extractEnumConstants(type))
