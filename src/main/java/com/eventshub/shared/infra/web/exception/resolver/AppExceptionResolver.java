@@ -1,6 +1,5 @@
 package com.eventshub.shared.infra.web.exception.resolver;
 
-import com.eventshub.modules.user.core.exception.InvalidPasswordException;
 import com.eventshub.shared.core.exception.AppError;
 import com.eventshub.shared.core.exception.AppException;
 import com.eventshub.shared.infra.web.exception.support.ProblemDetailFactory;
@@ -20,11 +19,9 @@ public class AppExceptionResolver {
         AppError error = ex.getError();
 
         var problemDetail = problemDetailFactory.create(error, ex.getMessage());
+        Set<String> fails = ex.getFails();
 
-        if (ex instanceof InvalidPasswordException invalidPasswordEx) {
-            Set<String> fails = invalidPasswordEx.getFails();
-            problemDetail.setProperty("fails", fails);
-        }
+        if (!fails.isEmpty()) problemDetail.setProperty("fails", fails);
 
         return problemDetail;
     }
