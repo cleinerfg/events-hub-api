@@ -12,7 +12,7 @@ public enum UserError implements AppError {
 
     EMAIL_ALREADY_EXISTS("EMAIL_ALREADY_EXISTS", ErrorCategory.BUSINESS_RULE_VIOLATION),
     INVALID_PASSWORD("INVALID_PASSWORD", ErrorCategory.BUSINESS_RULE_VIOLATION),
-    INVALID_CREDENTIALS("INVALID_CREDENTIALS", ErrorCategory.UNAUTHORIZED);
+    INVALID_CREDENTIALS("INVALID_CREDENTIALS", ErrorCategory.SECURITY);
 
     private final String code;
     private final ErrorCategory category;
