@@ -23,7 +23,7 @@ public class GlobalWebConfig {
                 GlobalAppError.TOKEN_EXPIRED, HttpStatus.UNAUTHORIZED,
                 GlobalAppError.VALIDATION_FAIL, HttpStatus.BAD_REQUEST,
                 GlobalAppError.RESOURCE_NOT_FOUND, HttpStatus.NOT_FOUND,
-                GlobalAppError.INVALID_PERIOD, HttpStatus.BAD_REQUEST
+                GlobalAppError.INVALID_PERIOD, HttpStatus.UNPROCESSABLE_CONTENT
         );
 
         return HttpErrorSchema.builder()
