@@ -17,6 +17,10 @@ public class GlobalAppException extends AppException {
         return new GlobalAppException(GlobalAppError.INVALID_JSON, "The provided JSON is invalid");
     }
 
+    public static GlobalAppException invalidParam() {
+        return new GlobalAppException(GlobalAppError.INVALID_PARAM, "The provided param is invalid");
+    }
+
     public static GlobalAppException validationFail() {
         return new GlobalAppException(GlobalAppError.VALIDATION_FAIL, "The data provided is invalid.");
     }
