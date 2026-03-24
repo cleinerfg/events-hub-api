@@ -11,11 +11,25 @@ public class AppException extends RuntimeException {
 
     private static final Logger log = LoggerFactory.getLogger(AppException.class);
 
+    private static final String TOKEN_MESSAGE = "Provide a valid Bearer Token.";
+
     private final transient AppError error;
 
     protected AppException(AppError error, String message) {
         super(message);
         this.error = error;
+    }
+
+    public static AppException tokenRequired() {
+        return new AppException(GlobalAppError.TOKEN_REQUIRED, TOKEN_MESSAGE);
+    }
+
+    public static AppException tokenInvalid() {
+        return new AppException(GlobalAppError.TOKEN_INVALID, TOKEN_MESSAGE);
+    }
+
+    public static AppException tokenExpired() {
+        return new AppException(GlobalAppError.TOKEN_EXPIRED, TOKEN_MESSAGE);
     }
 
     public static AppException invalidJson() {
