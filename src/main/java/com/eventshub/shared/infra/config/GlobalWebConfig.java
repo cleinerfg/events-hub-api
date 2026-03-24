@@ -3,7 +3,7 @@ package com.eventshub.shared.infra.config;
 import com.eventshub.shared.core.exception.AppError;
 import com.eventshub.shared.core.exception.ErrorScope;
 import com.eventshub.shared.core.exception.GlobalAppError;
-import com.eventshub.shared.infra.web.exception.HttpErrorSchema;
+import com.eventshub.shared.infra.web.exception.support.HttpErrorSchema;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ public class GlobalWebConfig {
                 GlobalAppError.TOKEN_EXPIRED, HttpStatus.UNAUTHORIZED,
                 GlobalAppError.VALIDATION_FAIL, HttpStatus.BAD_REQUEST,
                 GlobalAppError.RESOURCE_NOT_FOUND, HttpStatus.NOT_FOUND,
-                GlobalAppError.INVALID_PERIOD, HttpStatus.BAD_REQUEST
+                GlobalAppError.INVALID_PERIOD, HttpStatus.UNPROCESSABLE_CONTENT
         );
 
         return HttpErrorSchema.builder()
