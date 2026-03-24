@@ -29,7 +29,7 @@ public class UserController {
     private final UserDtoMapper dtoMapper;
     private final LoginDtoMapper loginDtoMapper;
 
-    @PostMapping
+    @PostMapping("/auth/register")
     public ResponseEntity<UserResponse> register(
             @RequestBody @Valid CreateUserRequest request) {
         User user = createUseCase.execute(dtoMapper.toCreateInput(request));
