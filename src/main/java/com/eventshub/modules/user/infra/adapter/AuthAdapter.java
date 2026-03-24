@@ -5,7 +5,7 @@ import com.eventshub.modules.user.core.model.User;
 import com.eventshub.modules.user.core.port.AuthPort;
 import com.eventshub.modules.user.infra.persistence.UserJpaEntity;
 import com.eventshub.modules.user.infra.persistence.UserPersistenceMapper;
-import com.eventshub.shared.core.exception.AppException;
+import com.eventshub.shared.core.exception.GlobalAppException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -29,7 +29,7 @@ public class AuthAdapter implements AuthPort {
                 return persistenceMapper.toDomain(jpaEntity);
             }
 
-            throw AppException.systemIntegrity(
+            throw GlobalAppException.systemIntegrity(
                     "Unexpected principal type returned from authentication manager."
             );
 

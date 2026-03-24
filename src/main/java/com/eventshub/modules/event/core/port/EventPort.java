@@ -2,7 +2,7 @@ package com.eventshub.modules.event.core.port;
 
 import com.eventshub.modules.event.core.model.Event;
 import com.eventshub.modules.event.core.model.input.SearchEventInput;
-import com.eventshub.shared.core.exception.AppException;
+import com.eventshub.shared.core.exception.GlobalAppException;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +28,7 @@ public interface EventPort {
         return findByExternalId(externalId).orElseThrow(() -> createNotFoundException(externalId));
     }
 
-    default AppException createNotFoundException(UUID externalId) {
-        return AppException.resourceNotFound("Event", externalId);
+    default GlobalAppException createNotFoundException(UUID externalId) {
+        return GlobalAppException.resourceNotFound("Event", externalId);
     }
 }

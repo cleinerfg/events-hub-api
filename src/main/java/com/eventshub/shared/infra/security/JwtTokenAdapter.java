@@ -6,8 +6,8 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
-import com.eventshub.shared.core.exception.AppException;
 import com.eventshub.shared.core.exception.support.CheckNotNull;
+import com.eventshub.shared.core.security.TokenException;
 import com.eventshub.shared.core.security.TokenPayload;
 import com.eventshub.shared.core.security.TokenPort;
 import jakarta.annotation.PostConstruct;
@@ -67,9 +67,9 @@ public class JwtTokenAdapter implements TokenPort {
                     .externalId(UUID.fromString(jwt.getSubject()))
                     .build();
         } catch (TokenExpiredException ex) {
-            throw AppException.tokenExpired();
+            throw TokenException.expired();
         } catch (JWTVerificationException ex) {
-            throw AppException.tokenInvalid();
+            throw TokenException.invalid();
         }
     }
 }

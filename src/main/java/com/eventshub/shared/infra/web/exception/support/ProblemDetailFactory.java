@@ -1,7 +1,7 @@
 package com.eventshub.shared.infra.web.exception.support;
 
 import com.eventshub.shared.core.exception.AppError;
-import com.eventshub.shared.core.exception.AppException;
+import com.eventshub.shared.core.exception.GlobalAppException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -24,7 +24,7 @@ public class ProblemDetailFactory {
     }
 
     private ProblemDetail handleUnmappedError(AppError orphanError) {
-        var systemIntegrity = AppException.systemIntegrity(
+        var systemIntegrity = GlobalAppException.systemIntegrity(
                 "AppError '%s' [scope='%s'] is unmapped.".formatted(orphanError.getCode(), orphanError.getScope())
         );
         var status = translator.lookup(systemIntegrity.getError());
