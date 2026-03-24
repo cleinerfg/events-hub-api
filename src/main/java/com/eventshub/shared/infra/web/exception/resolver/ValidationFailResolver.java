@@ -1,6 +1,6 @@
 package com.eventshub.shared.infra.web.exception.resolver;
 
-import com.eventshub.shared.core.exception.AppException;
+import com.eventshub.shared.core.exception.GlobalAppException;
 import com.eventshub.shared.infra.web.exception.support.ProblemDetailFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ProblemDetail;
@@ -32,7 +32,7 @@ public class ValidationFailResolver {
     }
 
     public ProblemDetail resolve(MethodArgumentNotValidException ex) {
-        var validationFail = AppException.validationFail();
+        var validationFail = GlobalAppException.validationFail();
 
         var fieldErrors = ex.getBindingResult().getFieldErrors();
         var fieldValidations = extract(fieldErrors);

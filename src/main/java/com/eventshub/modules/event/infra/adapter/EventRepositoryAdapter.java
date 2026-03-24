@@ -7,7 +7,7 @@ import com.eventshub.modules.event.infra.persistence.EventJpaEntity;
 import com.eventshub.modules.event.infra.persistence.EventPersistenceMapper;
 import com.eventshub.modules.event.infra.persistence.EventRepository;
 import com.eventshub.modules.event.infra.persistence.EventSpecs;
-import com.eventshub.shared.core.exception.AppException;
+import com.eventshub.shared.core.exception.GlobalAppException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -65,7 +65,7 @@ public class EventRepositoryAdapter implements EventPort {
     @Transactional
     public Event update(Event event) {
         EventJpaEntity jpaEntity = repository.findById(event.getId()).orElseThrow(
-                () -> AppException.systemIntegrity(
+                () -> GlobalAppException.systemIntegrity(
                         "Event with externalId '%s' lost during update".formatted(event.getExternalId())
                 ));
 

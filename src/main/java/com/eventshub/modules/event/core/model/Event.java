@@ -2,7 +2,7 @@ package com.eventshub.modules.event.core.model;
 
 import com.eventshub.modules.event.core.model.input.CreateEventInput;
 import com.eventshub.modules.event.core.model.input.UpdateEventInput;
-import com.eventshub.shared.core.exception.AppException;
+import com.eventshub.shared.core.exception.GlobalAppException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -58,7 +58,7 @@ public class Event {
 
     private void validateEndDate() {
         if (endDate != null && startDate.isAfter(endDate)) {
-            throw AppException.invalidPeriod(startDate.toString(), endDate.toString());
+            throw GlobalAppException.invalidPeriod(startDate.toString(), endDate.toString());
         }
     }
 }
