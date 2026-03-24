@@ -4,6 +4,8 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -14,6 +16,7 @@ public class AppException extends RuntimeException {
     private static final String TOKEN_MESSAGE = "Provide a valid Bearer Token.";
 
     private final transient AppError error;
+    private final transient Set<String> fails = new LinkedHashSet<>();
 
     protected AppException(AppError error, String message) {
         super(message);
@@ -54,5 +57,9 @@ public class AppException extends RuntimeException {
         log.error(message);
         var publicMessage = "System Integrity Violation";
         return new AppException(GlobalAppError.SYSTEM_INTEGRITY_ERROR, publicMessage);
+    }
+
+    protected void addFails(Set<String> fails) {
+        this.fails.addAll(fails);
     }
 }
