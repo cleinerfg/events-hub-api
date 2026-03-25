@@ -17,7 +17,7 @@ public class RestExceptionHandler {
 
     private final InvalidJsonResolver invalidJsonResolver;
     private final InvalidParamResolver invalidParamResolver;
-    private final ValidationFailResolver validationFailResolver;
+    private final MethodArgumentNotValidResolver methodArgumentNotValidResolver;
     private final AppExceptionResolver appExceptionResolver;
     private final InsufficientAuthenticationResolver insufficientAuthenticationResolver;
 
@@ -33,7 +33,7 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
-        return validationFailResolver.resolve(ex);
+        return methodArgumentNotValidResolver.resolve(ex);
     }
 
     @ExceptionHandler(AppException.class)
