@@ -1,23 +1,35 @@
-package com.eventshub.shared.infra.web.exception.resolver;
+package com.eventshub.shared.infra.web.exception.resolver.handler;
 
 import com.eventshub.shared.core.exception.GlobalAppException;
+import com.eventshub.shared.infra.web.exception.resolver.schema.FieldValidationViolation;
 import com.eventshub.shared.infra.web.exception.support.ProblemDetailFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ProblemDetail;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 @Component
-public class ValidationFailResolver {
+@RequiredArgsConstructor
+public class ValidationFailHandler {
 
     private final ProblemDetailFactory problemDetailFactory;
 
-    private List<FieldValidation> extract(List<FieldError> fieldErrors) {
+    public ProblemDetail handle(List<FieldError> fieldErrors) {
+        var validationFail = GlobalAppException.validationFail();
+        var problemDetail = problemDetailFactory.create(
+                validationFail.getError(),
+                validationFail.getMessage()
+        );
+
+        problemDetail.setProperty("fails", extractViolations(fieldErrors));
+
+        return problemDetail;
+    }
+
+    private List<FieldValidationViolation> extractViolations(List<FieldError> fieldErrors) {
         return fieldErrors.stream()
                 .collect(Collectors.groupingBy(
                         FieldError::getField,
@@ -27,22 +39,7 @@ public class ValidationFailResolver {
                         )
                 ))
                 .entrySet().stream()
-                .map(entry -> new FieldValidation(entry.getKey(), entry.getValue()))
+                .map(entry -> new FieldValidationViolation(entry.getKey(), entry.getValue()))
                 .toList();
-    }
-
-    public ProblemDetail resolve(MethodArgumentNotValidException ex) {
-        var validationFail = GlobalAppException.validationFail();
-
-        var fieldErrors = ex.getBindingResult().getFieldErrors();
-        var fieldValidations = extract(fieldErrors);
-
-        var problemDetail = problemDetailFactory.create(
-                validationFail.getError(),
-                validationFail.getMessage()
-        );
-        problemDetail.setProperty("fails", fieldValidations);
-
-        return problemDetail;
     }
 }
