@@ -21,6 +21,10 @@ public class GlobalAppException extends AppException {
         return new GlobalAppException(GlobalAppError.INVALID_PARAM, "The provided param is invalid");
     }
 
+    public static GlobalAppException invalidQueryParams() {
+        return new GlobalAppException(GlobalAppError.INVALID_QUERY_PARAMS, "The provided query params is invalid");
+    }
+
     public static GlobalAppException validationFail() {
         return new GlobalAppException(GlobalAppError.VALIDATION_FAIL, "The data provided is invalid.");
     }
