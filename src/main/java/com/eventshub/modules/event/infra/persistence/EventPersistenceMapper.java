@@ -21,7 +21,6 @@ public class EventPersistenceMapper {
 
     public Event toDomain(EventJpaEntity jpaEntity) {
         return Event.builder()
-                .id(jpaEntity.getId())
                 .externalId(jpaEntity.getExternalId())
                 .name(jpaEntity.getName())
                 .type(jpaEntity.getType())

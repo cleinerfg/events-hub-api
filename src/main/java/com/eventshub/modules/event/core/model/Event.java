@@ -15,7 +15,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Event {
 
-    private Long id;
     private final UUID externalId;
     private String name;
     private EventType type;

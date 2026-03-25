@@ -64,7 +64,7 @@ public class EventRepositoryAdapter implements EventPort {
     @Override
     @Transactional
     public Event update(Event event) {
-        EventJpaEntity jpaEntity = repository.findById(event.getId()).orElseThrow(
+        EventJpaEntity jpaEntity = repository.findByExternalId(event.getExternalId()).orElseThrow(
                 () -> GlobalAppException.systemIntegrity(
                         "Event with externalId '%s' lost during update".formatted(event.getExternalId())
                 ));
