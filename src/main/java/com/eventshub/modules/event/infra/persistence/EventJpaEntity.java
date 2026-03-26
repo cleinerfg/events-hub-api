@@ -1,6 +1,7 @@
 package com.eventshub.modules.event.infra.persistence;
 
 import com.eventshub.modules.event.core.model.EventType;
+import com.eventshub.modules.user.infra.persistence.UserJpaEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -24,6 +25,10 @@ public class EventJpaEntity {
 
     @Column(name = "external_id", nullable = false, unique = true, updatable = false)
     private UUID externalId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", nullable = false)
+    private UserJpaEntity owner;
 
     @Column(nullable = false)
     private String name;
