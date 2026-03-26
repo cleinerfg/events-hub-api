@@ -6,6 +6,7 @@ import com.eventshub.modules.event.infra.web.dto.CreateEventRequest;
 import com.eventshub.modules.event.infra.web.dto.EventResponse;
 import com.eventshub.modules.event.infra.web.dto.SearchEventRequest;
 import com.eventshub.modules.event.infra.web.dto.UpdateEventRequest;
+import com.eventshub.shared.infra.security.SecurityContextService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,14 +28,20 @@ public class EventController {
     private final SearchEventsUseCase searchUseCase;
     private final UpdateEventUseCase updateUseCase;
     private final DeleteEventUseCase deleteUseCase;
+
     private final EventDtoMapper dtoMapper;
+    private final SecurityContextService securityContextService;
 
     @PostMapping
     public ResponseEntity<EventResponse> create(
             @RequestBody @Valid CreateEventRequest request
     ) {
+        UUID ownerExternalId = securityContextService
+                .getAuthenticatedPayload()
+                .externalId();
+
         Event event = createUseCase.execute(
-                dtoMapper.toCreateInput(request)
+                dtoMapper.toCreateInput(request, ownerExternalId)
         );
         EventResponse response = dtoMapper.toResponse(event);
 

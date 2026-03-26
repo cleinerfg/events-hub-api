@@ -11,6 +11,8 @@ import com.eventshub.modules.event.infra.web.dto.UpdateEventRequest;
 import com.eventshub.shared.core.support.StringSanitizer;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class EventDtoMapper {
 
@@ -18,6 +20,7 @@ public class EventDtoMapper {
         return EventResponse.builder()
                 .name(event.getName())
                 .externalId(event.getExternalId())
+                .ownerExternalId(event.getOwnerExternalId())
                 .type(event.getType())
                 .description(event.getDescription())
                 .organizer(event.getOrganizer())
@@ -27,8 +30,9 @@ public class EventDtoMapper {
                 .build();
     }
 
-    public CreateEventInput toCreateInput(CreateEventRequest request) {
+    public CreateEventInput toCreateInput(CreateEventRequest request, UUID ownerExternalId) {
         return CreateEventInput.builder()
+                .ownerExternalId(ownerExternalId)
                 .name(StringSanitizer.capitalize(request.name()))
                 .type(request.type())
                 .description(StringSanitizer.trimAndClean(request.description()))
