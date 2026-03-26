@@ -7,6 +7,8 @@ import com.eventshub.modules.event.infra.persistence.EventJpaEntity;
 import com.eventshub.modules.event.infra.persistence.EventPersistenceMapper;
 import com.eventshub.modules.event.infra.persistence.EventRepository;
 import com.eventshub.modules.event.infra.persistence.EventSpecs;
+import com.eventshub.modules.user.infra.persistence.UserJpaEntity;
+import com.eventshub.modules.user.infra.persistence.UserJpaReferenceProvider;
 import com.eventshub.shared.core.exception.GlobalAppException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -23,12 +25,16 @@ public class EventRepositoryAdapter implements EventPort {
     private final EventRepository repository;
     private final EventPersistenceMapper persistenceMapper;
 
+    private final UserJpaReferenceProvider userJpaReferenceProvider;
+
     @Override
     public Event create(Event event) {
-        EventJpaEntity savedEvent = repository.save(
-                persistenceMapper.toEntity(event)
-        );
-        return persistenceMapper.toDomain(savedEvent);
+        UserJpaEntity owner = userJpaReferenceProvider
+                .provide(event.getOwnerExternalId());
+
+        var eventEntity = persistenceMapper.toEntity(event, owner);
+
+        return persistenceMapper.toDomain(repository.save(eventEntity));
     }
 
     @Override
