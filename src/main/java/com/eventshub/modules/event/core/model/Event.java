@@ -16,6 +16,7 @@ import java.util.UUID;
 public class Event {
 
     private final UUID externalId;
+    private final UUID ownerExternalId;
     private String name;
     private EventType type;
     private String description;
@@ -27,6 +28,7 @@ public class Event {
     public static Event create(CreateEventInput input, UUID externalId) {
         var event = Event.builder()
                 .externalId(externalId)
+                .ownerExternalId(input.ownerExternalId())
                 .name(input.name())
                 .type(input.type())
                 .description(input.description())
