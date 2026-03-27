@@ -13,6 +13,6 @@ public class LoginUseCase {
 
     public String execute(LoginCommand command) {
         var user = authPort.authenticate(command.email(), command.password());
-        return tokenPort.generate(user.getExternalId().toString());
+        return tokenPort.generate(user.getId().toString());
     }
 }

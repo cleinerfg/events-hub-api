@@ -12,7 +12,7 @@ public class UserWebMapper {
 
     public UserResponse toResponse(User user) {
         return UserResponse.builder()
-                .externalId(user.getExternalId())
+                .id(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
                 .build();

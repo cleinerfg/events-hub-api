@@ -6,7 +6,7 @@ import java.util.UUID;
 
 @Builder
 public record UserResponse(
-        UUID externalId,
+        UUID id,
         String name,
         String email
 ) {
