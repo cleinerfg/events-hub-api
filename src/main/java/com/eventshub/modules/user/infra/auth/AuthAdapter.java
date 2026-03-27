@@ -1,4 +1,4 @@
-package com.eventshub.modules.user.infra.adapter;
+package com.eventshub.modules.user.infra.auth;
 
 import com.eventshub.modules.user.core.exception.InvalidCredentialsException;
 import com.eventshub.modules.user.core.model.User;

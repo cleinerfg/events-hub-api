@@ -1,4 +1,4 @@
-package com.eventshub.modules.user.infra.adapter;
+package com.eventshub.modules.user.infra.auth;
 
 import com.eventshub.modules.user.core.port.PasswordEncoderPort;
 import lombok.RequiredArgsConstructor;

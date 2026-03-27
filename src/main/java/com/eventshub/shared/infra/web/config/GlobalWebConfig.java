@@ -1,4 +1,4 @@
-package com.eventshub.shared.infra.config;
+package com.eventshub.shared.infra.web.config;
 
 import com.eventshub.shared.core.exception.AppError;
 import com.eventshub.shared.core.exception.ErrorScope;

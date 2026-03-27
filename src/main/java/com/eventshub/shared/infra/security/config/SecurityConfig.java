@@ -1,4 +1,4 @@
-package com.eventshub.shared.infra.config;
+package com.eventshub.shared.infra.security.config;
 
 import com.eventshub.shared.infra.security.SecurityFilter;
 import com.eventshub.shared.infra.security.failure.UnauthenticatedEntryPoint;
