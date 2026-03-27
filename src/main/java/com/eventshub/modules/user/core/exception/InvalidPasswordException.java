@@ -1,15 +1,21 @@
 package com.eventshub.modules.user.core.exception;
 
+import com.eventshub.modules.user.core.validator.PasswordError;
 import com.eventshub.shared.core.exception.AppException;
 import lombok.Getter;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 public class InvalidPasswordException extends AppException {
 
-    public InvalidPasswordException(Set<String> fails) {
+    public InvalidPasswordException(Set<PasswordError> fails) {
         super(UserError.INVALID_PASSWORD, "The password provided is invalid.");
-        addFails(fails);
+        addFails(fails.stream()
+                .map(PasswordError::name)
+                .collect(Collectors.toSet()
+                )
+        );
     }
 }
