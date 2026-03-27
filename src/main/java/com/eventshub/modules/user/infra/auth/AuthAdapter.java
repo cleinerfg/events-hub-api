@@ -1,8 +1,8 @@
 package com.eventshub.modules.user.infra.auth;
 
-import com.eventshub.modules.user.core.exception.InvalidCredentialsException;
-import com.eventshub.modules.user.core.model.User;
-import com.eventshub.modules.user.core.port.AuthPort;
+import com.eventshub.modules.user.core.application.port.AuthPort;
+import com.eventshub.modules.user.core.domain.exception.InvalidCredentialsException;
+import com.eventshub.modules.user.core.domain.model.User;
 import com.eventshub.modules.user.infra.persistence.UserJpaEntity;
 import com.eventshub.modules.user.infra.persistence.UserPersistenceMapper;
 import com.eventshub.shared.core.exception.GlobalAppException;

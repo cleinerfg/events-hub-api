@@ -1,7 +1,7 @@
 package com.eventshub.modules.user.infra.web;
 
-import com.eventshub.modules.user.core.model.User;
-import com.eventshub.modules.user.core.usecase.CreateUserUseCase;
+import com.eventshub.modules.user.core.application.usecase.CreateUserUseCase;
+import com.eventshub.modules.user.core.domain.model.User;
 import com.eventshub.modules.user.infra.web.dto.CreateUserRequest;
 import com.eventshub.modules.user.infra.web.dto.UserResponse;
 import com.eventshub.modules.user.infra.web.mapper.UserWebMapper;

@@ -1,6 +1,6 @@
-package com.eventshub.modules.user.core.exception;
+package com.eventshub.modules.user.core.domain.exception;
 
-import com.eventshub.modules.user.core.validator.PasswordError;
+import com.eventshub.modules.user.core.domain.validator.PasswordError;
 import com.eventshub.shared.core.exception.AppException;
 import lombok.Getter;
 

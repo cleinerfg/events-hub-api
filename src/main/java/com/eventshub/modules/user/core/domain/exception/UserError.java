@@ -1,4 +1,4 @@
-package com.eventshub.modules.user.core.exception;
+package com.eventshub.modules.user.core.domain.exception;
 
 import com.eventshub.shared.core.exception.AppError;
 import com.eventshub.shared.core.exception.ErrorCategory;

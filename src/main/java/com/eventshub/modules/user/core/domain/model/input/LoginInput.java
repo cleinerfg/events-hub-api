@@ -1,4 +1,4 @@
-package com.eventshub.modules.user.core.model.input;
+package com.eventshub.modules.user.core.domain.model.input;
 
 import com.eventshub.shared.core.exception.support.CheckNotNull;
 import lombok.Builder;

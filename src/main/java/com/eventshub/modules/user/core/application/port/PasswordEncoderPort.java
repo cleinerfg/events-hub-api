@@ -1,4 +1,4 @@
-package com.eventshub.modules.user.core.port;
+package com.eventshub.modules.user.core.application.port;
 
 public interface PasswordEncoderPort {
 

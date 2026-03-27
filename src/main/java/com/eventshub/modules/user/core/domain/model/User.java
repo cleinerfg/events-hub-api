@@ -1,6 +1,6 @@
-package com.eventshub.modules.user.core.model;
+package com.eventshub.modules.user.core.domain.model;
 
-import com.eventshub.modules.user.core.model.input.CreateUserInput;
+import com.eventshub.modules.user.core.domain.model.input.CreateUserInput;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

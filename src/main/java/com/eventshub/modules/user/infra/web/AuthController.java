@@ -1,6 +1,6 @@
 package com.eventshub.modules.user.infra.web;
 
-import com.eventshub.modules.user.core.usecase.LoginUseCase;
+import com.eventshub.modules.user.core.application.usecase.LoginUseCase;
 import com.eventshub.modules.user.infra.web.dto.LoginRequest;
 import com.eventshub.modules.user.infra.web.dto.LoginResponse;
 import com.eventshub.modules.user.infra.web.mapper.LoginWebMapper;

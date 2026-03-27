@@ -1,6 +1,6 @@
 package com.eventshub.modules.user.infra.web.mapper;
 
-import com.eventshub.modules.user.core.model.input.LoginInput;
+import com.eventshub.modules.user.core.domain.model.input.LoginInput;
 import com.eventshub.modules.user.infra.web.dto.LoginRequest;
 import com.eventshub.modules.user.infra.web.dto.LoginResponse;
 import com.eventshub.shared.core.support.StringSanitizer;

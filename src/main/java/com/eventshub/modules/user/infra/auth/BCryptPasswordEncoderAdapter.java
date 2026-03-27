@@ -1,6 +1,6 @@
 package com.eventshub.modules.user.infra.auth;
 
-import com.eventshub.modules.user.core.port.PasswordEncoderPort;
+import com.eventshub.modules.user.core.application.port.PasswordEncoderPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

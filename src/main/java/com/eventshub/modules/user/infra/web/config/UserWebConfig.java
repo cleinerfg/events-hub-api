@@ -1,6 +1,6 @@
 package com.eventshub.modules.user.infra.web.config;
 
-import com.eventshub.modules.user.core.exception.UserError;
+import com.eventshub.modules.user.core.domain.exception.UserError;
 import com.eventshub.shared.core.exception.AppError;
 import com.eventshub.shared.core.exception.ErrorScope;
 import com.eventshub.shared.infra.web.exception.support.HttpErrorSchema;

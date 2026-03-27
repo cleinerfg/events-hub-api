@@ -1,7 +1,7 @@
 package com.eventshub.modules.user.infra.web.mapper;
 
-import com.eventshub.modules.user.core.model.User;
-import com.eventshub.modules.user.core.model.input.CreateUserInput;
+import com.eventshub.modules.user.core.domain.model.User;
+import com.eventshub.modules.user.core.domain.model.input.CreateUserInput;
 import com.eventshub.modules.user.infra.web.dto.CreateUserRequest;
 import com.eventshub.modules.user.infra.web.dto.UserResponse;
 import com.eventshub.shared.core.support.StringSanitizer;

@@ -1,6 +1,6 @@
-package com.eventshub.modules.user.core.validator;
+package com.eventshub.modules.user.core.domain.validator;
 
-import com.eventshub.modules.user.core.exception.InvalidPasswordException;
+import com.eventshub.modules.user.core.domain.exception.InvalidPasswordException;
 import com.eventshub.shared.core.exception.support.CheckNotNull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

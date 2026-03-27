@@ -1,7 +1,7 @@
 package com.eventshub.modules.user.infra.persistence;
 
-import com.eventshub.modules.user.core.model.User;
-import com.eventshub.modules.user.core.port.UserPort;
+import com.eventshub.modules.user.core.application.port.UserPort;
+import com.eventshub.modules.user.core.domain.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

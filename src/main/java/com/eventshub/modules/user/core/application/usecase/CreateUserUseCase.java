@@ -1,11 +1,11 @@
-package com.eventshub.modules.user.core.usecase;
+package com.eventshub.modules.user.core.application.usecase;
 
-import com.eventshub.modules.user.core.exception.EmailAlreadyExistsException;
-import com.eventshub.modules.user.core.model.User;
-import com.eventshub.modules.user.core.model.input.CreateUserInput;
-import com.eventshub.modules.user.core.port.PasswordEncoderPort;
-import com.eventshub.modules.user.core.port.UserPort;
-import com.eventshub.modules.user.core.validator.PasswordValidator;
+import com.eventshub.modules.user.core.application.port.PasswordEncoderPort;
+import com.eventshub.modules.user.core.application.port.UserPort;
+import com.eventshub.modules.user.core.domain.exception.EmailAlreadyExistsException;
+import com.eventshub.modules.user.core.domain.model.User;
+import com.eventshub.modules.user.core.domain.model.input.CreateUserInput;
+import com.eventshub.modules.user.core.domain.validator.PasswordValidator;
 import com.eventshub.shared.core.port.UuidGeneratorPort;
 import lombok.RequiredArgsConstructor;
 

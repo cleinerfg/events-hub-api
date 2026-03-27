@@ -1,7 +1,7 @@
-package com.eventshub.modules.user.core.usecase;
+package com.eventshub.modules.user.core.application.usecase;
 
-import com.eventshub.modules.user.core.model.input.LoginInput;
-import com.eventshub.modules.user.core.port.AuthPort;
+import com.eventshub.modules.user.core.application.port.AuthPort;
+import com.eventshub.modules.user.core.domain.model.input.LoginInput;
 import com.eventshub.shared.core.security.TokenPort;
 import lombok.RequiredArgsConstructor;
 

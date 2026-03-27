@@ -1,4 +1,4 @@
-package com.eventshub.modules.user.core.validator;
+package com.eventshub.modules.user.core.domain.validator;
 
 public enum PasswordError {
     TOO_SHORT,
