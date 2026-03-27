@@ -10,55 +10,62 @@ import java.util.UUID;
 
 @Getter
 @Builder(access = AccessLevel.PRIVATE)
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class User {
 
-    private final UUID externalId;
+    private final UUID id;
     private String name;
     private String email;
     private String passwordHash;
 
-    public static User create(CreateUserProps props) {
-        validate(props);
-
-        return reconstruct(
-                props.id(),
-                props.name(),
-                props.email().toLowerCase(),
-                props.passwordHash()
-        );
+    private User(UUID id) {
+        validateId(id);
+        this.id = id;
     }
 
-    public static User reconstruct(
-            UUID id,
-            String name,
-            String email,
-            String passwordHash
-    ) {
+    public static User create(CreateUserProps props) {
+        var user = new User(props.id());
+        
+        user.setName(props.name());
+        user.setEmail(props.email());
+        user.setPasswordHash(props.passwordHash());
+
+        return user;
+    }
+
+    public static User reconstruct(ReconstructUserProps props) {
         return User.builder()
-                .externalId(id)
-                .name(name)
-                .email(email)
-                .passwordHash(passwordHash)
+                .id(props.id())
+                .name(props.name())
+                .email(props.email())
+                .passwordHash(props.passwordHash())
                 .build();
     }
 
-    private static void validate(CreateUserProps props) {
-
-        if (props.id() == null) {
-            throw new IllegalArgumentException("User id cannot be null");
-        }
-
-        if (props.name() == null || props.name().isBlank()) {
+    public void setName(String name) {
+        if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("User name cannot be blank");
         }
+        this.name = name;
+    }
 
-        if (props.passwordHash() == null || props.passwordHash().isBlank()) {
+    public void setEmail(String email) {
+        if (email == null || !isValidEmail(email)) {
+            throw new InvalidEmailException(email);
+        }
+        this.email = email;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        if (passwordHash == null || passwordHash.isBlank()) {
             throw new IllegalArgumentException("Password hash cannot be blank");
         }
+        this.passwordHash = passwordHash;
+    }
 
-        if (props.email() == null || !isValidEmail(props.email())) {
-            throw new InvalidEmailException(props.email());
+    private static void validateId(UUID id) {
+        if (id == null) {
+            throw new IllegalArgumentException("User id cannot be null");
         }
     }
 
