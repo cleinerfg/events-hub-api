@@ -2,12 +2,8 @@ package com.eventshub.modules.user.infra.web;
 
 import com.eventshub.modules.user.core.model.User;
 import com.eventshub.modules.user.core.usecase.CreateUserUseCase;
-import com.eventshub.modules.user.core.usecase.LoginUseCase;
 import com.eventshub.modules.user.infra.web.dto.CreateUserRequest;
-import com.eventshub.modules.user.infra.web.dto.LoginRequest;
-import com.eventshub.modules.user.infra.web.dto.LoginResponse;
 import com.eventshub.modules.user.infra.web.dto.UserResponse;
-import com.eventshub.modules.user.infra.web.mapper.LoginWebMapper;
 import com.eventshub.modules.user.infra.web.mapper.UserWebMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,25 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final CreateUserUseCase createUseCase;
-    private final LoginUseCase loginUseCase;
+    private final UserWebMapper mapper;
 
-    private final UserWebMapper userMapper;
-    private final LoginWebMapper loginMapper;
-
-    @PostMapping("/auth/register")
-    public ResponseEntity<UserResponse> register(
+    @PostMapping
+    public ResponseEntity<UserResponse> create(
             @RequestBody @Valid CreateUserRequest request) {
-        User user = createUseCase.execute(userMapper.toCreateInput(request));
-        UserResponse response = userMapper.toResponse(user);
+        User user = createUseCase.execute(mapper.toCreateInput(request));
+        UserResponse response = mapper.toResponse(user);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
-    @PostMapping("/auth/login")
-    public ResponseEntity<LoginResponse> login(
-            @RequestBody @Valid LoginRequest request
-    ) {
-        String token = loginUseCase.execute(loginMapper.toInput(request));
-        return ResponseEntity.ok(loginMapper.toResponse(token));
     }
 }
