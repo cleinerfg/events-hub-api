@@ -1,7 +1,7 @@
 package com.eventshub.modules.user.core.domain.model;
 
 import com.eventshub.modules.user.core.domain.exception.InvalidEmailException;
-import com.eventshub.modules.user.core.domain.model.input.CreateUserInput;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Getter;
 import java.util.UUID;
 
 @Getter
-@Builder
+@Builder(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class User {
 
@@ -18,43 +18,47 @@ public class User {
     private String email;
     private String passwordHash;
 
-    public static User create(
-            CreateUserInput input,
-            UUID externalId,
-            String passwordHash
-    ) {
+    public static User create(CreateUserProps props) {
+        validate(props);
 
-        validate(externalId, input.name(), input.email(), passwordHash);
-
-        return User.builder()
-                .externalId(externalId)
-                .name(input.name())
-                .email(input.email().toLowerCase())
-                .passwordHash(passwordHash)
-                .build();
+        return reconstruct(
+                props.id(),
+                props.name(),
+                props.email().toLowerCase(),
+                props.passwordHash()
+        );
     }
 
-    private static void validate(
+    public static User reconstruct(
             UUID id,
             String name,
             String email,
             String passwordHash
     ) {
+        return User.builder()
+                .externalId(id)
+                .name(name)
+                .email(email)
+                .passwordHash(passwordHash)
+                .build();
+    }
 
-        if (id == null) {
+    private static void validate(CreateUserProps props) {
+
+        if (props.id() == null) {
             throw new IllegalArgumentException("User id cannot be null");
         }
 
-        if (name == null || name.isBlank()) {
+        if (props.name() == null || props.name().isBlank()) {
             throw new IllegalArgumentException("User name cannot be blank");
         }
 
-        if (passwordHash == null || passwordHash.isBlank()) {
+        if (props.passwordHash() == null || props.passwordHash().isBlank()) {
             throw new IllegalArgumentException("Password hash cannot be blank");
         }
 
-        if (email == null || !isValidEmail(email)) {
-            throw new InvalidEmailException(email);
+        if (props.email() == null || !isValidEmail(props.email())) {
+            throw new InvalidEmailException(props.email());
         }
     }
 
