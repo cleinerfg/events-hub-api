@@ -7,8 +7,8 @@ import com.eventshub.modules.user.infra.web.dto.CreateUserRequest;
 import com.eventshub.modules.user.infra.web.dto.LoginRequest;
 import com.eventshub.modules.user.infra.web.dto.LoginResponse;
 import com.eventshub.modules.user.infra.web.dto.UserResponse;
-import com.eventshub.modules.user.infra.web.mapper.LoginDtoMapper;
-import com.eventshub.modules.user.infra.web.mapper.UserDtoMapper;
+import com.eventshub.modules.user.infra.web.mapper.LoginWebMapper;
+import com.eventshub.modules.user.infra.web.mapper.UserWebMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,14 +26,14 @@ public class UserController {
     private final CreateUserUseCase createUseCase;
     private final LoginUseCase loginUseCase;
 
-    private final UserDtoMapper dtoMapper;
-    private final LoginDtoMapper loginDtoMapper;
+    private final UserWebMapper userMapper;
+    private final LoginWebMapper loginMapper;
 
     @PostMapping("/auth/register")
     public ResponseEntity<UserResponse> register(
             @RequestBody @Valid CreateUserRequest request) {
-        User user = createUseCase.execute(dtoMapper.toCreateInput(request));
-        UserResponse response = dtoMapper.toResponse(user);
+        User user = createUseCase.execute(userMapper.toCreateInput(request));
+        UserResponse response = userMapper.toResponse(user);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -42,7 +42,7 @@ public class UserController {
     public ResponseEntity<LoginResponse> login(
             @RequestBody @Valid LoginRequest request
     ) {
-        String token = loginUseCase.execute(loginDtoMapper.toInput(request));
-        return ResponseEntity.ok(loginDtoMapper.toResponse(token));
+        String token = loginUseCase.execute(loginMapper.toInput(request));
+        return ResponseEntity.ok(loginMapper.toResponse(token));
     }
 }

@@ -8,7 +8,7 @@ import com.eventshub.shared.core.support.StringSanitizer;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserDtoMapper {
+public class UserWebMapper {
 
     public UserResponse toResponse(User user) {
         return UserResponse.builder()

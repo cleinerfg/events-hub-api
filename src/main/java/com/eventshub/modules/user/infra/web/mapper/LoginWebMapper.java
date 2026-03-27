@@ -7,7 +7,7 @@ import com.eventshub.shared.core.support.StringSanitizer;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LoginDtoMapper {
+public class LoginWebMapper {
 
     public LoginResponse toResponse(String token) {
         return new LoginResponse(token);

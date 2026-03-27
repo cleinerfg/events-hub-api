@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserPersistenceMapper {
 
-    public UserJpaEntity toJpaEntity(User user) {
+    public UserJpaEntity toEntity(User user) {
         return UserJpaEntity.builder()
                 .externalId(user.getExternalId())
                 .name(user.getName())

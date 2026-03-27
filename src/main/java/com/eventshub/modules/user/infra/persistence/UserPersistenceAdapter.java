@@ -10,14 +10,15 @@ import org.springframework.stereotype.Repository;
 public class UserPersistenceAdapter implements UserPort {
 
     private final UserJpaRepository repository;
-    private final UserPersistenceMapper persistenceMapper;
+    private final UserPersistenceMapper mapper;
 
     @Override
     public User create(User user) {
-        UserJpaEntity savedUser = repository.save(
-                persistenceMapper.toJpaEntity(user)
+        var entity = mapper.toEntity(user);
+
+        return mapper.toDomain(
+                repository.save(entity)
         );
-        return persistenceMapper.toDomain(savedUser);
     }
 
     @Override
