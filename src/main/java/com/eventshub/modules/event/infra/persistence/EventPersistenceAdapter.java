@@ -1,12 +1,8 @@
-package com.eventshub.modules.event.infra.adapter;
+package com.eventshub.modules.event.infra.persistence;
 
 import com.eventshub.modules.event.core.model.Event;
 import com.eventshub.modules.event.core.model.input.SearchEventInput;
 import com.eventshub.modules.event.core.port.EventPort;
-import com.eventshub.modules.event.infra.persistence.EventJpaEntity;
-import com.eventshub.modules.event.infra.persistence.EventPersistenceMapper;
-import com.eventshub.modules.event.infra.persistence.EventRepository;
-import com.eventshub.modules.event.infra.persistence.EventSpecs;
 import com.eventshub.modules.user.infra.persistence.UserJpaEntity;
 import com.eventshub.modules.user.infra.persistence.UserJpaReferenceProvider;
 import com.eventshub.shared.core.exception.GlobalAppException;
@@ -20,7 +16,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Repository
-public class EventRepositoryAdapter implements EventPort {
+public class EventPersistenceAdapter implements EventPort {
 
     private final EventRepository repository;
     private final EventPersistenceMapper persistenceMapper;

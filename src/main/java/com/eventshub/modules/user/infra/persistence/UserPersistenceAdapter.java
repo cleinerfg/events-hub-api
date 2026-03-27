@@ -1,16 +1,13 @@
-package com.eventshub.modules.user.infra.adapter;
+package com.eventshub.modules.user.infra.persistence;
 
 import com.eventshub.modules.user.core.model.User;
 import com.eventshub.modules.user.core.port.UserPort;
-import com.eventshub.modules.user.infra.persistence.UserJpaEntity;
-import com.eventshub.modules.user.infra.persistence.UserPersistenceMapper;
-import com.eventshub.modules.user.infra.persistence.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
 @Repository
-public class UserRepositoryAdapter implements UserPort {
+public class UserPersistenceAdapter implements UserPort {
 
     private final UserRepository repository;
     private final UserPersistenceMapper persistenceMapper;
