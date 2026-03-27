@@ -10,12 +10,12 @@ public class DeleteEventUseCase {
 
     private final EventPort port;
 
-    public void execute(UUID externalId) {
+    public void execute(UUID id) {
 
-        if (!port.existsByExternalId(externalId)) {
-            throw port.createNotFoundException(externalId);
+        if (!port.existsById(id)) {
+            throw port.createNotFoundException(id);
         }
 
-        port.delete(externalId);
+        port.delete(id);
     }
 }

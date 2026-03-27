@@ -18,8 +18,8 @@ public class EventBeanConfig {
     }
 
     @Bean
-    public FindEventByExternalIdUseCase findEventByExternalIdUseCase(EventPort port) {
-        return new FindEventByExternalIdUseCase(port);
+    public FindEventByIdUseCase findEventByIdUseCase(EventPort port) {
+        return new FindEventByIdUseCase(port);
     }
 
     @Bean

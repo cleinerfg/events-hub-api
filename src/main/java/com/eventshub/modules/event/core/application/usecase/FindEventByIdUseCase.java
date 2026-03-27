@@ -7,11 +7,11 @@ import lombok.RequiredArgsConstructor;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-public class FindEventByExternalIdUseCase {
+public class FindEventByIdUseCase {
 
     private final EventPort port;
 
-    public Event execute(UUID externalId) {
-        return port.getByExternalIdOrThrow(externalId);
+    public Event execute(UUID id) {
+        return port.getByIdOrThrow(id);
     }
 }

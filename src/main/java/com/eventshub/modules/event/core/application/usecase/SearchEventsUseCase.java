@@ -1,8 +1,8 @@
 package com.eventshub.modules.event.core.application.usecase;
 
 import com.eventshub.modules.event.core.application.port.EventPort;
+import com.eventshub.modules.event.core.application.usecase.query.SearchEventQuery;
 import com.eventshub.modules.event.core.domain.model.Event;
-import com.eventshub.modules.event.core.domain.model.input.SearchEventInput;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -12,7 +12,7 @@ public class SearchEventsUseCase {
 
     private final EventPort port;
 
-    public List<Event> execute(SearchEventInput input) {
-        return port.search(input);
+    public List<Event> execute(SearchEventQuery query) {
+        return port.search(query);
     }
 }
