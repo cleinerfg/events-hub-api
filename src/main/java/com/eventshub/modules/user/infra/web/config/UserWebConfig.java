@@ -17,6 +17,7 @@ public class UserWebConfig {
     public HttpErrorSchema userHttpErrorSchema() {
         Map<AppError, HttpStatus> map = Map.of(
                 UserError.EMAIL_ALREADY_EXISTS, HttpStatus.CONFLICT,
+                UserError.INVALID_EMAIL, HttpStatus.BAD_REQUEST,
                 UserError.INVALID_CREDENTIALS, HttpStatus.UNAUTHORIZED,
                 UserError.INVALID_PASSWORD, HttpStatus.UNPROCESSABLE_CONTENT
         );
