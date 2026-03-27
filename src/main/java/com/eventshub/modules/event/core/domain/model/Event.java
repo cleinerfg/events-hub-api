@@ -1,64 +1,112 @@
 package com.eventshub.modules.event.core.domain.model;
 
-import com.eventshub.modules.event.core.domain.model.input.CreateEventInput;
-import com.eventshub.modules.event.core.domain.model.input.UpdateEventInput;
 import com.eventshub.shared.core.exception.GlobalAppException;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Getter
-@Builder
-@AllArgsConstructor
+@Builder(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Event {
 
-    private final UUID externalId;
-    private final UUID ownerExternalId;
+    private final UUID id;
+    private final UUID ownerId;
     private String name;
     private EventType type;
+
+    @Setter
     private String description;
+
     private String organizer;
     private String location;
     private OffsetDateTime startDate;
     private OffsetDateTime endDate;
 
-    public static Event create(CreateEventInput input, UUID externalId) {
-        var event = Event.builder()
-                .externalId(externalId)
-                .ownerExternalId(input.ownerExternalId())
-                .name(input.name())
-                .type(input.type())
-                .description(input.description())
-                .organizer(input.organizer())
-                .location(input.location())
-                .startDate(input.startDate())
-                .endDate(input.endDate())
-                .build();
+    private Event(UUID id, UUID ownerId) {
+        validateId(id);
+        validateOwnerId(ownerId);
 
-        event.validateEndDate();
+        this.id = id;
+        this.ownerId = ownerId;
+    }
+
+    public static Event create(CreateEventProps props) {
+        var event = new Event(props.id(), props.ownerId());
+
+        event.setName(props.name());
+        event.setType(props.type());
+        event.setDescription(props.description());
+        event.setOrganizer(props.organizer());
+        event.setLocation(props.location());
+        event.setStartDate(props.startDate());
+        event.setEndDate(props.endDate());
+
         return event;
     }
 
-    public void update(UpdateEventInput input) {
-        applyPartialUpdates(input);
-        validateEndDate();
+    public static Event reconstruct(ReconstructEventProps props) {
+        return Event.builder()
+                .id(props.id())
+                .ownerId(props.ownerId())
+                .name(props.name())
+                .type(props.type())
+                .description(props.description())
+                .organizer(props.organizer())
+                .location(props.location())
+                .startDate(props.startDate())
+                .endDate(props.endDate())
+                .build();
     }
 
-    private void applyPartialUpdates(UpdateEventInput input) {
-        if (input.name() != null) this.name = input.name();
-        if (input.type() != null) this.type = input.type();
-        if (input.description() != null) this.description = input.description();
-        if (input.organizer() != null) this.organizer = input.organizer();
-        if (input.location() != null) this.location = input.location();
-        if (input.startDate() != null) this.startDate = input.startDate();
-        if (input.endDate() != null) this.endDate = input.endDate();
+    public void setName(String name) {
+        if (name == null || name.isBlank()) throw new IllegalArgumentException("Event name cannot be blank");
+        this.name = name;
     }
 
-    private void validateEndDate() {
-        if (endDate != null && startDate.isAfter(endDate)) {
+    public void setType(EventType type) {
+        if (type == null) throw new IllegalArgumentException("Event type cannot be null");
+        this.type = type;
+    }
+
+    public void setOrganizer(String organizer) {
+        if (organizer == null || organizer.isBlank())
+            throw new IllegalArgumentException("Event organizer cannot be blank");
+        this.organizer = organizer;
+    }
+
+    public void setLocation(String location) {
+        if (location == null || location.isBlank())
+            throw new IllegalArgumentException("Event location cannot be blank");
+        this.location = location;
+    }
+
+    public void setStartDate(OffsetDateTime startDate) {
+        if (startDate == null) throw new IllegalArgumentException("Start date cannot be null");
+        validateEndDate(startDate, endDate);
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(OffsetDateTime endDate) {
+        validateEndDate(startDate, endDate);
+        this.endDate = endDate;
+    }
+
+    private static void validateId(UUID id) {
+        if (id == null) throw new IllegalArgumentException("Event id cannot be null");
+    }
+
+    private static void validateOwnerId(UUID ownerId) {
+        if (ownerId == null) throw new IllegalArgumentException("Owner external id cannot be null");
+    }
+
+    private static void validateEndDate(OffsetDateTime startDate, OffsetDateTime endDate) {
+        /*
+         * Was defined `startDate != null` just for NullPointerException safety,
+         *  as the creation rule specifies that `startDate` must not be null
+         * */
+        if (endDate != null && startDate != null && startDate.isAfter(endDate)) {
             throw GlobalAppException.invalidPeriod(startDate.toString(), endDate.toString());
         }
     }
