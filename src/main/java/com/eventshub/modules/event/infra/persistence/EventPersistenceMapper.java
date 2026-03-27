@@ -21,27 +21,27 @@ public class EventPersistenceMapper {
                 .build();
     }
 
-    public Event toDomain(EventJpaEntity jpaEntity) {
+    public Event toDomain(EventJpaEntity entity) {
         return Event.builder()
-                .externalId(jpaEntity.getExternalId())
-                .ownerExternalId(jpaEntity.getOwner().getExternalId())
-                .name(jpaEntity.getName())
-                .type(jpaEntity.getType())
-                .description(jpaEntity.getDescription())
-                .organizer(jpaEntity.getOrganizer())
-                .location(jpaEntity.getLocation())
-                .startDate(jpaEntity.getStartDate())
-                .endDate(jpaEntity.getEndDate())
+                .externalId(entity.getExternalId())
+                .ownerExternalId(entity.getOwner().getExternalId())
+                .name(entity.getName())
+                .type(entity.getType())
+                .description(entity.getDescription())
+                .organizer(entity.getOrganizer())
+                .location(entity.getLocation())
+                .startDate(entity.getStartDate())
+                .endDate(entity.getEndDate())
                 .build();
     }
 
-    public void updateJpaEntityFromDomain(EventJpaEntity jpaEntity, Event event) {
-        jpaEntity.setName(event.getName());
-        jpaEntity.setType(event.getType());
-        jpaEntity.setDescription(event.getDescription());
-        jpaEntity.setOrganizer(event.getOrganizer());
-        jpaEntity.setLocation(event.getLocation());
-        jpaEntity.setStartDate(event.getStartDate());
-        jpaEntity.setEndDate(event.getEndDate());
+    public void updateEntity(EventJpaEntity entity, Event event) {
+        entity.setName(event.getName());
+        entity.setType(event.getType());
+        entity.setDescription(event.getDescription());
+        entity.setOrganizer(event.getOrganizer());
+        entity.setLocation(event.getLocation());
+        entity.setStartDate(event.getStartDate());
+        entity.setEndDate(event.getEndDate());
     }
 }

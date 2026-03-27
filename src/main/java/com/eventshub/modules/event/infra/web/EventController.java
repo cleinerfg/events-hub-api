@@ -29,21 +29,21 @@ public class EventController {
     private final UpdateEventUseCase updateUseCase;
     private final DeleteEventUseCase deleteUseCase;
 
-    private final EventDtoMapper dtoMapper;
+    private final EventWebMapper mapper;
     private final SecurityContextService securityContextService;
 
     @PostMapping
     public ResponseEntity<EventResponse> create(
             @RequestBody @Valid CreateEventRequest request
     ) {
-        UUID ownerExternalId = securityContextService
+        UUID ownerId = securityContextService
                 .getAuthenticatedPayload()
                 .externalId();
 
         Event event = createUseCase.execute(
-                dtoMapper.toCreateInput(request, ownerExternalId)
+                mapper.toCreateInput(request, ownerId)
         );
-        EventResponse response = dtoMapper.toResponse(event);
+        EventResponse response = mapper.toResponse(event);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -59,14 +59,14 @@ public class EventController {
             @PathVariable UUID externalId
     ) {
         Event event = findByExternalIdUseCase.execute(externalId);
-        return ResponseEntity.ok(dtoMapper.toResponse(event));
+        return ResponseEntity.ok(mapper.toResponse(event));
     }
 
     @GetMapping
     public List<EventResponse> findAll() {
         return findAllUseCase.execute()
                 .stream()
-                .map(dtoMapper::toResponse)
+                .map(mapper::toResponse)
                 .toList();
     }
 
@@ -74,9 +74,9 @@ public class EventController {
     public List<EventResponse> search(
             @ModelAttribute @Valid SearchEventRequest request
     ) {
-        return searchUseCase.execute(dtoMapper.toSearchInput(request))
+        return searchUseCase.execute(mapper.toSearchInput(request))
                 .stream()
-                .map(dtoMapper::toResponse)
+                .map(mapper::toResponse)
                 .toList();
     }
 
@@ -85,11 +85,11 @@ public class EventController {
             @PathVariable UUID externalId,
             @RequestBody @Valid UpdateEventRequest request
     ) {
-        Event updatedEvent = updateUseCase.execute(
+        Event event = updateUseCase.execute(
                 externalId,
-                dtoMapper.toUpdateInput(request)
+                mapper.toUpdateInput(request)
         );
-        return ResponseEntity.ok(dtoMapper.toResponse(updatedEvent));
+        return ResponseEntity.ok(mapper.toResponse(event));
     }
 
     @DeleteMapping("/{externalId}")

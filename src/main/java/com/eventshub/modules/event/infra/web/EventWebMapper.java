@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 @Component
-public class EventDtoMapper {
+public class EventWebMapper {
 
     public EventResponse toResponse(Event event) {
         return EventResponse.builder()
@@ -30,9 +30,9 @@ public class EventDtoMapper {
                 .build();
     }
 
-    public CreateEventInput toCreateInput(CreateEventRequest request, UUID ownerExternalId) {
+    public CreateEventInput toCreateInput(CreateEventRequest request, UUID ownerId) {
         return CreateEventInput.builder()
-                .ownerExternalId(ownerExternalId)
+                .ownerExternalId(ownerId)
                 .name(StringSanitizer.capitalize(request.name()))
                 .type(request.type())
                 .description(StringSanitizer.trimAndClean(request.description()))

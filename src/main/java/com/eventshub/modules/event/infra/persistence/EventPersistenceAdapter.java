@@ -19,7 +19,7 @@ import java.util.UUID;
 public class EventPersistenceAdapter implements EventPort {
 
     private final EventJpaRepository repository;
-    private final EventPersistenceMapper persistenceMapper;
+    private final EventPersistenceMapper mapper;
 
     private final UserJpaReferenceProvider userJpaReferenceProvider;
 
@@ -28,9 +28,11 @@ public class EventPersistenceAdapter implements EventPort {
         UserJpaEntity owner = userJpaReferenceProvider
                 .provide(event.getOwnerExternalId());
 
-        var eventEntity = persistenceMapper.toEntity(event, owner);
+        var entity = mapper.toEntity(event, owner);
 
-        return persistenceMapper.toDomain(repository.save(eventEntity));
+        return mapper.toDomain(
+                repository.save(entity)
+        );
     }
 
     @Override
@@ -41,14 +43,14 @@ public class EventPersistenceAdapter implements EventPort {
     @Override
     public Optional<Event> findByExternalId(UUID externalId) {
         return repository.findByExternalId(externalId)
-                .map(persistenceMapper::toDomain);
+                .map(mapper::toDomain);
     }
 
     @Override
     public List<Event> findAll() {
         return repository.findAll()
                 .stream()
-                .map(persistenceMapper::toDomain)
+                .map(mapper::toDomain)
                 .toList();
     }
 
@@ -59,23 +61,23 @@ public class EventPersistenceAdapter implements EventPort {
 
         return repository.findAll(spec)
                 .stream()
-                .map(persistenceMapper::toDomain)
+                .map(mapper::toDomain)
                 .toList();
     }
 
     @Override
     @Transactional
     public Event update(Event event) {
-        EventJpaEntity jpaEntity = repository.findByExternalId(event.getExternalId()).orElseThrow(
+        EventJpaEntity entity = repository.findByExternalId(event.getExternalId()).orElseThrow(
                 () -> GlobalAppException.systemIntegrity(
                         "Event with externalId '%s' lost during update".formatted(event.getExternalId())
                 ));
 
-        persistenceMapper.updateJpaEntityFromDomain(jpaEntity, event);
+        mapper.updateEntity(entity, event);
 
-        EventJpaEntity updatedEntity = repository.save(jpaEntity);
-
-        return persistenceMapper.toDomain(updatedEntity);
+        return mapper.toDomain(
+                repository.save(entity)
+        );
     }
 
     @Override
