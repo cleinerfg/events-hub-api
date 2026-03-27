@@ -18,7 +18,7 @@ import java.util.UUID;
 @Repository
 public class EventPersistenceAdapter implements EventPort {
 
-    private final EventRepository repository;
+    private final EventJpaRepository repository;
     private final EventPersistenceMapper persistenceMapper;
 
     private final UserJpaReferenceProvider userJpaReferenceProvider;

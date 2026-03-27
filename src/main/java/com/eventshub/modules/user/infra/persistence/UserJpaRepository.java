@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface UserRepository extends JpaRepository<UserJpaEntity, Long> {
+public interface UserJpaRepository extends JpaRepository<UserJpaEntity, Long> {
 
     @Query("SELECT u.id FROM UserJpaEntity u WHERE u.externalId = :externalId")
     Optional<Long> findIdByExternalId(UUID externalId);

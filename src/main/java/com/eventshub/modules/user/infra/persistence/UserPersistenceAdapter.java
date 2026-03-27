@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserPersistenceAdapter implements UserPort {
 
-    private final UserRepository repository;
+    private final UserJpaRepository repository;
     private final UserPersistenceMapper persistenceMapper;
 
     @Override
