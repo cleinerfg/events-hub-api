@@ -12,16 +12,9 @@ import java.util.Set;
 public class PasswordValidator {
 
     public static final int MIN_PASSWORD_LENGTH = 8;
-    public static final String TOO_SHORT = "TOO_SHORT";
-    public static final String MUST_HAVE_UPPERCASE = "MUST_HAVE_UPPERCASE";
-    public static final String MUST_HAVE_LOWERCASE = "MUST_HAVE_LOWERCASE";
-    public static final String MUST_HAVE_NUMBER = "MUST_HAVE_NUMBER";
-    public static final String MUST_HAVE_SPECIAL_CHARACTER = "MUST_HAVE_SPECIAL_CHARACTER";
-    public static final String NO_SEQUENTIAL_CHARACTER = "NO_SEQUENTIAL_CHARACTER";
-    public static final String NO_REPEATING_CHARACTER = "NO_REPEATING_CHARACTER";
 
     private final String password;
-    private final Set<String> fails = new LinkedHashSet<>();
+    private final Set<PasswordError> fails = new LinkedHashSet<>();
 
     public static PasswordValidator create(String password) {
         CheckNotNull.forClass(PasswordValidator.class.getName())
@@ -31,11 +24,11 @@ public class PasswordValidator {
     }
 
     public void validate() {
-        if (password.length() < MIN_PASSWORD_LENGTH) fails.add(TOO_SHORT);
-        if (!password.matches(".*[A-Z].*")) fails.add(MUST_HAVE_UPPERCASE);
-        if (!password.matches(".*[a-z].*")) fails.add(MUST_HAVE_LOWERCASE);
-        if (!password.matches(".*\\d.*")) fails.add(MUST_HAVE_NUMBER);
-        if (!password.matches(".*[^a-zA-Z0-9].*")) fails.add(MUST_HAVE_SPECIAL_CHARACTER);
+        if (password.length() < MIN_PASSWORD_LENGTH) fails.add(PasswordError.TOO_SHORT);
+        if (!password.matches(".*[A-Z].*")) fails.add(PasswordError.MUST_HAVE_UPPERCASE);
+        if (!password.matches(".*[a-z].*")) fails.add(PasswordError.MUST_HAVE_LOWERCASE);
+        if (!password.matches(".*\\d.*")) fails.add(PasswordError.MUST_HAVE_NUMBER);
+        if (!password.matches(".*[^a-zA-Z0-9].*")) fails.add(PasswordError.MUST_HAVE_SPECIAL_CHARACTER);
 
         checkSequenceAndRepetition();
 
@@ -69,8 +62,8 @@ public class PasswordValidator {
             if (foundSequence && foundRepetition) break; // Optimization: early exit
         }
 
-        if (foundRepetition) fails.add(NO_REPEATING_CHARACTER);
-        if (foundSequence) fails.add(NO_SEQUENTIAL_CHARACTER);
+        if (foundRepetition) fails.add(PasswordError.NO_REPEATING_CHARACTER);
+        if (foundSequence) fails.add(PasswordError.NO_SEQUENTIAL_CHARACTER);
     }
 
     private boolean checkRepetition(char c1, char c2, char c3) {
