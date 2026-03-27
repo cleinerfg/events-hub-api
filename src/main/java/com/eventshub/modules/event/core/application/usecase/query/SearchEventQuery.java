@@ -1,4 +1,4 @@
-package com.eventshub.modules.event.core.domain.model.input;
+package com.eventshub.modules.event.core.application.usecase.query;
 
 import com.eventshub.modules.event.core.domain.model.EventType;
 import lombok.Builder;
@@ -8,7 +8,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
 @Builder
-public record SearchEventInput(
+public record SearchEventQuery(
         String name,
         EventType type,
         String description,

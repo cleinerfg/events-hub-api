@@ -1,4 +1,4 @@
-package com.eventshub.modules.event.core.domain.model.input;
+package com.eventshub.modules.event.core.application.usecase.command;
 
 import com.eventshub.modules.event.core.domain.model.EventType;
 import com.eventshub.shared.core.exception.support.CheckNotNull;
@@ -8,8 +8,8 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Builder
-public record CreateEventInput(
-        UUID ownerExternalId,
+public record CreateEventCommand(
+        UUID ownerId,
         String name,
         EventType type,
         String description,
@@ -19,9 +19,9 @@ public record CreateEventInput(
         OffsetDateTime endDate
 ) {
 
-    public CreateEventInput {
-        CheckNotNull.forClass(CreateEventInput.class.getName())
-                .field("ownerExternalId", ownerExternalId)
+    public CreateEventCommand {
+        CheckNotNull.forClass(CreateEventCommand.class.getName())
+                .field("ownerId", ownerId)
                 .field("name", name)
                 .field("type", type)
                 .field("organizer", organizer)
