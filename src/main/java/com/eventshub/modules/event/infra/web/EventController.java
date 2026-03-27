@@ -1,7 +1,7 @@
 package com.eventshub.modules.event.infra.web;
 
-import com.eventshub.modules.event.core.model.Event;
-import com.eventshub.modules.event.core.usecase.*;
+import com.eventshub.modules.event.core.application.usecase.*;
+import com.eventshub.modules.event.core.domain.model.Event;
 import com.eventshub.modules.event.infra.web.dto.CreateEventRequest;
 import com.eventshub.modules.event.infra.web.dto.EventResponse;
 import com.eventshub.modules.event.infra.web.dto.SearchEventRequest;

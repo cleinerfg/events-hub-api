@@ -1,6 +1,6 @@
 package com.eventshub.modules.event.infra.persistence;
 
-import com.eventshub.modules.event.core.model.EventType;
+import com.eventshub.modules.event.core.domain.model.EventType;
 import com.eventshub.modules.user.infra.persistence.UserJpaEntity;
 import jakarta.persistence.*;
 import lombok.*;

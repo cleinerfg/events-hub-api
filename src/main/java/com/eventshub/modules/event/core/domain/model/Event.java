@@ -1,7 +1,7 @@
-package com.eventshub.modules.event.core.model;
+package com.eventshub.modules.event.core.domain.model;
 
-import com.eventshub.modules.event.core.model.input.CreateEventInput;
-import com.eventshub.modules.event.core.model.input.UpdateEventInput;
+import com.eventshub.modules.event.core.domain.model.input.CreateEventInput;
+import com.eventshub.modules.event.core.domain.model.input.UpdateEventInput;
 import com.eventshub.shared.core.exception.GlobalAppException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

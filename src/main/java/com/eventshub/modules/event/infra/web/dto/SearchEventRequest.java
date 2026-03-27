@@ -1,6 +1,6 @@
 package com.eventshub.modules.event.infra.web.dto;
 
-import com.eventshub.modules.event.core.model.EventType;
+import com.eventshub.modules.event.core.domain.model.EventType;
 import com.eventshub.shared.infra.web.exception.ValidationMessage;
 import jakarta.validation.constraints.Size;
 

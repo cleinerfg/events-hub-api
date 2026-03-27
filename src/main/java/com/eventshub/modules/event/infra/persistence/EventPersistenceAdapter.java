@@ -1,8 +1,8 @@
 package com.eventshub.modules.event.infra.persistence;
 
-import com.eventshub.modules.event.core.model.Event;
-import com.eventshub.modules.event.core.model.input.SearchEventInput;
-import com.eventshub.modules.event.core.port.EventPort;
+import com.eventshub.modules.event.core.application.port.EventPort;
+import com.eventshub.modules.event.core.domain.model.Event;
+import com.eventshub.modules.event.core.domain.model.input.SearchEventInput;
 import com.eventshub.modules.user.infra.persistence.UserJpaEntity;
 import com.eventshub.modules.user.infra.persistence.UserJpaReferenceProvider;
 import com.eventshub.shared.core.exception.GlobalAppException;

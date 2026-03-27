@@ -1,8 +1,8 @@
-package com.eventshub.modules.event.core.usecase;
+package com.eventshub.modules.event.core.application.usecase;
 
-import com.eventshub.modules.event.core.model.Event;
-import com.eventshub.modules.event.core.model.input.CreateEventInput;
-import com.eventshub.modules.event.core.port.EventPort;
+import com.eventshub.modules.event.core.application.port.EventPort;
+import com.eventshub.modules.event.core.domain.model.Event;
+import com.eventshub.modules.event.core.domain.model.input.CreateEventInput;
 import com.eventshub.shared.core.port.UuidGeneratorPort;
 import lombok.RequiredArgsConstructor;
 

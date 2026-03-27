@@ -1,6 +1,6 @@
 package com.eventshub.modules.event.infra.persistence;
 
-import com.eventshub.modules.event.core.model.input.SearchEventInput;
+import com.eventshub.modules.event.core.domain.model.input.SearchEventInput;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Predicate;

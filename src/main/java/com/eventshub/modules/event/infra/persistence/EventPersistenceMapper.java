@@ -1,6 +1,6 @@
 package com.eventshub.modules.event.infra.persistence;
 
-import com.eventshub.modules.event.core.model.Event;
+import com.eventshub.modules.event.core.domain.model.Event;
 import com.eventshub.modules.user.infra.persistence.UserJpaEntity;
 import org.springframework.stereotype.Component;
 

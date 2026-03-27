@@ -1,7 +1,7 @@
-package com.eventshub.modules.event.core.port;
+package com.eventshub.modules.event.core.application.port;
 
-import com.eventshub.modules.event.core.model.Event;
-import com.eventshub.modules.event.core.model.input.SearchEventInput;
+import com.eventshub.modules.event.core.domain.model.Event;
+import com.eventshub.modules.event.core.domain.model.input.SearchEventInput;
 import com.eventshub.shared.core.exception.GlobalAppException;
 
 import java.util.List;

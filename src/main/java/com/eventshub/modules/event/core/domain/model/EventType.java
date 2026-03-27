@@ -1,4 +1,4 @@
-package com.eventshub.modules.event.core.model;
+package com.eventshub.modules.event.core.domain.model;
 
 public enum EventType {
     NETWORKING,

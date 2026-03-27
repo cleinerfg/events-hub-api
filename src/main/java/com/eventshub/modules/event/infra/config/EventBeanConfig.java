@@ -1,7 +1,7 @@
 package com.eventshub.modules.event.infra.config;
 
-import com.eventshub.modules.event.core.port.EventPort;
-import com.eventshub.modules.event.core.usecase.*;
+import com.eventshub.modules.event.core.application.port.EventPort;
+import com.eventshub.modules.event.core.application.usecase.*;
 import com.eventshub.shared.core.port.UuidGeneratorPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

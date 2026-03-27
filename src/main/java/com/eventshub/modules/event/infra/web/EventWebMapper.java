@@ -1,9 +1,9 @@
 package com.eventshub.modules.event.infra.web;
 
-import com.eventshub.modules.event.core.model.Event;
-import com.eventshub.modules.event.core.model.input.CreateEventInput;
-import com.eventshub.modules.event.core.model.input.SearchEventInput;
-import com.eventshub.modules.event.core.model.input.UpdateEventInput;
+import com.eventshub.modules.event.core.domain.model.Event;
+import com.eventshub.modules.event.core.domain.model.input.CreateEventInput;
+import com.eventshub.modules.event.core.domain.model.input.SearchEventInput;
+import com.eventshub.modules.event.core.domain.model.input.UpdateEventInput;
 import com.eventshub.modules.event.infra.web.dto.CreateEventRequest;
 import com.eventshub.modules.event.infra.web.dto.EventResponse;
 import com.eventshub.modules.event.infra.web.dto.SearchEventRequest;

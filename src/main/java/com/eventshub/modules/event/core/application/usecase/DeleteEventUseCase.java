@@ -1,6 +1,6 @@
-package com.eventshub.modules.event.core.usecase;
+package com.eventshub.modules.event.core.application.usecase;
 
-import com.eventshub.modules.event.core.port.EventPort;
+import com.eventshub.modules.event.core.application.port.EventPort;
 import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
