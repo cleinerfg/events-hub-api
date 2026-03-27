@@ -15,12 +15,12 @@ public class UserPersistenceMapper {
                 .build();
     }
 
-    public User toDomain(UserJpaEntity jpaEntity) {
-        return User.builder()
-                .externalId(jpaEntity.getExternalId())
-                .name(jpaEntity.getName())
-                .email(jpaEntity.getEmail())
-                .passwordHash(jpaEntity.getPasswordHash())
-                .build();
+    public User toDomain(UserJpaEntity entity) {
+        return User.reconstruct(
+                entity.getExternalId(),
+                entity.getName(),
+                entity.getEmail(),
+                entity.getPasswordHash()
+        );
     }
 }

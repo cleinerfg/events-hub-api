@@ -25,7 +25,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserResponse> create(
             @RequestBody @Valid CreateUserRequest request) {
-        User user = createUseCase.execute(mapper.toCreateInput(request));
+        User user = createUseCase.execute(mapper.toCreateCommand(request));
         UserResponse response = mapper.toResponse(user);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

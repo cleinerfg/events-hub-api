@@ -1,6 +1,6 @@
 package com.eventshub.modules.user.infra.web.mapper;
 
-import com.eventshub.modules.user.core.domain.model.input.LoginInput;
+import com.eventshub.modules.user.core.application.usecase.command.LoginCommand;
 import com.eventshub.modules.user.infra.web.dto.LoginRequest;
 import com.eventshub.modules.user.infra.web.dto.LoginResponse;
 import com.eventshub.shared.core.support.StringSanitizer;
@@ -13,8 +13,8 @@ public class LoginWebMapper {
         return new LoginResponse(token);
     }
 
-    public LoginInput toInput(LoginRequest request) {
-        return LoginInput.builder()
+    public LoginCommand toCommand(LoginRequest request) {
+        return LoginCommand.builder()
                 .email(StringSanitizer.trimAndClean(request.email()).toLowerCase())
                 .password(request.password())
                 .build();

@@ -24,7 +24,7 @@ public class AuthController {
     public ResponseEntity<LoginResponse> login(
             @RequestBody @Valid LoginRequest request
     ) {
-        String token = loginUseCase.execute(mapper.toInput(request));
+        String token = loginUseCase.execute(mapper.toCommand(request));
         return ResponseEntity.ok(mapper.toResponse(token));
     }
 }
