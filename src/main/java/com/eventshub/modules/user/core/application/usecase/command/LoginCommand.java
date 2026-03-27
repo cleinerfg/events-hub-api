@@ -1,16 +1,16 @@
-package com.eventshub.modules.user.core.domain.model.input;
+package com.eventshub.modules.user.core.application.usecase.command;
 
 import com.eventshub.shared.core.exception.support.CheckNotNull;
 import lombok.Builder;
 
 @Builder
-public record LoginInput(
+public record LoginCommand(
         String email,
         String password
 ) {
 
-    public LoginInput {
-        CheckNotNull.forClass(LoginInput.class.getName())
+    public LoginCommand {
+        CheckNotNull.forClass(LoginCommand.class.getName())
                 .field("email", email)
                 .field("password", password);
     }
