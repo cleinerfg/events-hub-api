@@ -1,7 +1,7 @@
 package com.eventshub.modules.user.infra.cache;
 
 
-import com.eventshub.modules.user.infra.persistence.UserRepository;
+import com.eventshub.modules.user.infra.persistence.UserJpaRepository;
 import com.eventshub.shared.core.exception.GlobalAppException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
@@ -18,7 +18,7 @@ import java.util.UUID;
 @Component
 public class UserIdCacheResolver {
 
-    private final UserRepository repository;
+    private final UserJpaRepository repository;
 
     @Cacheable(value = UserCacheNames.USER_INTERNAL_ID, key = "#externalId")
     public Long byExternalId(UUID externalId) {

@@ -1,6 +1,6 @@
 package com.eventshub.modules.user.infra.auth;
 
-import com.eventshub.modules.user.infra.persistence.UserRepository;
+import com.eventshub.modules.user.infra.persistence.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class JpaUserDetailsService implements UserDetailsService {
 
-    private final UserRepository repository;
+    private final UserJpaRepository repository;
 
     @NullMarked
     @Override

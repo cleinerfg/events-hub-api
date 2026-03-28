@@ -1,6 +1,7 @@
 package com.eventshub.modules.event.infra.persistence;
 
-import com.eventshub.modules.event.core.model.Event;
+import com.eventshub.modules.event.core.domain.model.Event;
+import com.eventshub.modules.event.core.domain.model.ReconstructEventProps;
 import com.eventshub.modules.user.infra.persistence.UserJpaEntity;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +10,7 @@ public class EventPersistenceMapper {
 
     public EventJpaEntity toEntity(Event event, UserJpaEntity owner) {
         return EventJpaEntity.builder()
-                .externalId(event.getExternalId())
+                .externalId(event.getId())
                 .owner(owner)
                 .name(event.getName())
                 .type(event.getType())
@@ -21,27 +22,29 @@ public class EventPersistenceMapper {
                 .build();
     }
 
-    public Event toDomain(EventJpaEntity jpaEntity) {
-        return Event.builder()
-                .externalId(jpaEntity.getExternalId())
-                .ownerExternalId(jpaEntity.getOwner().getExternalId())
-                .name(jpaEntity.getName())
-                .type(jpaEntity.getType())
-                .description(jpaEntity.getDescription())
-                .organizer(jpaEntity.getOrganizer())
-                .location(jpaEntity.getLocation())
-                .startDate(jpaEntity.getStartDate())
-                .endDate(jpaEntity.getEndDate())
+    public Event toDomain(EventJpaEntity entity) {
+        var props = ReconstructEventProps.builder()
+                .id(entity.getExternalId())
+                .ownerId(entity.getOwner().getExternalId())
+                .name(entity.getName())
+                .type(entity.getType())
+                .description(entity.getDescription())
+                .organizer(entity.getOrganizer())
+                .location(entity.getLocation())
+                .startDate(entity.getStartDate())
+                .endDate(entity.getEndDate())
                 .build();
+
+        return Event.reconstruct(props);
     }
 
-    public void updateJpaEntityFromDomain(EventJpaEntity jpaEntity, Event event) {
-        jpaEntity.setName(event.getName());
-        jpaEntity.setType(event.getType());
-        jpaEntity.setDescription(event.getDescription());
-        jpaEntity.setOrganizer(event.getOrganizer());
-        jpaEntity.setLocation(event.getLocation());
-        jpaEntity.setStartDate(event.getStartDate());
-        jpaEntity.setEndDate(event.getEndDate());
+    public void updateEntity(EventJpaEntity entity, Event event) {
+        entity.setName(event.getName());
+        entity.setType(event.getType());
+        entity.setDescription(event.getDescription());
+        entity.setOrganizer(event.getOrganizer());
+        entity.setLocation(event.getLocation());
+        entity.setStartDate(event.getStartDate());
+        entity.setEndDate(event.getEndDate());
     }
 }

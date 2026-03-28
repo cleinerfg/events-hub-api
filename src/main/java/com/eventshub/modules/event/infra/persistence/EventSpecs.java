@@ -1,6 +1,6 @@
 package com.eventshub.modules.event.infra.persistence;
 
-import com.eventshub.modules.event.core.model.input.SearchEventInput;
+import com.eventshub.modules.event.core.application.usecase.query.SearchEventQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Predicate;
@@ -15,32 +15,32 @@ public final class EventSpecs {
     private EventSpecs() {
     }
 
-    public static Specification<EventJpaEntity> from(SearchEventInput input) {
-        return (root, query, cb) -> {
+    public static Specification<EventJpaEntity> from(SearchEventQuery query) {
+        return (root, criteriaQuery, cb) -> {
 
             // Local list to each execution (Thread-safe)
             List<Predicate> predicates = new ArrayList<>();
 
-            addLike(predicates, cb, root.get("name"), input.name());
-            addEqual(predicates, cb, root.get("type"), input.type());
-            addLike(predicates, cb, root.get("description"), input.description());
-            addEqual(predicates, cb, root.get("organizer"), input.organizer());
-            addLike(predicates, cb, root.get("location"), input.location());
+            addLike(predicates, cb, root.get("name"), query.name());
+            addEqual(predicates, cb, root.get("type"), query.type());
+            addLike(predicates, cb, root.get("description"), query.description());
+            addEqual(predicates, cb, root.get("organizer"), query.organizer());
+            addLike(predicates, cb, root.get("location"), query.location());
 
             Expression<OffsetDateTime> startDate = root.get("startDate");
             addRange(predicates,
                     cb,
                     startDate,
-                    input.getStartDateFromAsDateTime(),
-                    input.getStartDateUntilAsDateTime()
+                    query.getStartDateFromAsDateTime(),
+                    query.getStartDateUntilAsDateTime()
             );
 
             Expression<OffsetDateTime> endDate = root.get("endDate");
             addRange(predicates,
                     cb,
                     endDate,
-                    input.getEndDateFromAsDateTime(),
-                    input.getEndDateUntilAsDateTime()
+                    query.getEndDateFromAsDateTime(),
+                    query.getEndDateUntilAsDateTime()
             );
 
             return cb.and(predicates.toArray(new Predicate[0]));

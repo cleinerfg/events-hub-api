@@ -1,10 +1,10 @@
 package com.eventshub.modules.user.infra.config;
 
-import com.eventshub.modules.user.core.port.AuthPort;
-import com.eventshub.modules.user.core.port.PasswordEncoderPort;
-import com.eventshub.modules.user.core.port.UserPort;
-import com.eventshub.modules.user.core.usecase.CreateUserUseCase;
-import com.eventshub.modules.user.core.usecase.LoginUseCase;
+import com.eventshub.modules.user.core.application.port.AuthPort;
+import com.eventshub.modules.user.core.application.port.PasswordEncoderPort;
+import com.eventshub.modules.user.core.application.port.UserPort;
+import com.eventshub.modules.user.core.application.usecase.CreateUserUseCase;
+import com.eventshub.modules.user.core.application.usecase.LoginUseCase;
 import com.eventshub.shared.core.port.UuidGeneratorPort;
 import com.eventshub.shared.core.security.TokenPort;
 import org.springframework.context.annotation.Bean;
