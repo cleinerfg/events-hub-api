@@ -8,8 +8,8 @@ import java.util.UUID;
 
 @Builder
 public record EventResponse(
-        UUID externalId,
-        UUID ownerExternalId,
+        UUID id,
+        UUID ownerId,
         String name,
         EventType type,
         String description,

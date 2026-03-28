@@ -1,6 +1,7 @@
 package com.eventshub.modules.event.infra.persistence;
 
 import com.eventshub.modules.event.core.domain.model.Event;
+import com.eventshub.modules.event.core.domain.model.ReconstructEventProps;
 import com.eventshub.modules.user.infra.persistence.UserJpaEntity;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +10,7 @@ public class EventPersistenceMapper {
 
     public EventJpaEntity toEntity(Event event, UserJpaEntity owner) {
         return EventJpaEntity.builder()
-                .externalId(event.getExternalId())
+                .externalId(event.getId())
                 .owner(owner)
                 .name(event.getName())
                 .type(event.getType())
@@ -22,9 +23,9 @@ public class EventPersistenceMapper {
     }
 
     public Event toDomain(EventJpaEntity entity) {
-        return Event.builder()
-                .externalId(entity.getExternalId())
-                .ownerExternalId(entity.getOwner().getExternalId())
+        var props = ReconstructEventProps.builder()
+                .id(entity.getExternalId())
+                .ownerId(entity.getOwner().getExternalId())
                 .name(entity.getName())
                 .type(entity.getType())
                 .description(entity.getDescription())
@@ -33,6 +34,8 @@ public class EventPersistenceMapper {
                 .startDate(entity.getStartDate())
                 .endDate(entity.getEndDate())
                 .build();
+
+        return Event.reconstruct(props);
     }
 
     public void updateEntity(EventJpaEntity entity, Event event) {

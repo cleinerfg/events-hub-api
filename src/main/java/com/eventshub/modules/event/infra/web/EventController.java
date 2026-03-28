@@ -23,7 +23,7 @@ import java.util.UUID;
 public class EventController {
 
     private final CreateEventUseCase createUseCase;
-    private final FindEventByExternalIdUseCase findByExternalIdUseCase;
+    private final FindEventByIdUseCase findByIdUseCase;
     private final FindAllEventsUseCase findAllUseCase;
     private final SearchEventsUseCase searchUseCase;
     private final UpdateEventUseCase updateUseCase;
@@ -41,14 +41,14 @@ public class EventController {
                 .externalId();
 
         Event event = createUseCase.execute(
-                mapper.toCreateInput(request, ownerId)
+                mapper.toCreateCommand(request, ownerId)
         );
         EventResponse response = mapper.toResponse(event);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{externalId}")
-                .buildAndExpand(event.getExternalId())
+                .buildAndExpand(event.getId())
                 .toUri();
 
         return ResponseEntity.created(location).body(response);
@@ -58,7 +58,7 @@ public class EventController {
     public ResponseEntity<EventResponse> findByExternalId(
             @PathVariable UUID externalId
     ) {
-        Event event = findByExternalIdUseCase.execute(externalId);
+        Event event = findByIdUseCase.execute(externalId);
         return ResponseEntity.ok(mapper.toResponse(event));
     }
 
@@ -74,7 +74,7 @@ public class EventController {
     public List<EventResponse> search(
             @ModelAttribute @Valid SearchEventRequest request
     ) {
-        return searchUseCase.execute(mapper.toSearchInput(request))
+        return searchUseCase.execute(mapper.toSearchQuery(request))
                 .stream()
                 .map(mapper::toResponse)
                 .toList();
@@ -87,7 +87,7 @@ public class EventController {
     ) {
         Event event = updateUseCase.execute(
                 externalId,
-                mapper.toUpdateInput(request)
+                mapper.toUpdateCommand(request)
         );
         return ResponseEntity.ok(mapper.toResponse(event));
     }

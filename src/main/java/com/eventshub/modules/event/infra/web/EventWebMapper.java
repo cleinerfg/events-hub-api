@@ -1,9 +1,9 @@
 package com.eventshub.modules.event.infra.web;
 
+import com.eventshub.modules.event.core.application.usecase.command.CreateEventCommand;
+import com.eventshub.modules.event.core.application.usecase.command.UpdateEventCommand;
+import com.eventshub.modules.event.core.application.usecase.query.SearchEventQuery;
 import com.eventshub.modules.event.core.domain.model.Event;
-import com.eventshub.modules.event.core.domain.model.input.CreateEventInput;
-import com.eventshub.modules.event.core.domain.model.input.SearchEventInput;
-import com.eventshub.modules.event.core.domain.model.input.UpdateEventInput;
 import com.eventshub.modules.event.infra.web.dto.CreateEventRequest;
 import com.eventshub.modules.event.infra.web.dto.EventResponse;
 import com.eventshub.modules.event.infra.web.dto.SearchEventRequest;
@@ -18,9 +18,9 @@ public class EventWebMapper {
 
     public EventResponse toResponse(Event event) {
         return EventResponse.builder()
+                .id(event.getId())
+                .ownerId(event.getOwnerId())
                 .name(event.getName())
-                .externalId(event.getExternalId())
-                .ownerExternalId(event.getOwnerExternalId())
                 .type(event.getType())
                 .description(event.getDescription())
                 .organizer(event.getOrganizer())
@@ -30,9 +30,9 @@ public class EventWebMapper {
                 .build();
     }
 
-    public CreateEventInput toCreateInput(CreateEventRequest request, UUID ownerId) {
-        return CreateEventInput.builder()
-                .ownerExternalId(ownerId)
+    public CreateEventCommand toCreateCommand(CreateEventRequest request, UUID ownerId) {
+        return CreateEventCommand.builder()
+                .ownerId(ownerId)
                 .name(StringSanitizer.capitalize(request.name()))
                 .type(request.type())
                 .description(StringSanitizer.trimAndClean(request.description()))
@@ -43,8 +43,8 @@ public class EventWebMapper {
                 .build();
     }
 
-    public SearchEventInput toSearchInput(SearchEventRequest request) {
-        return SearchEventInput.builder()
+    public SearchEventQuery toSearchQuery(SearchEventRequest request) {
+        return SearchEventQuery.builder()
                 .name(StringSanitizer.trimAndClean(request.name()))
                 .type(request.type())
                 .description(StringSanitizer.trimAndClean(request.description()))
@@ -57,8 +57,8 @@ public class EventWebMapper {
                 .build();
     }
 
-    public UpdateEventInput toUpdateInput(UpdateEventRequest request) {
-        return UpdateEventInput.builder()
+    public UpdateEventCommand toUpdateCommand(UpdateEventRequest request) {
+        return UpdateEventCommand.builder()
                 .name(StringSanitizer.capitalize(request.name()))
                 .type(request.type())
                 .description(StringSanitizer.trimAndClean(request.description()))

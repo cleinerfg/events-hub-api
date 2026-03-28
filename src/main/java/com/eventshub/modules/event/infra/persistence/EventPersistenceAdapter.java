@@ -1,8 +1,8 @@
 package com.eventshub.modules.event.infra.persistence;
 
 import com.eventshub.modules.event.core.application.port.EventPort;
+import com.eventshub.modules.event.core.application.usecase.query.SearchEventQuery;
 import com.eventshub.modules.event.core.domain.model.Event;
-import com.eventshub.modules.event.core.domain.model.input.SearchEventInput;
 import com.eventshub.modules.user.infra.persistence.UserJpaEntity;
 import com.eventshub.modules.user.infra.persistence.UserJpaReferenceProvider;
 import com.eventshub.shared.core.exception.GlobalAppException;
@@ -26,7 +26,7 @@ public class EventPersistenceAdapter implements EventPort {
     @Override
     public Event create(Event event) {
         UserJpaEntity owner = userJpaReferenceProvider
-                .provide(event.getOwnerExternalId());
+                .provide(event.getOwnerId());
 
         var entity = mapper.toEntity(event, owner);
 
@@ -36,13 +36,13 @@ public class EventPersistenceAdapter implements EventPort {
     }
 
     @Override
-    public boolean existsByExternalId(UUID externalId) {
-        return repository.existsByExternalId(externalId);
+    public boolean existsById(UUID id) {
+        return repository.existsByExternalId(id);
     }
 
     @Override
-    public Optional<Event> findByExternalId(UUID externalId) {
-        return repository.findByExternalId(externalId)
+    public Optional<Event> findById(UUID id) {
+        return repository.findByExternalId(id)
                 .map(mapper::toDomain);
     }
 
@@ -55,9 +55,9 @@ public class EventPersistenceAdapter implements EventPort {
     }
 
     @Override
-    public List<Event> search(SearchEventInput input) {
+    public List<Event> search(SearchEventQuery query) {
 
-        var spec = EventSpecs.from(input);
+        var spec = EventSpecs.from(query);
 
         return repository.findAll(spec)
                 .stream()
@@ -68,9 +68,9 @@ public class EventPersistenceAdapter implements EventPort {
     @Override
     @Transactional
     public Event update(Event event) {
-        EventJpaEntity entity = repository.findByExternalId(event.getExternalId()).orElseThrow(
+        EventJpaEntity entity = repository.findByExternalId(event.getId()).orElseThrow(
                 () -> GlobalAppException.systemIntegrity(
-                        "Event with externalId '%s' lost during update".formatted(event.getExternalId())
+                        "Event with id '%s' lost during update".formatted(event.getId())
                 ));
 
         mapper.updateEntity(entity, event);
@@ -82,7 +82,7 @@ public class EventPersistenceAdapter implements EventPort {
 
     @Override
     @Transactional
-    public void delete(UUID externalId) {
-        repository.deleteByExternalId(externalId);
+    public void delete(UUID id) {
+        repository.deleteByExternalId(id);
     }
 }
