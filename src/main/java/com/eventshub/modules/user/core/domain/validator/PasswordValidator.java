@@ -3,43 +3,45 @@ package com.eventshub.modules.user.core.domain.validator;
 import com.eventshub.modules.user.core.domain.exception.InvalidPasswordException;
 import com.eventshub.shared.core.exception.support.CheckNotNull;
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.regex.Pattern;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class PasswordValidator {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class PasswordValidator {
 
     public static final int MIN_PASSWORD_LENGTH = 8;
 
-    private final String password;
-    private final Set<PasswordError> fails = new LinkedHashSet<>();
+    private static final Pattern RGX_WHITESPACE = Pattern.compile(".*\\s.*");
+    private static final Pattern RGX_UPPERCASE = Pattern.compile(".*[A-Z].*");
+    private static final Pattern RGX_LOWERCASE = Pattern.compile(".*[a-z].*");
+    private static final Pattern RGX_NUMBER = Pattern.compile(".*\\d.*");
+    private static final Pattern RGX_SPECIAL_CHAR_IGNORE_WHITESPACE = Pattern.compile(".*[^a-zA-Z0-9\\s].*");
 
     public static void validate(String password) {
         CheckNotNull.forClass(PasswordValidator.class.getName())
                 .field("password", password);
 
-        var validator = new PasswordValidator(password);
-        validator.applyValidation();
-    }
+        Set<PasswordError> fails = new LinkedHashSet<>();
 
-    private void applyValidation() {
         if (password.length() < MIN_PASSWORD_LENGTH) fails.add(PasswordError.TOO_SHORT);
-        if (password.matches(".*\\s.*")) fails.add(PasswordError.NO_WHITESPACE);
-        if (!password.matches(".*[A-Z].*")) fails.add(PasswordError.MUST_HAVE_UPPERCASE);
-        if (!password.matches(".*[a-z].*")) fails.add(PasswordError.MUST_HAVE_LOWERCASE);
-        if (!password.matches(".*\\d.*")) fails.add(PasswordError.MUST_HAVE_NUMBER);
-        if (!password.matches(".*[^a-zA-Z0-9\\s].*")) fails.add(PasswordError.MUST_HAVE_SPECIAL_CHARACTER);
+        if (RGX_WHITESPACE.matcher(password).matches()) fails.add(PasswordError.NO_WHITESPACE);
+        if (!RGX_UPPERCASE.matcher(password).matches()) fails.add(PasswordError.MUST_HAVE_UPPERCASE);
+        if (!RGX_LOWERCASE.matcher(password).matches()) fails.add(PasswordError.MUST_HAVE_LOWERCASE);
+        if (!RGX_NUMBER.matcher(password).matches()) fails.add(PasswordError.MUST_HAVE_NUMBER);
+        if (!RGX_SPECIAL_CHAR_IGNORE_WHITESPACE.matcher(password).matches())
+            fails.add(PasswordError.MUST_HAVE_SPECIAL_CHARACTER);
 
-        checkSequenceAndRepetition();
+        checkSequenceAndRepetition(password, fails);
 
         if (!fails.isEmpty()) {
             throw new InvalidPasswordException(fails);
         }
     }
 
-    private void checkSequenceAndRepetition() {
+    private static void checkSequenceAndRepetition(String password, Set<PasswordError> fails) {
         if (password == null || password.length() < 3) return;
 
         boolean foundSequence = false;
@@ -52,7 +54,6 @@ public class PasswordValidator {
 
             // Assign only if no match
             // Prevents erroneous reset to false
-
             if (!foundRepetition) {
                 foundRepetition = checkRepetition(c1, c2, c3);
             }
@@ -68,13 +69,12 @@ public class PasswordValidator {
         if (foundSequence) fails.add(PasswordError.NO_SEQUENTIAL_CHARACTER);
     }
 
-    private boolean checkRepetition(char c1, char c2, char c3) {
+    private static boolean checkRepetition(char c1, char c2, char c3) {
         // Repetition (aaa, 111, DDD)
         return (c1 == c2 && c2 == c3);
     }
 
-    private boolean checkSequence(char c1, char c2, char c3) {
-
+    private static boolean checkSequence(char c1, char c2, char c3) {
         // Identifies character sequences by char arithmetic.
         // Since characters are represented as numeric Unicode values,
         // (c1 + 1 == c2) effectively checks if characters are adjacent
