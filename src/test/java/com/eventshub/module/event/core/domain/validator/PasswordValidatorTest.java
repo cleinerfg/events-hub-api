@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Set;
+
 import static org.assertj.core.api.Assertions.*;
 
 class PasswordValidatorTest {
@@ -90,6 +92,21 @@ class PasswordValidatorTest {
                     assertThat(exception.getFails()).contains(
                             PasswordError.NO_SEQUENTIAL_CHARACTER.toString()
                     );
+                });
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"#$%", "()*", ":;<"})
+    @DisplayName("Should not fail for symbol sequences even if they are sequential in ASCII")
+    void shouldNotFailWhenSymbolSequenceIsAsciiSequential(String password) {
+        assertThatThrownBy(() -> PasswordValidator.validate(password))
+                .isInstanceOf(InvalidPasswordException.class)
+                .satisfies(ex -> {
+                    var exception = (InvalidPasswordException) ex;
+                    Set<String> fails = exception.getFails();
+
+                    assertThat(fails).isNotEmpty();
+                    assertThat(fails).doesNotContain(PasswordError.NO_SEQUENTIAL_CHARACTER.toString());
                 });
     }
 
