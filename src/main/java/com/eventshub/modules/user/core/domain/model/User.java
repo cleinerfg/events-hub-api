@@ -50,18 +50,19 @@ public class User {
     }
 
     public void setName(String name) {
-        if (name == null || name.isBlank()) {
+        String sanitized = StringSanitizer.capitalize(name);
+        if (sanitized == null || sanitized.isBlank()) {
             throw new IllegalArgumentException(UserMessages.NAME_REQUIRED.getMessage());
         }
-        this.name = StringSanitizer.capitalize(name);
+
+        this.name = sanitized;
     }
 
     public void setEmail(String email) {
-        if (email == null || email.isBlank()) {
+        String sanitized = StringSanitizer.toLowerCase(email);
+        if (sanitized == null || sanitized.isBlank()) {
             throw new IllegalArgumentException(UserMessages.EMAIL_REQUIRED.getMessage());
         }
-
-        String sanitized = StringSanitizer.trimAndClean(email.toLowerCase());
 
         if (!isValidEmail(sanitized)) throw new InvalidEmailException(sanitized);
 
