@@ -16,19 +16,21 @@ public class PasswordValidator {
     private final String password;
     private final Set<PasswordError> fails = new LinkedHashSet<>();
 
-    public static PasswordValidator create(String password) {
+    public static void validate(String password) {
         CheckNotNull.forClass(PasswordValidator.class.getName())
                 .field("password", password);
 
-        return new PasswordValidator(password);
+        var validator = new PasswordValidator(password);
+        validator.applyValidation();
     }
 
-    public void validate() {
+    private void applyValidation() {
         if (password.length() < MIN_PASSWORD_LENGTH) fails.add(PasswordError.TOO_SHORT);
+        if (password.matches(".*\\s.*")) fails.add(PasswordError.NO_WHITESPACE);
         if (!password.matches(".*[A-Z].*")) fails.add(PasswordError.MUST_HAVE_UPPERCASE);
         if (!password.matches(".*[a-z].*")) fails.add(PasswordError.MUST_HAVE_LOWERCASE);
         if (!password.matches(".*\\d.*")) fails.add(PasswordError.MUST_HAVE_NUMBER);
-        if (!password.matches(".*[^a-zA-Z0-9].*")) fails.add(PasswordError.MUST_HAVE_SPECIAL_CHARACTER);
+        if (!password.matches(".*[^a-zA-Z0-9\\s].*")) fails.add(PasswordError.MUST_HAVE_SPECIAL_CHARACTER);
 
         checkSequenceAndRepetition();
 
