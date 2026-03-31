@@ -75,6 +75,15 @@ public final class PasswordValidator {
     }
 
     private static boolean checkSequence(char c1, char c2, char c3) {
+        // Convert chars to String to check against regex
+        String triple = "" + c1 + c2 + c3;
+
+        // Skip sequence validation if the triple contains special characters,
+        // as users are typically unaware of their ASCII/Unicode order.
+        if (RGX_SPECIAL_CHAR_IGNORE_WHITESPACE.matcher(triple).find()) {
+            return false;
+        }
+
         // Identifies character sequences by char arithmetic.
         // Since characters are represented as numeric Unicode values,
         // (c1 + 1 == c2) effectively checks if characters are adjacent
