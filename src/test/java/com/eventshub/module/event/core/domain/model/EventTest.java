@@ -95,6 +95,17 @@ class EventTest {
     }
 
     @Test
+    @DisplayName("Should capitalize name and trim spaces when setting name")
+    void setName_ShouldCapitalizeAndTrim() {
+        String input = "  jaVA   WOrkSHop  ";
+        String expected = "Java Workshop";
+
+        sut.setName(input);
+
+        assertThat(sut.getName()).isEqualTo(expected);
+    }
+
+    @Test
     @DisplayName("Should throw exception when setting type to null")
     void setType_ShouldThrowException_WhenNull() {
         assertThatThrownBy(() -> sut.setType(null))
@@ -110,6 +121,28 @@ class EventTest {
         assertThatThrownBy(() -> sut.setOrganizer(invalidOrg))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(EventMessages.ORGANIZER_REQUIRED.getMessage());
+    }
+
+    @Test
+    @DisplayName("Should trim and clean organizer name when setting it")
+    void setOrganizer_ShouldTrimAndClean() {
+        String input = "   Organizer    Name  Inc.   ";
+        String expected = "Organizer Name Inc.";
+
+        sut.setOrganizer(input);
+
+        assertThat(sut.getOrganizer()).isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("Should trim and clean location when setting it")
+    void setLocation_ShouldTrimAndClean() {
+        String input = "  Main   Street, 123 \n ";
+        String expected = "Main Street, 123";
+
+        sut.setLocation(input);
+
+        assertThat(sut.getLocation()).isEqualTo(expected);
     }
 
     @Test
