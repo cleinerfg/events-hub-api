@@ -1,6 +1,7 @@
 package com.eventshub.modules.event.core.domain.model;
 
 import com.eventshub.shared.core.exception.GlobalAppException;
+import com.eventshub.shared.core.support.StringSanitizer;
 import lombok.*;
 
 import java.time.OffsetDateTime;
@@ -61,9 +62,11 @@ public class Event {
     }
 
     public void setName(String name) {
-        if (name == null || name.isBlank())
+        String sanitized = StringSanitizer.capitalize(name);
+        if (sanitized == null || sanitized.isBlank())
             throw new IllegalArgumentException(EventMessages.NAME_REQUIRED.getMessage());
-        this.name = name;
+
+        this.name = sanitized;
     }
 
     public void setType(EventType type) {
@@ -73,15 +76,19 @@ public class Event {
     }
 
     public void setOrganizer(String organizer) {
-        if (organizer == null || organizer.isBlank())
+        String sanitized = StringSanitizer.trimAndClean(organizer);
+        if (sanitized == null || sanitized.isBlank())
             throw new IllegalArgumentException(EventMessages.ORGANIZER_REQUIRED.getMessage());
-        this.organizer = organizer;
+
+        this.organizer = sanitized;
     }
 
     public void setLocation(String location) {
-        if (location == null || location.isBlank())
+        String sanitized = StringSanitizer.trimAndClean(location);
+        if (sanitized == null || sanitized.isBlank())
             throw new IllegalArgumentException(EventMessages.LOCATION_REQUIRED.getMessage());
-        this.location = location;
+
+        this.location = sanitized;
     }
 
     public void setStartDate(OffsetDateTime startDate) {
