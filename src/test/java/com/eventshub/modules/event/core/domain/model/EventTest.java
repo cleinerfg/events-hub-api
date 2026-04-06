@@ -1,6 +1,5 @@
-package com.eventshub.module.event.core.domain.model;
+package com.eventshub.modules.event.core.domain.model;
 
-import com.eventshub.modules.event.core.domain.model.*;
 import com.eventshub.shared.core.exception.GlobalAppException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

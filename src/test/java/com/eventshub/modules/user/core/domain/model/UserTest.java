@@ -1,10 +1,6 @@
-package com.eventshub.module.user.core.domain.model;
+package com.eventshub.modules.user.core.domain.model;
 
 import com.eventshub.modules.user.core.domain.exception.InvalidEmailException;
-import com.eventshub.modules.user.core.domain.model.CreateUserProps;
-import com.eventshub.modules.user.core.domain.model.ReconstructUserProps;
-import com.eventshub.modules.user.core.domain.model.User;
-import com.eventshub.modules.user.core.domain.model.UserMessages;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

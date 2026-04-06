@@ -1,8 +1,7 @@
-package com.eventshub.module.user.core.application.usecase;
+package com.eventshub.modules.user.core.application.usecase;
 
 import com.eventshub.modules.user.core.application.port.PasswordEncoderPort;
 import com.eventshub.modules.user.core.application.port.UserPort;
-import com.eventshub.modules.user.core.application.usecase.CreateUserUseCase;
 import com.eventshub.modules.user.core.application.usecase.command.CreateUserCommand;
 import com.eventshub.modules.user.core.domain.exception.EmailAlreadyExistsException;
 import com.eventshub.modules.user.core.domain.exception.InvalidPasswordException;

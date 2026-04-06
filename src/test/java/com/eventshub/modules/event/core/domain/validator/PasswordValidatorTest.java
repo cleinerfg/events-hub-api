@@ -1,4 +1,4 @@
-package com.eventshub.module.event.core.domain.validator;
+package com.eventshub.modules.event.core.domain.validator;
 
 import com.eventshub.modules.user.core.domain.exception.InvalidPasswordException;
 import com.eventshub.modules.user.core.domain.validator.PasswordError;
