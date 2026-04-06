@@ -1,8 +1,6 @@
-package com.eventshub.modules.event.core.domain.validator;
+package com.eventshub.modules.user.core.domain.validator;
 
 import com.eventshub.modules.user.core.domain.exception.InvalidPasswordException;
-import com.eventshub.modules.user.core.domain.validator.PasswordError;
-import com.eventshub.modules.user.core.domain.validator.PasswordValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
