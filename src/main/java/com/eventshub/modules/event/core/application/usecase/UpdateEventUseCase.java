@@ -3,6 +3,7 @@ package com.eventshub.modules.event.core.application.usecase;
 import com.eventshub.modules.event.core.application.port.EventPort;
 import com.eventshub.modules.event.core.application.usecase.command.UpdateEventCommand;
 import com.eventshub.modules.event.core.domain.model.Event;
+import com.eventshub.shared.core.exception.GlobalAppException;
 import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
@@ -13,7 +14,8 @@ public class UpdateEventUseCase {
     private final EventPort port;
 
     public Event execute(UUID id, UpdateEventCommand command) {
-        Event event = port.getByIdOrThrow(id);
+        Event event = port.findById(id)
+                .orElseThrow(() -> GlobalAppException.resourceNotFound("Event", id));
 
         if (command.name() != null) event.setName(command.name());
         if (command.type() != null) event.setType(command.type());
