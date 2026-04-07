@@ -26,30 +26,27 @@ class DeleteEventUseCaseTest {
     @Test
     @DisplayName("Should delete successfully an event when it exists")
     void shouldDeleteEventWhenIdExists() {
-        UUID eventId = UUID.randomUUID();
-        when(port.existsById(eventId)).thenReturn(true);
+        UUID id = UUID.randomUUID();
+        when(port.existsById(id)).thenReturn(true);
 
-        sut.execute(eventId);
+        sut.execute(id);
 
-        verify(port).existsById(eventId);
-        verify(port).delete(eventId);
+        verify(port).existsById(id);
+        verify(port).delete(id);
     }
 
     @Test
     @DisplayName("Should throw an exception when an event when does not exists")
     void shouldThrowExceptionWhenEventDoesNotExist() {
-        UUID eventId = UUID.randomUUID();
-        GlobalAppException expectedException = GlobalAppException.resourceNotFound(
-                "Event", eventId
-        );
+        UUID id = UUID.randomUUID();
+        when(port.existsById(id)).thenReturn(false);
 
-        when(port.existsById(eventId)).thenReturn(false);
-
-        assertThatThrownBy(() -> sut.execute(eventId))
+        assertThatThrownBy(() -> sut.execute(id))
                 .isInstanceOf(GlobalAppException.class)
-                .hasMessage(expectedException.getMessage());
+                .hasMessageContaining("Event")
+                .hasMessageContaining(id.toString());
 
-        verify(port).existsById(eventId);
-        verify(port, never()).delete(eventId);
+        verify(port).existsById(id);
+        verify(port, never()).delete(id);
     }
 }

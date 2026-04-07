@@ -37,7 +37,7 @@ class CreateEventUseCaseTest {
     @Test
     @DisplayName("Should create event successfully when data is valid")
     void shouldCreateEventSuccessfully() {
-        var eventId = UUID.randomUUID();
+        var id = UUID.randomUUID();
         var ownerId = UUID.randomUUID();
         var command = new CreateEventCommand(
                 ownerId,
@@ -51,7 +51,7 @@ class CreateEventUseCaseTest {
         );
 
         var props = ReconstructEventProps.builder()
-                .id(eventId)
+                .id(id)
                 .ownerId(ownerId)
                 .name(command.name())
                 .type(command.type())
@@ -64,7 +64,7 @@ class CreateEventUseCaseTest {
 
         var expectedEvent = Event.reconstruct(props);
 
-        when(uuidGeneratorPort.generate()).thenReturn(eventId);
+        when(uuidGeneratorPort.generate()).thenReturn(id);
         when(port.create(any(Event.class))).thenReturn(expectedEvent);
 
         sut.execute(command);
@@ -73,6 +73,7 @@ class CreateEventUseCaseTest {
         // integrates the UUID from mock before persistence.
         ArgumentCaptor<Event> eventCaptor = ArgumentCaptor.forClass(Event.class);
         verify(port).create(eventCaptor.capture());
+        verify(uuidGeneratorPort).generate();
 
         Event result = eventCaptor.getValue();
 

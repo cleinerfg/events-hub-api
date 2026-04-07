@@ -47,7 +47,7 @@ class UpdateEventUseCaseTest {
     @Test
     @DisplayName("Should update all fields successfully when event exists and command is full")
     void shouldUpdateAllFieldsSuccessfully() {
-        var existingEvent = createSampleEvent();
+        var existing = createSampleEvent();
 
         var command = new UpdateEventCommand(
                 "New Name",
@@ -60,8 +60,8 @@ class UpdateEventUseCaseTest {
         );
 
         var props = ReconstructEventProps.builder()
-                .id(existingEvent.getId())
-                .ownerId(existingEvent.getOwnerId())
+                .id(existing.getId())
+                .ownerId(existing.getOwnerId())
                 .name(command.name())
                 .type(command.type())
                 .description(command.description())
@@ -73,19 +73,20 @@ class UpdateEventUseCaseTest {
 
         var expectedEvent = Event.reconstruct(props);
 
-        when(port.findById(existingEvent.getId())).thenReturn(Optional.of(existingEvent));
+        when(port.findById(existing.getId())).thenReturn(Optional.of(existing));
         when(port.update(any(Event.class))).thenReturn(expectedEvent);
 
-        Event result = sut.execute(existingEvent.getId(), command);
+        Event result = sut.execute(existing.getId(), command);
 
         assertThat(result).usingRecursiveComparison().isEqualTo(expectedEvent);
-        verify(port).update(existingEvent);
+        verify(port).update(existing);
+        verify(port).findById(existing.getId());
     }
 
     @Test
     @DisplayName("Should not update fields that are null in the command")
     void shouldNotUpdateNullFields() {
-        var existingEvent = createSampleEvent();
+        var existing = createSampleEvent();
 
         var command = new UpdateEventCommand(
                 null, null,
@@ -93,13 +94,13 @@ class UpdateEventUseCaseTest {
                 null, null, null
         );
 
-        when(port.findById(existingEvent.getId())).thenReturn(Optional.of(existingEvent));
-        when(port.update(any(Event.class))).thenReturn(existingEvent);
+        when(port.findById(existing.getId())).thenReturn(Optional.of(existing));
+        when(port.update(any(Event.class))).thenReturn(existing);
 
-        Event result = sut.execute(existingEvent.getId(), command);
+        Event result = sut.execute(existing.getId(), command);
 
-        assertThat(result).usingRecursiveComparison().isEqualTo(existingEvent);
-        verify(port).update(existingEvent);
+        assertThat(result).usingRecursiveComparison().isEqualTo(existing);
+        verify(port).update(existing);
     }
 
     @Test
