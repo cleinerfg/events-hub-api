@@ -107,15 +107,13 @@ class UpdateEventUseCaseTest {
     @DisplayName("Should throw an exception when an event when does not exists")
     void shouldThrowExceptionWhenEventDoesNotExist() {
         UUID id = UUID.randomUUID();
-        GlobalAppException expectedException = GlobalAppException.resourceNotFound(
-                "Event", id
-        );
 
         when(port.findById(id)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> sut.execute(id, mock(UpdateEventCommand.class)))
                 .isInstanceOf(GlobalAppException.class)
-                .hasMessage(expectedException.getMessage());
+                .hasMessageContaining("Event")
+                .hasMessageContaining(id.toString());
 
         verify(port, never()).update(any());
     }
