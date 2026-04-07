@@ -20,8 +20,8 @@ public class UserWebMapper {
 
     public CreateUserCommand toCreateCommand(CreateUserRequest request) {
         return CreateUserCommand.builder()
-                .name(StringSanitizer.capitalize(request.name()))
-                .email(StringSanitizer.trimAndClean(request.email()).toLowerCase())
+                .name(StringSanitizer.trimAndClean(request.name()))
+                .email(StringSanitizer.trimAndClean(request.email()))
                 .password(request.password())
                 .build();
     }

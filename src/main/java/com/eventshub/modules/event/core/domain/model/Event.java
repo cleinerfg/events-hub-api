@@ -1,6 +1,7 @@
 package com.eventshub.modules.event.core.domain.model;
 
 import com.eventshub.shared.core.exception.GlobalAppException;
+import com.eventshub.shared.core.support.StringSanitizer;
 import lombok.*;
 
 import java.time.OffsetDateTime;
@@ -61,29 +62,38 @@ public class Event {
     }
 
     public void setName(String name) {
-        if (name == null || name.isBlank()) throw new IllegalArgumentException("Event name cannot be blank");
-        this.name = name;
+        String sanitized = StringSanitizer.capitalize(name);
+        if (sanitized == null || sanitized.isBlank())
+            throw new IllegalArgumentException(EventMessages.NAME_REQUIRED.getMessage());
+
+        this.name = sanitized;
     }
 
     public void setType(EventType type) {
-        if (type == null) throw new IllegalArgumentException("Event type cannot be null");
+        if (type == null)
+            throw new IllegalArgumentException(EventMessages.TYPE_REQUIRED.getMessage());
         this.type = type;
     }
 
     public void setOrganizer(String organizer) {
-        if (organizer == null || organizer.isBlank())
-            throw new IllegalArgumentException("Event organizer cannot be blank");
-        this.organizer = organizer;
+        String sanitized = StringSanitizer.trimAndClean(organizer);
+        if (sanitized == null || sanitized.isBlank())
+            throw new IllegalArgumentException(EventMessages.ORGANIZER_REQUIRED.getMessage());
+
+        this.organizer = sanitized;
     }
 
     public void setLocation(String location) {
-        if (location == null || location.isBlank())
-            throw new IllegalArgumentException("Event location cannot be blank");
-        this.location = location;
+        String sanitized = StringSanitizer.trimAndClean(location);
+        if (sanitized == null || sanitized.isBlank())
+            throw new IllegalArgumentException(EventMessages.LOCATION_REQUIRED.getMessage());
+
+        this.location = sanitized;
     }
 
     public void setStartDate(OffsetDateTime startDate) {
-        if (startDate == null) throw new IllegalArgumentException("Start date cannot be null");
+        if (startDate == null)
+            throw new IllegalArgumentException(EventMessages.START_DATE_REQUIRED.getMessage());
         validateEndDate(startDate, endDate);
         this.startDate = startDate;
     }
@@ -94,11 +104,13 @@ public class Event {
     }
 
     private static void validateId(UUID id) {
-        if (id == null) throw new IllegalArgumentException("Event id cannot be null");
+        if (id == null)
+            throw new IllegalArgumentException(EventMessages.ID_REQUIRED.getMessage());
     }
 
     private static void validateOwnerId(UUID ownerId) {
-        if (ownerId == null) throw new IllegalArgumentException("Owner external id cannot be null");
+        if (ownerId == null)
+            throw new IllegalArgumentException(EventMessages.OWNER_ID_REQUIRED.getMessage());
     }
 
     private static void validateEndDate(OffsetDateTime startDate, OffsetDateTime endDate) {

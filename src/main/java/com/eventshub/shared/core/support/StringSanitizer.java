@@ -23,4 +23,10 @@ public class StringSanitizer {
                 .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase())
                 .collect(Collectors.joining(" "));
     }
+
+    public static String toLowerCase(String value) {
+        if (value == null) return null;
+        String cleaned = trimAndClean(value);
+        return cleaned == null ? null : cleaned.toLowerCase();
+    }
 }

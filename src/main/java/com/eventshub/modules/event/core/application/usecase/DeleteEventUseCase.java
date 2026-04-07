@@ -1,6 +1,7 @@
 package com.eventshub.modules.event.core.application.usecase;
 
 import com.eventshub.modules.event.core.application.port.EventPort;
+import com.eventshub.shared.core.exception.GlobalAppException;
 import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
@@ -13,7 +14,7 @@ public class DeleteEventUseCase {
     public void execute(UUID id) {
 
         if (!port.existsById(id)) {
-            throw port.createNotFoundException(id);
+            throw GlobalAppException.resourceNotFound("Event", id);
         }
 
         port.delete(id);

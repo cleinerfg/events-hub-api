@@ -1,15 +1,19 @@
 package com.eventshub;
 
-import com.tngtech.archunit.core.importer.ImportOption;
+import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
+import com.tngtech.archunit.lang.ArchCondition;
 import com.tngtech.archunit.lang.ArchRule;
+import com.tngtech.archunit.lang.ConditionEvents;
+import com.tngtech.archunit.lang.SimpleConditionEvent;
 
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAPackage;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import static com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices;
 
-@AnalyzeClasses(packages = "com.eventshub", importOptions = ImportOption.DoNotIncludeTests.class)
+@AnalyzeClasses(packages = "com.eventshub")
 public class ArchitectureTest {
 
     private static final String MODULE_SLICES = "com.eventshub.modules.(*)..";
@@ -53,4 +57,25 @@ public class ArchitectureTest {
             .that().resideInAPackage(SHARED_PACKAGE)
             .should().dependOnClassesThat().resideInAPackage(MODULE_PACKAGE)
             .because("The shared is multifunctional and should not be subject to specific business rules");
+
+    @ArchTest
+    static final ArchRule tests_must_reside_in_same_package_as_production_code = classes()
+            .that().haveSimpleNameEndingWith("Test")
+            .and().areNotAnnotatedWith(AnalyzeClasses.class)
+            .should(new ArchCondition<JavaClass>("reside in a mirrored package") {
+                @Override
+                public void check(JavaClass testClass, ConditionEvents events) {
+                    String productionClassName = testClass.getFullName().replace("Test", "");
+                    boolean hasProductionClass = testClass.getDirectDependenciesFromSelf().stream()
+                            .anyMatch(d -> d.getTargetClass().getFullName().equals(productionClassName));
+
+                    if (!hasProductionClass) {
+                        String message = String.format(
+                                "Test %s does not appear to have a corresponding " +
+                                        "production class in the same package.",
+                                testClass.getName());
+                        events.add(SimpleConditionEvent.violated(testClass, message));
+                    }
+                }
+            });
 }

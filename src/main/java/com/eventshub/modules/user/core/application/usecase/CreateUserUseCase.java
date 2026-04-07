@@ -22,8 +22,7 @@ public class CreateUserUseCase {
             throw new EmailAlreadyExistsException(command.email());
         }
 
-        PasswordValidator.create(command.password())
-                .validate();
+        PasswordValidator.validate(command.password());
 
         var props = CreateUserProps.builder()
                 .id(uuidGeneratorPort.generate())

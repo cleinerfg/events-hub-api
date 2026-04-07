@@ -33,7 +33,7 @@ public class EventWebMapper {
     public CreateEventCommand toCreateCommand(CreateEventRequest request, UUID ownerId) {
         return CreateEventCommand.builder()
                 .ownerId(ownerId)
-                .name(StringSanitizer.capitalize(request.name()))
+                .name(StringSanitizer.trimAndClean(request.name()))
                 .type(request.type())
                 .description(StringSanitizer.trimAndClean(request.description()))
                 .organizer(StringSanitizer.trimAndClean(request.organizer()))
@@ -59,7 +59,7 @@ public class EventWebMapper {
 
     public UpdateEventCommand toUpdateCommand(UpdateEventRequest request) {
         return UpdateEventCommand.builder()
-                .name(StringSanitizer.capitalize(request.name()))
+                .name(StringSanitizer.trimAndClean(request.name()))
                 .type(request.type())
                 .description(StringSanitizer.trimAndClean(request.description()))
                 .organizer(StringSanitizer.trimAndClean(request.organizer()))
