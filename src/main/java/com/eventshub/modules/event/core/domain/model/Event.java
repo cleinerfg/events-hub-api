@@ -5,6 +5,8 @@ import com.eventshub.shared.core.support.StringSanitizer;
 import lombok.*;
 
 import java.time.OffsetDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -24,6 +26,7 @@ public class Event {
     private String location;
     private OffsetDateTime startDate;
     private OffsetDateTime endDate;
+    private Set<UUID> participantIds = new HashSet<>();
 
     private Event(UUID id, UUID ownerId) {
         validateId(id);
@@ -58,6 +61,7 @@ public class Event {
                 .location(props.location())
                 .startDate(props.startDate())
                 .endDate(props.endDate())
+                .participantIds(props.participantIds())
                 .build();
     }
 
@@ -101,6 +105,13 @@ public class Event {
     public void setEndDate(OffsetDateTime endDate) {
         validateEndDate(startDate, endDate);
         this.endDate = endDate;
+    }
+
+    public void addParticipant(UUID participantId) {
+        if (participantId == null)
+            throw new IllegalArgumentException(EventMessages.PARTICIPANT_ID_REQUIRED.getMessage());
+
+        this.participantIds.add(participantId);
     }
 
     private static void validateId(UUID id) {
