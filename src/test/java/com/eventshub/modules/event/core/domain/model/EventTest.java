@@ -14,8 +14,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class EventTest {
 
@@ -210,5 +209,37 @@ class EventTest {
 
         assertEquals(2, sut.getParticipantIds().size(),
                 "The collection should not contain duplicate participant IDs");
+    }
+
+    @Test
+    @DisplayName("Should remove an existing participant successfully")
+    void shouldRemoveParticipantSuccessfully() {
+        UUID id = UUID.randomUUID();
+
+        sut.addParticipant(id);
+
+        sut.removeParticipant(id);
+
+        assertFalse(sut.getParticipantIds().contains(id),
+                "The participant ID should have been removed from the set");
+        assertEquals(0, sut.getParticipantIds().size());
+    }
+
+    @Test
+    @DisplayName("Should throw exception when participant ID to remove is null")
+    void shouldThrowExceptionWhenRemovingNullParticipantId() {
+        assertThatThrownBy(() -> sut.removeParticipant(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(EventMessages.PARTICIPANT_ID_REQUIRED.getMessage());
+    }
+
+    @Test
+    @DisplayName("Should throw GlobalAppException when participant to remove is not found")
+    void shouldThrowExceptionWhenParticipantNotFound() {
+        UUID id = UUID.randomUUID();
+
+        assertThatThrownBy(() -> sut.removeParticipant(id))
+                .isInstanceOf(GlobalAppException.class)
+                .hasMessageContaining(id.toString());
     }
 }
