@@ -9,10 +9,13 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.OffsetDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class EventTest {
 
@@ -68,12 +71,15 @@ class EventTest {
     @Test
     @DisplayName("Should reconstruct event with exactly the same properties")
     void shouldReconstructWithSameState() {
+        var participantIds = Set.of(UUID.randomUUID(), UUID.randomUUID());
         var props = new ReconstructEventProps(
                 UUID.randomUUID(), UUID.randomUUID(),
                 "Recon", EventType.FASHION,
                 "Desc", "Org",
                 "Local", OffsetDateTime.now(),
-                OffsetDateTime.now().plusDays(1)
+                OffsetDateTime.now().plusDays(1),
+                participantIds
+
         );
 
         Event result = Event.reconstruct(props);
@@ -168,5 +174,41 @@ class EventTest {
 
         assertThatThrownBy(() -> sut.setEndDate(invalidEnd))
                 .isInstanceOf(GlobalAppException.class);
+    }
+
+    // --- PARTICIPANT METHODS ---
+
+    @Test
+    @DisplayName("Should add a participant successfully")
+    void shouldAddParticipantSuccessfully() {
+        UUID id = UUID.randomUUID();
+
+        sut.addParticipant(id);
+
+        assertTrue(sut.getParticipantIds().contains(id),
+                "The participant ID should be present in the list");
+        assertEquals(1, sut.getParticipantIds().size());
+    }
+
+    @Test
+    @DisplayName("Should throw exception when adding a null participant ID")
+    void shouldThrowExceptionWhenParticipantIdIsNull() {
+        assertThatThrownBy(() -> sut.addParticipant(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(EventMessages.PARTICIPANT_ID_REQUIRED.getMessage());
+    }
+
+    @Test
+    @DisplayName("Should not allow duplicate participants")
+    void shouldNotAllowDuplicateParticipants() {
+        UUID id = UUID.randomUUID();
+        UUID id2 = UUID.randomUUID();
+
+        sut.addParticipant(id);
+        sut.addParticipant(id2);
+        sut.addParticipant(id); // Try to add same
+
+        assertEquals(2, sut.getParticipantIds().size(),
+                "The collection should not contain duplicate participant IDs");
     }
 }
