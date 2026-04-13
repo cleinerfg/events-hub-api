@@ -123,6 +123,13 @@ public class Event {
         participantIds.remove(participantId);
     }
 
+    public boolean participantIsOwner(UUID participantId) {
+        if (participantId == null)
+            throw new IllegalArgumentException(EventMessages.PARTICIPANT_ID_REQUIRED.getMessage());
+
+        return participantId.equals(ownerId);
+    }
+
     private static void validateId(UUID id) {
         if (id == null)
             throw new IllegalArgumentException(EventMessages.ID_REQUIRED.getMessage());
