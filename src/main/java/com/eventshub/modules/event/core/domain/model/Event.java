@@ -114,6 +114,15 @@ public class Event {
         this.participantIds.add(participantId);
     }
 
+    public void removeParticipant(UUID participantId) {
+        if (participantId == null)
+            throw new IllegalArgumentException(EventMessages.PARTICIPANT_ID_REQUIRED.getMessage());
+
+        if (!participantIds.contains(participantId))
+            throw GlobalAppException.resourceNotFound("Participant", participantId);
+        participantIds.remove(participantId);
+    }
+
     private static void validateId(UUID id) {
         if (id == null)
             throw new IllegalArgumentException(EventMessages.ID_REQUIRED.getMessage());
