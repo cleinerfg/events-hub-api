@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EventTest {
 
+    private final UUID sutOwnerId = UUID.randomUUID();
     private Event sut;
 
     @BeforeEach
@@ -25,7 +26,7 @@ class EventTest {
         var now = OffsetDateTime.now();
         var props = new CreateEventProps(
                 UUID.randomUUID(),
-                UUID.randomUUID(),
+                sutOwnerId,
                 "Valid Event",
                 EventType.WORKSHOP,
                 "Description",
@@ -241,5 +242,27 @@ class EventTest {
         assertThatThrownBy(() -> sut.removeParticipant(id))
                 .isInstanceOf(GlobalAppException.class)
                 .hasMessageContaining(id.toString());
+    }
+
+    @Test
+    @DisplayName("Should return true when the participant is the owner")
+    void shouldReturnTrueWhenParticipantIsOwner() {
+        boolean isOwner = sut.participantIsOwner(sutOwnerId);
+        assertTrue(isOwner, "Should return true for the actual owner ID");
+    }
+
+    @Test
+    @DisplayName("Should return false when the participant is not the owner")
+    void shouldReturnFalseWhenParticipantIsNotOwner() {
+        boolean isOwner = sut.participantIsOwner(UUID.randomUUID());
+        assertFalse(isOwner, "Should return false for an ID that is not the owner");
+    }
+
+    @Test
+    @DisplayName("Should throw exception when checking a null participant ID")
+    void shouldThrowExceptionWhenCheckingNullParticipantId() {
+        assertThatThrownBy(() -> sut.participantIsOwner(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(EventMessages.PARTICIPANT_ID_REQUIRED.getMessage());
     }
 }
