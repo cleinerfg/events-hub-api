@@ -61,7 +61,9 @@ public class Event {
                 .location(props.location())
                 .startDate(props.startDate())
                 .endDate(props.endDate())
-                .participantIds(props.participantIds())
+                .participantIds(props.participantIds() != null ?
+                        new HashSet<>(props.participantIds()) : new HashSet<>()
+                )
                 .build();
     }
 
