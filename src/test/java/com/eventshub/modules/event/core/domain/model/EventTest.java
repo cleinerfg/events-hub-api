@@ -14,7 +14,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EventTest {
 
@@ -185,8 +185,8 @@ class EventTest {
 
         sut.addParticipant(id);
 
-        assertTrue(sut.getParticipantIds().contains(id),
-                "The participant ID should be present in the list");
+        assertThat(sut.getParticipantIds())
+                .contains(id);
         assertEquals(1, sut.getParticipantIds().size());
     }
 
@@ -221,8 +221,8 @@ class EventTest {
 
         sut.removeParticipant(id);
 
-        assertFalse(sut.getParticipantIds().contains(id),
-                "The participant ID should have been removed from the set");
+        assertThat(sut.getParticipantIds())
+                .doesNotContain(id);
         assertEquals(0, sut.getParticipantIds().size());
     }
 
@@ -248,14 +248,14 @@ class EventTest {
     @DisplayName("Should return true when the participant is the owner")
     void shouldReturnTrueWhenParticipantIsOwner() {
         boolean isOwner = sut.participantIsOwner(sutOwnerId);
-        assertTrue(isOwner, "Should return true for the actual owner ID");
+        assertThat(isOwner).isTrue();
     }
 
     @Test
     @DisplayName("Should return false when the participant is not the owner")
     void shouldReturnFalseWhenParticipantIsNotOwner() {
         boolean isOwner = sut.participantIsOwner(UUID.randomUUID());
-        assertFalse(isOwner, "Should return false for an ID that is not the owner");
+        assertThat(isOwner).isFalse();
     }
 
     @Test
