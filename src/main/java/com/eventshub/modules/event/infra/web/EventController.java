@@ -1,6 +1,7 @@
 package com.eventshub.modules.event.infra.web;
 
 import com.eventshub.modules.event.core.application.usecase.*;
+import com.eventshub.modules.event.core.domain.dto.EventSummary;
 import com.eventshub.modules.event.core.domain.dto.ParticipantEvent;
 import com.eventshub.modules.event.core.domain.model.Event;
 import com.eventshub.modules.event.infra.web.dto.*;
@@ -26,6 +27,7 @@ public class EventController {
     private final SearchEventsUseCase searchUseCase;
     private final UpdateEventUseCase updateUseCase;
     private final DeleteEventUseCase deleteUseCase;
+    private final FindAllEventsByOwnerIdUseCase findAllByOwnerIdUseCase;
     private final FindAllParticipantsEventUseCase findAllParticipantsUseCase;
     private final AddParticipantEventUseCase addParticipantUseCase;
     private final RemoveParticipantEventUseCase removeParticipantUseCase;
@@ -99,6 +101,16 @@ public class EventController {
     ) {
         deleteUseCase.execute(externalId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<EventsSummaryResponse> findMyEvents() {
+        UUID ownerId = securityContextService
+                .getAuthenticatedPayload()
+                .externalId();
+
+        List<EventSummary> response = findAllByOwnerIdUseCase.execute(ownerId);
+        return ResponseEntity.ok(mapper.toSummaryResponse(ownerId, response));
     }
 
     @GetMapping("/{externalId}/participants")
