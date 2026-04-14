@@ -3,6 +3,7 @@ package com.eventshub.modules.event.infra.web;
 import com.eventshub.modules.event.core.application.usecase.command.CreateEventCommand;
 import com.eventshub.modules.event.core.application.usecase.command.UpdateEventCommand;
 import com.eventshub.modules.event.core.application.usecase.query.SearchEventQuery;
+import com.eventshub.modules.event.core.domain.dto.EventSummary;
 import com.eventshub.modules.event.core.domain.dto.ParticipantEvent;
 import com.eventshub.modules.event.core.domain.model.Event;
 import com.eventshub.modules.event.infra.web.dto.*;
@@ -26,6 +27,15 @@ public class EventWebMapper {
                 .location(event.getLocation())
                 .startDate(event.getStartDate())
                 .endDate(event.getEndDate())
+                .build();
+    }
+
+    public EventsSummaryResponse toSummaryResponse(
+            UUID ownerId, List<EventSummary> summaries
+    ) {
+        return EventsSummaryResponse.builder()
+                .ownerId(ownerId)
+                .events(summaries)
                 .build();
     }
 
