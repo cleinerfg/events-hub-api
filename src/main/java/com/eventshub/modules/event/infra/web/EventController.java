@@ -102,8 +102,8 @@ public class EventController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{externalId}/sign-up")
-    public ResponseEntity<Void> signUpParticipant(
+    @PostMapping("/{externalId}/join")
+    public ResponseEntity<Void> participantJoin(
             @PathVariable UUID externalId
     ) {
         UUID participantId = securityContextService
