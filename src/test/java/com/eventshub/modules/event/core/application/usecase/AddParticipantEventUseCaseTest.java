@@ -22,13 +22,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class AddParticipantUseCaseTest {
+class AddParticipantEventUseCaseTest {
 
     @Mock
     private EventPort port;
 
     @InjectMocks
-    private AddParticipantUseCase sut;
+    private AddParticipantEventUseCase sut;
 
     private Event createSampleEvent() {
         return Event.reconstruct(ReconstructEventProps.builder()

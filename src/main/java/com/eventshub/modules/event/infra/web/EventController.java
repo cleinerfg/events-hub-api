@@ -28,7 +28,7 @@ public class EventController {
     private final SearchEventsUseCase searchUseCase;
     private final UpdateEventUseCase updateUseCase;
     private final DeleteEventUseCase deleteUseCase;
-    private final AddParticipantUseCase addParticipantUseCase;
+    private final AddParticipantEventUseCase addParticipantUseCase;
 
     private final EventWebMapper mapper;
     private final SecurityContextService securityContextService;

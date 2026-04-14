@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-public class AddParticipantUseCase {
+public class AddParticipantEventUseCase {
     private final EventPort port;
 
     public void execute(UUID eventId, UUID participantId) {
