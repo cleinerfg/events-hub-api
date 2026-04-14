@@ -23,13 +23,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class RemoveParticipantUseCaseTest {
+class RemoveParticipantEventUseCaseTest {
 
     @Mock
     private EventPort port;
 
     @InjectMocks
-    private RemoveParticipantUseCase sut;
+    private RemoveParticipantEventUseCase sut;
 
     private final UUID participantId = UUID.randomUUID();
 
