@@ -22,6 +22,7 @@ public class EventPersistenceAdapter implements EventPort {
     private final EventPersistenceMapper mapper;
 
     private final UserJpaReferenceProvider userJpaReferenceProvider;
+    private final EventJpaReferenceProvider eventJpaReferenceProvider;
 
     @Override
     public Event create(Event event) {
@@ -84,5 +85,15 @@ public class EventPersistenceAdapter implements EventPort {
     @Transactional
     public void delete(UUID id) {
         repository.deleteByExternalId(id);
+    }
+
+    @Override
+    @Transactional
+    public void addParticipant(UUID eventId, UUID userId) {
+        EventJpaEntity eventRef = eventJpaReferenceProvider.provide(eventId);
+        UserJpaEntity userRef = userJpaReferenceProvider.provide(userId);
+
+        eventRef.addParticipant(userRef);
+        repository.save(eventRef);
     }
 }

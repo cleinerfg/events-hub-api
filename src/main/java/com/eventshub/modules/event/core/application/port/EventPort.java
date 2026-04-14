@@ -22,4 +22,6 @@ public interface EventPort {
     Event update(Event event);
 
     void delete(UUID id);
+
+    void addParticipant(UUID eventId, UUID userId);
 }
