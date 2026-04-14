@@ -1,6 +1,7 @@
 package com.eventshub.modules.event.core.application.port;
 
 import com.eventshub.modules.event.core.application.usecase.query.SearchEventQuery;
+import com.eventshub.modules.event.core.domain.dto.ParticipantEvent;
 import com.eventshub.modules.event.core.domain.model.Event;
 
 import java.util.List;
@@ -22,6 +23,8 @@ public interface EventPort {
     Event update(Event event);
 
     void delete(UUID id);
+
+    List<ParticipantEvent> findAllParticipants(UUID eventId);
 
     void addParticipant(UUID eventId, UUID userId);
 

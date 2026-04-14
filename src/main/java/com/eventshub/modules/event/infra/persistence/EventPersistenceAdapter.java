@@ -2,6 +2,7 @@ package com.eventshub.modules.event.infra.persistence;
 
 import com.eventshub.modules.event.core.application.port.EventPort;
 import com.eventshub.modules.event.core.application.usecase.query.SearchEventQuery;
+import com.eventshub.modules.event.core.domain.dto.ParticipantEvent;
 import com.eventshub.modules.event.core.domain.model.Event;
 import com.eventshub.modules.user.infra.persistence.UserJpaEntity;
 import com.eventshub.modules.user.infra.persistence.UserJpaReferenceProvider;
@@ -71,7 +72,7 @@ public class EventPersistenceAdapter implements EventPort {
     public Event update(Event event) {
         EventJpaEntity entity = repository.findByExternalId(event.getId()).orElseThrow(
                 () -> GlobalAppException.systemIntegrity(
-                        "Event with id '%s' lost during update".formatted(event.getId())
+                        "Event with eventId '%s' lost during update".formatted(event.getId())
                 ));
 
         mapper.updateEntity(entity, event);
@@ -85,6 +86,11 @@ public class EventPersistenceAdapter implements EventPort {
     @Transactional
     public void delete(UUID id) {
         repository.deleteByExternalId(id);
+    }
+
+    @Override
+    public List<ParticipantEvent> findAllParticipants(UUID eventId) {
+        return repository.findAllParticipantsByExternalId(eventId);
     }
 
     @Override
