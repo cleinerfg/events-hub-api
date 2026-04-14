@@ -41,4 +41,9 @@ public class EventBeanConfig {
     public DeleteEventUseCase deleteEventUseCase(EventPort port) {
         return new DeleteEventUseCase(port);
     }
+
+    @Bean
+    public AddParticipantUseCase addParticipantUseCase(EventPort port) {
+        return new AddParticipantUseCase(port);
+    }
 }
