@@ -16,6 +16,6 @@ public class AddParticipantUseCase {
                 .orElseThrow(() -> GlobalAppException.resourceNotFound("Event", eventId));
 
         event.addParticipant(participantId);
-        port.update(event);
+        port.addParticipant(event.getId(), participantId);
     }
 }

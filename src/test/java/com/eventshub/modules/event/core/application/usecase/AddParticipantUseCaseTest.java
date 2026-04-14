@@ -8,7 +8,6 @@ import com.eventshub.shared.core.exception.GlobalAppException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -51,17 +50,15 @@ class AddParticipantUseCaseTest {
     void shouldAddParticipantSuccessfully() {
         var event = createSampleEvent();
         var participantId = UUID.randomUUID();
+        var eventId = event.getId();
 
-        when(port.findById(event.getId())).thenReturn(Optional.of(event));
+        when(port.findById(eventId)).thenReturn(Optional.of(event));
 
-        sut.execute(event.getId(), participantId);
+        sut.execute(eventId, participantId);
 
-        ArgumentCaptor<Event> eventCaptor = ArgumentCaptor.forClass(Event.class);
-        verify(port).update(eventCaptor.capture());
-
-        Event updatedEvent = eventCaptor.getValue();
-        assertThat(updatedEvent.getParticipantIds()).contains(participantId);
-        verify(port).findById(event.getId());
+        verify(port).addParticipant(eventId, participantId);
+        assertThat(event.getParticipantIds()).contains(participantId);
+        verify(port).findById(eventId);
     }
 
     @Test
