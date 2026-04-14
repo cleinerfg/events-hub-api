@@ -5,6 +5,8 @@ import com.eventshub.modules.event.core.domain.model.ReconstructEventProps;
 import com.eventshub.modules.user.infra.persistence.UserJpaEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.stream.Collectors;
+
 @Component
 public class EventPersistenceMapper {
 
@@ -33,6 +35,10 @@ public class EventPersistenceMapper {
                 .location(entity.getLocation())
                 .startDate(entity.getStartDate())
                 .endDate(entity.getEndDate())
+                .participantIds(entity.getParticipants().stream()
+                        .map(UserJpaEntity::getExternalId)
+                        .collect(Collectors.toSet())
+                )
                 .build();
 
         return Event.reconstruct(props);
