@@ -16,6 +16,6 @@ public class RemoveParticipantEventUseCase {
                 .orElseThrow(() -> GlobalAppException.resourceNotFound("Event", eventId));
 
         event.removeParticipant(participantId);
-        port.update(event);
+        port.removeParticipant(event.getId(), participantId);
     }
 }

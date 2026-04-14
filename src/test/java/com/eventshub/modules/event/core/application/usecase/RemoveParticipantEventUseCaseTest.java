@@ -8,7 +8,6 @@ import com.eventshub.shared.core.exception.GlobalAppException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -52,18 +51,15 @@ class RemoveParticipantEventUseCaseTest {
     @DisplayName("Should remove participant successfully when event exists and participant ID is valid")
     void shouldRemoveParticipantSuccessfully() {
         var event = createSampleEvent();
+        var eventId = event.getId();
 
-        when(port.findById(event.getId())).thenReturn(Optional.of(event));
+        when(port.findById(eventId)).thenReturn(Optional.of(event));
 
-        sut.execute(event.getId(), participantId);
+        sut.execute(eventId, participantId);
 
-        ArgumentCaptor<Event> eventCaptor = ArgumentCaptor.forClass(Event.class);
-        verify(port).update(eventCaptor.capture());
-
-        Event updatedEvent = eventCaptor.getValue();
-        assertThat(updatedEvent.getParticipantIds()).isNotNull();
-        assertThat(updatedEvent.getParticipantIds()).doesNotContain(participantId);
-        verify(port).findById(event.getId());
+        verify(port).removeParticipant(eventId, participantId);
+        assertThat(event.getParticipantIds()).doesNotContain(participantId);
+        verify(port).findById(eventId);
     }
 
     @Test
