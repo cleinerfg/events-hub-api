@@ -68,4 +68,10 @@ public class EventJpaEntity {
             throw GlobalAppException.systemIntegrity("Participant cannot be null");
         this.participants.add(user);
     }
+
+    public void removeParticipant(UserJpaEntity user) {
+        if (this.participants == null)
+            throw GlobalAppException.systemIntegrity("Participant cannot be null");
+        this.participants.remove(user);
+    }
 }
