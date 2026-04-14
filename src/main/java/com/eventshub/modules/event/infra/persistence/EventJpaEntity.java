@@ -2,12 +2,15 @@ package com.eventshub.modules.event.infra.persistence;
 
 import com.eventshub.modules.event.core.domain.model.EventType;
 import com.eventshub.modules.user.infra.persistence.UserJpaEntity;
+import com.eventshub.shared.core.exception.GlobalAppException;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.OffsetDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -50,4 +53,25 @@ public class EventJpaEntity {
 
     @Column(name = "end_date")
     private OffsetDateTime endDate;
+
+    @Builder.Default
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_event",
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<UserJpaEntity> participants = new HashSet<>();
+
+    public void addParticipant(UserJpaEntity user) {
+        if (this.participants == null)
+            throw GlobalAppException.systemIntegrity("Participant cannot be null");
+        this.participants.add(user);
+    }
+
+    public void removeParticipant(UserJpaEntity user) {
+        if (this.participants == null)
+            throw GlobalAppException.systemIntegrity("Participant cannot be null");
+        this.participants.remove(user);
+    }
 }

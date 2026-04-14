@@ -3,14 +3,14 @@ package com.eventshub.modules.event.infra.web;
 import com.eventshub.modules.event.core.application.usecase.command.CreateEventCommand;
 import com.eventshub.modules.event.core.application.usecase.command.UpdateEventCommand;
 import com.eventshub.modules.event.core.application.usecase.query.SearchEventQuery;
+import com.eventshub.modules.event.core.domain.dto.EventSummary;
+import com.eventshub.modules.event.core.domain.dto.ParticipantEvent;
 import com.eventshub.modules.event.core.domain.model.Event;
-import com.eventshub.modules.event.infra.web.dto.CreateEventRequest;
-import com.eventshub.modules.event.infra.web.dto.EventResponse;
-import com.eventshub.modules.event.infra.web.dto.SearchEventRequest;
-import com.eventshub.modules.event.infra.web.dto.UpdateEventRequest;
+import com.eventshub.modules.event.infra.web.dto.*;
 import com.eventshub.shared.core.support.StringSanitizer;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -27,6 +27,24 @@ public class EventWebMapper {
                 .location(event.getLocation())
                 .startDate(event.getStartDate())
                 .endDate(event.getEndDate())
+                .build();
+    }
+
+    public EventsSummaryResponse toSummaryResponse(
+            UUID ownerId, List<EventSummary> summaries
+    ) {
+        return EventsSummaryResponse.builder()
+                .ownerId(ownerId)
+                .events(summaries)
+                .build();
+    }
+
+    public ParticipantsEventResponse toParticipantsResponse(
+            UUID id, List<ParticipantEvent> participantsEvent
+    ) {
+        return ParticipantsEventResponse.builder()
+                .eventId(id)
+                .participants(participantsEvent)
                 .build();
     }
 

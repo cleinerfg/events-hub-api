@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.OffsetDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -60,6 +61,7 @@ class CreateEventUseCaseTest {
                 .location(command.location())
                 .startDate(command.startDate())
                 .endDate(command.endDate())
+                .participantIds(Set.of())
                 .build();
 
         var expectedEvent = Event.reconstruct(props);

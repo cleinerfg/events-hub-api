@@ -9,13 +9,16 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.OffsetDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EventTest {
 
+    private final UUID sutOwnerId = UUID.randomUUID();
     private Event sut;
 
     @BeforeEach
@@ -23,7 +26,7 @@ class EventTest {
         var now = OffsetDateTime.now();
         var props = new CreateEventProps(
                 UUID.randomUUID(),
-                UUID.randomUUID(),
+                sutOwnerId,
                 "Valid Event",
                 EventType.WORKSHOP,
                 "Description",
@@ -68,12 +71,15 @@ class EventTest {
     @Test
     @DisplayName("Should reconstruct event with exactly the same properties")
     void shouldReconstructWithSameState() {
+        var participantIds = Set.of(UUID.randomUUID(), UUID.randomUUID());
         var props = new ReconstructEventProps(
                 UUID.randomUUID(), UUID.randomUUID(),
                 "Recon", EventType.FASHION,
                 "Desc", "Org",
                 "Local", OffsetDateTime.now(),
-                OffsetDateTime.now().plusDays(1)
+                OffsetDateTime.now().plusDays(1),
+                participantIds
+
         );
 
         Event result = Event.reconstruct(props);
@@ -168,5 +174,95 @@ class EventTest {
 
         assertThatThrownBy(() -> sut.setEndDate(invalidEnd))
                 .isInstanceOf(GlobalAppException.class);
+    }
+
+    // --- PARTICIPANT METHODS ---
+
+    @Test
+    @DisplayName("Should add a participant successfully")
+    void shouldAddParticipantSuccessfully() {
+        UUID id = UUID.randomUUID();
+
+        sut.addParticipant(id);
+
+        assertThat(sut.getParticipantIds())
+                .contains(id);
+        assertEquals(1, sut.getParticipantIds().size());
+    }
+
+    @Test
+    @DisplayName("Should throw exception when adding a null participant ID")
+    void shouldThrowExceptionWhenParticipantIdIsNull() {
+        assertThatThrownBy(() -> sut.addParticipant(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(EventMessages.PARTICIPANT_ID_REQUIRED.getMessage());
+    }
+
+    @Test
+    @DisplayName("Should not allow duplicate participants")
+    void shouldNotAllowDuplicateParticipants() {
+        UUID id = UUID.randomUUID();
+        UUID id2 = UUID.randomUUID();
+
+        sut.addParticipant(id);
+        sut.addParticipant(id2);
+        sut.addParticipant(id); // Try to add same
+
+        assertEquals(2, sut.getParticipantIds().size(),
+                "The collection should not contain duplicate participant IDs");
+    }
+
+    @Test
+    @DisplayName("Should remove an existing participant successfully")
+    void shouldRemoveParticipantSuccessfully() {
+        UUID id = UUID.randomUUID();
+
+        sut.addParticipant(id);
+
+        sut.removeParticipant(id);
+
+        assertThat(sut.getParticipantIds())
+                .doesNotContain(id);
+        assertEquals(0, sut.getParticipantIds().size());
+    }
+
+    @Test
+    @DisplayName("Should throw exception when participant ID to remove is null")
+    void shouldThrowExceptionWhenRemovingNullParticipantId() {
+        assertThatThrownBy(() -> sut.removeParticipant(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(EventMessages.PARTICIPANT_ID_REQUIRED.getMessage());
+    }
+
+    @Test
+    @DisplayName("Should throw GlobalAppException when participant to remove is not found")
+    void shouldThrowExceptionWhenParticipantNotFound() {
+        UUID id = UUID.randomUUID();
+
+        assertThatThrownBy(() -> sut.removeParticipant(id))
+                .isInstanceOf(GlobalAppException.class)
+                .hasMessageContaining(id.toString());
+    }
+
+    @Test
+    @DisplayName("Should return true when the participant is the owner")
+    void shouldReturnTrueWhenParticipantIsOwner() {
+        boolean isOwner = sut.participantIsOwner(sutOwnerId);
+        assertThat(isOwner).isTrue();
+    }
+
+    @Test
+    @DisplayName("Should return false when the participant is not the owner")
+    void shouldReturnFalseWhenParticipantIsNotOwner() {
+        boolean isOwner = sut.participantIsOwner(UUID.randomUUID());
+        assertThat(isOwner).isFalse();
+    }
+
+    @Test
+    @DisplayName("Should throw exception when checking a null participant ID")
+    void shouldThrowExceptionWhenCheckingNullParticipantId() {
+        assertThatThrownBy(() -> sut.participantIsOwner(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(EventMessages.PARTICIPANT_ID_REQUIRED.getMessage());
     }
 }

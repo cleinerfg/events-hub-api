@@ -1,11 +1,10 @@
 package com.eventshub.modules.event.infra.web;
 
 import com.eventshub.modules.event.core.application.usecase.*;
+import com.eventshub.modules.event.core.domain.dto.EventSummary;
+import com.eventshub.modules.event.core.domain.dto.ParticipantEvent;
 import com.eventshub.modules.event.core.domain.model.Event;
-import com.eventshub.modules.event.infra.web.dto.CreateEventRequest;
-import com.eventshub.modules.event.infra.web.dto.EventResponse;
-import com.eventshub.modules.event.infra.web.dto.SearchEventRequest;
-import com.eventshub.modules.event.infra.web.dto.UpdateEventRequest;
+import com.eventshub.modules.event.infra.web.dto.*;
 import com.eventshub.shared.infra.security.SecurityContextService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +27,10 @@ public class EventController {
     private final SearchEventsUseCase searchUseCase;
     private final UpdateEventUseCase updateUseCase;
     private final DeleteEventUseCase deleteUseCase;
+    private final FindAllEventsByOwnerIdUseCase findAllByOwnerIdUseCase;
+    private final FindAllParticipantsEventUseCase findAllParticipantsUseCase;
+    private final AddParticipantEventUseCase addParticipantUseCase;
+    private final RemoveParticipantEventUseCase removeParticipantUseCase;
 
     private final EventWebMapper mapper;
     private final SecurityContextService securityContextService;
@@ -98,5 +101,50 @@ public class EventController {
     ) {
         deleteUseCase.execute(externalId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<EventsSummaryResponse> findMyEvents() {
+        UUID ownerId = securityContextService
+                .getAuthenticatedPayload()
+                .externalId();
+
+        List<EventSummary> response = findAllByOwnerIdUseCase.execute(ownerId);
+        return ResponseEntity.ok(mapper.toSummaryResponse(ownerId, response));
+    }
+
+    @GetMapping("/{externalId}/participants")
+    public ResponseEntity<ParticipantsEventResponse> findAllParticipants(
+            @PathVariable UUID externalId
+    ) {
+
+        List<ParticipantEvent> response = findAllParticipantsUseCase
+                .execute(externalId);
+
+        return ResponseEntity.ok(mapper.toParticipantsResponse(externalId, response));
+    }
+
+    @PostMapping("/{externalId}/participants/join")
+    public ResponseEntity<Void> participantJoin(
+            @PathVariable UUID externalId
+    ) {
+        UUID participantId = securityContextService
+                .getAuthenticatedPayload()
+                .externalId();
+
+        addParticipantUseCase.execute(externalId, participantId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{externalId}/participants/leave")
+    public ResponseEntity<Void> participantLeave(
+            @PathVariable UUID externalId
+    ) {
+        UUID participantId = securityContextService
+                .getAuthenticatedPayload()
+                .externalId();
+
+        removeParticipantUseCase.execute(externalId, participantId);
+        return ResponseEntity.ok().build();
     }
 }

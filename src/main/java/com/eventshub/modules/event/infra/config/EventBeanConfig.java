@@ -41,4 +41,24 @@ public class EventBeanConfig {
     public DeleteEventUseCase deleteEventUseCase(EventPort port) {
         return new DeleteEventUseCase(port);
     }
+
+    @Bean
+    public FindAllEventsByOwnerIdUseCase findAllEventsByOwnerIdUseCase(EventPort port) {
+        return new FindAllEventsByOwnerIdUseCase(port);
+    }
+
+    @Bean
+    public FindAllParticipantsEventUseCase findAllParticipantsEventUseCase(EventPort port) {
+        return new FindAllParticipantsEventUseCase(port);
+    }
+
+    @Bean
+    public AddParticipantEventUseCase addParticipantUseCase(EventPort port) {
+        return new AddParticipantEventUseCase(port);
+    }
+
+    @Bean
+    public RemoveParticipantEventUseCase removeParticipantEventUseCase(EventPort port) {
+        return new RemoveParticipantEventUseCase(port);
+    }
 }

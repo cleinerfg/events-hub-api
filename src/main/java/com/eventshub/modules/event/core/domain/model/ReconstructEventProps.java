@@ -3,6 +3,7 @@ package com.eventshub.modules.event.core.domain.model;
 import lombok.Builder;
 
 import java.time.OffsetDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Builder
@@ -15,6 +16,7 @@ public record ReconstructEventProps(
         String organizer,
         String location,
         OffsetDateTime startDate,
-        OffsetDateTime endDate
+        OffsetDateTime endDate,
+        Set<UUID> participantIds
 ) {
 }
