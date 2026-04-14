@@ -96,4 +96,14 @@ public class EventPersistenceAdapter implements EventPort {
         eventRef.addParticipant(userRef);
         repository.save(eventRef);
     }
+
+    @Override
+    @Transactional
+    public void removeParticipant(UUID eventId, UUID userId) {
+        EventJpaEntity eventRef = eventJpaReferenceProvider.provide(eventId);
+        UserJpaEntity userRef = userJpaReferenceProvider.provide(userId);
+
+        eventRef.removeParticipant(userRef);
+        repository.save(eventRef);
+    }
 }
