@@ -43,6 +43,11 @@ public class EventBeanConfig {
     }
 
     @Bean
+    public FindAllEventsByOwnerIdUseCase findAllEventsByOwnerIdUseCase(EventPort port) {
+        return new FindAllEventsByOwnerIdUseCase(port);
+    }
+
+    @Bean
     public FindAllParticipantsEventUseCase findAllParticipantsEventUseCase(EventPort port) {
         return new FindAllParticipantsEventUseCase(port);
     }
