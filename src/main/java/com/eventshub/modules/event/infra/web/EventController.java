@@ -102,7 +102,7 @@ public class EventController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{externalId}/join")
+    @PostMapping("/{externalId}/participants/join")
     public ResponseEntity<Void> participantJoin(
             @PathVariable UUID externalId
     ) {
@@ -114,7 +114,7 @@ public class EventController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/{externalId}/leave")
+    @PostMapping("/{externalId}/participants/leave")
     public ResponseEntity<Void> participantLeave(
             @PathVariable UUID externalId
     ) {
