@@ -29,6 +29,7 @@ public class EventController {
     private final UpdateEventUseCase updateUseCase;
     private final DeleteEventUseCase deleteUseCase;
     private final AddParticipantEventUseCase addParticipantUseCase;
+    private final RemoveParticipantEventUseCase removeParticipantUseCase;
 
     private final EventWebMapper mapper;
     private final SecurityContextService securityContextService;
@@ -110,6 +111,18 @@ public class EventController {
                 .externalId();
 
         addParticipantUseCase.execute(externalId, participantId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{externalId}/leave")
+    public ResponseEntity<Void> participantLeave(
+            @PathVariable UUID externalId
+    ) {
+        UUID participantId = securityContextService
+                .getAuthenticatedPayload()
+                .externalId();
+
+        removeParticipantUseCase.execute(externalId, participantId);
         return ResponseEntity.ok().build();
     }
 }
