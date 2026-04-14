@@ -28,6 +28,7 @@ public class EventController {
     private final SearchEventsUseCase searchUseCase;
     private final UpdateEventUseCase updateUseCase;
     private final DeleteEventUseCase deleteUseCase;
+    private final AddParticipantUseCase addParticipantUseCase;
 
     private final EventWebMapper mapper;
     private final SecurityContextService securityContextService;
@@ -98,5 +99,17 @@ public class EventController {
     ) {
         deleteUseCase.execute(externalId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{externalId}/sign-up")
+    public ResponseEntity<Void> signUpParticipant(
+            @PathVariable UUID externalId
+    ) {
+        UUID participantId = securityContextService
+                .getAuthenticatedPayload()
+                .externalId();
+
+        addParticipantUseCase.execute(externalId, participantId);
+        return ResponseEntity.ok().build();
     }
 }
