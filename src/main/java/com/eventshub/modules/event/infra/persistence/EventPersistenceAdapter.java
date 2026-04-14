@@ -2,6 +2,7 @@ package com.eventshub.modules.event.infra.persistence;
 
 import com.eventshub.modules.event.core.application.port.EventPort;
 import com.eventshub.modules.event.core.application.usecase.query.SearchEventQuery;
+import com.eventshub.modules.event.core.domain.dto.EventSummary;
 import com.eventshub.modules.event.core.domain.dto.ParticipantEvent;
 import com.eventshub.modules.event.core.domain.model.Event;
 import com.eventshub.modules.user.infra.persistence.UserJpaEntity;
@@ -86,6 +87,11 @@ public class EventPersistenceAdapter implements EventPort {
     @Transactional
     public void delete(UUID id) {
         repository.deleteByExternalId(id);
+    }
+
+    @Override
+    public List<EventSummary> findAllEventsByOwnerId(UUID ownerId) {
+        return repository.findAllSummariesByOwnerId(ownerId);
     }
 
     @Override

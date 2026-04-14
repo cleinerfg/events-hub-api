@@ -1,5 +1,6 @@
 package com.eventshub.modules.event.infra.persistence;
 
+import com.eventshub.modules.event.core.domain.dto.EventSummary;
 import com.eventshub.modules.event.core.domain.dto.ParticipantEvent;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -21,6 +22,13 @@ public interface EventJpaRepository extends
     Optional<EventJpaEntity> findByExternalId(UUID externalId);
 
     void deleteByExternalId(UUID externalId);
+
+    @Query("""
+                SELECT new com.eventshub.modules.event.core.domain.dto.EventSummary(e.externalId, e.name)
+                FROM EventJpaEntity e
+                WHERE e.owner.externalId = :ownerId
+            """)
+    List<EventSummary> findAllSummariesByOwnerId(UUID ownerId);
 
     @Query("""
                 SELECT new com.eventshub.modules.event.core.domain.dto.ParticipantEvent(u.externalId, u.name)
